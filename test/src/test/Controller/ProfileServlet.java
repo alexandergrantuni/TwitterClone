@@ -63,7 +63,6 @@ public class ProfileServlet extends HttpServlet {
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 				return;
 			}
-			response.sendRedirect(request.getContextPath()+"/404.jsp");
 			}
 			
 		}

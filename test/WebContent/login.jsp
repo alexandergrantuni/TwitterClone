@@ -46,7 +46,7 @@ function loginFormValidation()
 <div class="container">
   <div class="login">
     <h1>ChitChat Login</h1>
-    <form name="loginForm" method="post" action="Login" onsubmit="return loginFormValidation()">
+    <form name="loginForm" method="post" action="Login" onsubmit="return inputValidation()">
       <p><input type="text" name="emailAddress" value="" placeholder="Email Address"></p>
       <p><input type="password" name="userPassword" value="" placeholder="Password"></p>
       <p class="submit"><input type="submit" name="loginButton" value="Login"></p>

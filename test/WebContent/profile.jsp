@@ -20,23 +20,9 @@
     <div id="bio">
     <font color="#ffffff">${profileUser.bio}</font>
     </div>
-    <c:if test="${activeUser.username != profileUser.username}">
-     <p class="submit"><input type="submit" name="followButton" value="Follow ${profileUser.username}"></p>
-    </c:if>
-    
+    <p class="submit"><input type="submit" name="loginButton" value="Follow"></p>
 </div>
 <div id="broadcastcontainer">
-    <h1>${profileUser.username }'s Broadcasts</h1>
-    <c:forEach items="${messages}" var="individualMessage">
-      <p><div id="message">
-      <div id="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
-      <div id="messageText">${individualMessage.text }</div>
-      <c:if test="${activeUser.username == individualMessage.owner.username}">
-      <div id="deleteMessageButton"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Profile picture" width="21" height="25"></div>
-      </c:if>
-      <div id="timestampArea">Posted by ${individualMessage.owner.username } 5 hours ago.</div>
-      </div>
-</c:forEach>
 </div>
 
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
