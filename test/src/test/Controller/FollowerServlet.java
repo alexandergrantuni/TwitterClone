@@ -51,14 +51,14 @@ public class FollowerServlet extends HttpServlet {
 			{
 				//Display the active user's profile
 				System.out.println(UserMethods.getUserFromUsername(activeUser.getUsername()).getEmailAddress());
-				request.setAttribute("user", UserMethods.getUserFromUsername(activeUser.getUsername()));
+				request.setAttribute("profileUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("followerList", UserMethods.getFollowers(activeUser.getUsername()));
 				request.getRequestDispatcher("/followers.jsp").forward(request, response);
 				return;
 			}
 			if(Authentication.usernameRegistered(username))//Is the username valid?
 			{
-				request.setAttribute("user", UserMethods.getUserFromUsername(username));
+				request.setAttribute("profileUser", UserMethods.getUserFromUsername(username));
 				request.setAttribute("followerList", UserMethods.getFollowers(username));
 				request.getRequestDispatcher("/followers.jsp").forward(request, response);
 				return;
@@ -78,7 +78,7 @@ public class FollowerServlet extends HttpServlet {
 		{
 			String message = request.getParameter("message");
 			User user = (User)request.getSession().getAttribute("activeUser");
-			MessageMethods.addMessage(user.getUsername(), message);
+			MessageMethods.sendMessage(user.getUsername(), message);
 			response.sendRedirect("messages.jsp");
 		}
 		else

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import test.General.MessageMethods;
+import test.General.UserMethods;
 import test.Model.Message;
 import test.Model.User;
 
@@ -33,21 +34,35 @@ public class MessageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		List<Message> messageList = new LinkedList<Message>();
-		
+		User activeUser = (User)request.getSession().getAttribute("activeUser");
+		if(activeUser == null)
+		{
+			//User is not logged in
+			response.sendRedirect("login.jsp");
+			return;
+		}
+		else
+		{
+			//User is logged in
+			//SHOW JUST FOLLOWER MESSAGES
+			List<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
+			request.setAttribute("profileUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+			request.setAttribute("messages", messageList);
+			request.getRequestDispatcher("/messages.jsp").forward(request, response);
+			return;
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		if(request.getSession().getAttribute("activeUser") != null)
 		{
 			String message = request.getParameter("message");
 			User user = (User)request.getSession().getAttribute("activeUser");
-			MessageMethods.addMessage(user.getUsername(), message);
+			MessageMethods.sendMessage(user.getUsername(), message);
 			response.sendRedirect("messages.jsp");
 		}
 		else
@@ -71,7 +86,11 @@ public class MessageServlet extends HttpServlet {
 		{
 			if(MessageMethods.createdMessage((User)request.getSession().getAttribute("activeUser"), (int)request.getAttribute("messageId")))
 			{
-				
+				MessageMethods.deleteMessage((int)request.getAttribute("messageId"));
+			}
+			else
+			{
+				request.setAttribute("errorMessage", "You can only delete your own messages!");
 			}
 		}
 	}

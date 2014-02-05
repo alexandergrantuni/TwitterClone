@@ -50,6 +50,10 @@ public class LoginServlet extends HttpServlet {
 		{
 			//Login was successful
 			System.out.println("Login successful");
+			for(Message m : MessageMethods.getFollowingMessages("admin"))
+			{
+				System.out.println(m.getText());
+			}
 			request.getSession().setAttribute("activeUser", authenticatedUser);
 			response.sendRedirect("messages.jsp");
 		}

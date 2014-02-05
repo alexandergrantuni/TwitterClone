@@ -49,14 +49,14 @@ public class FollowingServlet extends HttpServlet {
 			{
 				//Display the active user's profile
 				System.out.println(UserMethods.getUserFromUsername(activeUser.getUsername()).getEmailAddress());
-				request.setAttribute("user", UserMethods.getUserFromUsername(activeUser.getUsername()));
+				request.setAttribute("profileUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("followingList", UserMethods.getFollowing(activeUser.getUsername()));
 				request.getRequestDispatcher("/following.jsp").forward(request, response);
 				return;
 			}
 			if(Authentication.usernameRegistered(username))//Is the username valid?
 			{
-				request.setAttribute("user", UserMethods.getUserFromUsername(username));
+				request.setAttribute("profileUser", UserMethods.getUserFromUsername(username));
 				request.setAttribute("followingList", UserMethods.getFollowing(username));
 				request.getRequestDispatcher("/following.jsp").forward(request, response);
 				return;

@@ -12,7 +12,7 @@ import test.Model.*;
 
 public class MessageMethods {
 	
-	public static boolean addMessage(String username, String message)
+	public static boolean sendMessage(String username, String message)
 	{
 		 Connection connection = Database.getConnection();
     	Date now = new Date();
@@ -153,6 +153,39 @@ public class MessageMethods {
 	
 	public static List<Message> getFollowingMessages(String username)
 	{
+		 Connection connection = Database.getConnection();
+	        PreparedStatement query = null;
+	        try 
+	    {
+	            query = (PreparedStatement) connection.prepareStatement("SELECT * FROM message AS msg INNER JOIN following AS follow ON msg.Username = follow.FollowingUserID WHERE follow.UserID = ? ORDER BY msg.Timestamp DESC;");
+	            query.setString(1, username);
+	            ResultSet resultSet = query.executeQuery();          
+	           LinkedList<Message> list = new LinkedList<Message>();
+	            while(resultSet.next())
+	            {
+	            	Message msg = new Message();
+	            	msg.setOwner(UserMethods.getUserFromUsername(username));
+	            	msg.setText(resultSet.getString("msg.Text"));
+	            	msg.setBroadcastId(resultSet.getInt("msg.MessageId"));
+	            	msg.setTimestamp(resultSet.getInt("msg.Timestamp"));
+	            	list.add(msg);
+	            }
+	            return list;
+	    }
+	    catch(Exception ex)
+	    {
+	            ex.printStackTrace();
+	            try
+	            {
+	                query.close();
+	                connection.close();
+	            }
+	            catch (SQLException sqle)
+	            {
+	                    sqle.printStackTrace();
+	            }
+	            
+	    }
 		return null;
 	}
 	public static List<Message> getAllMessages()

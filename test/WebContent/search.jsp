@@ -5,13 +5,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="css/style.css" type="text/css" /> <!-- stylesheet -->
-<title>Login</title>
+<title>Search</title>
 </head>
+<jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->
 <script>
-function loginFormValidation()
+function searchFormValidation()
 {
-	var email=document.forms["loginForm"]["emailAddress"].value;
-	var password=document.forms["loginForm"]["userPassword"].value;
+	var email=document.forms["searchForm"]["emailAddress"].value;
+	var password=document.forms["searchForm"]["userPassword"].value;
 	var emailRegex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;//found on stackoverflow
 	if ( email == "")
 	{
@@ -45,11 +46,11 @@ function loginFormValidation()
 <body>
 <div class="container">
   <div class="login">
-    <h1>ChitChat Login</h1>
-    <form name="loginForm" method="post" action="Login" onsubmit="return loginFormValidation()">
-      <p><input type="text" name="emailAddress" value="" placeholder="Email Address"></p>
+    <h1>Search ChitChat</h1>
+    <form name="searchForm" method="post" action="Search" onsubmit="return searchFormValidation()">
+      <p><input type="text" name="emailAddress" value="" placeholder="Search term"></p>
       <p><input type="password" name="userPassword" value="" placeholder="Password"></p>
-      <p class="submit"><input type="submit" name="loginButton" value="Login"></p>
+      <p class="submit"><input type="submit" name="loginButton" value="Search"></p>
     </form>
     <%if (request.getAttribute("errorMessage")!=null){%>
       <p><center><font color="#ff0000" >Invalid email address and/or password. </font></center></p>

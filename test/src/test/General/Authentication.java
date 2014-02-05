@@ -11,7 +11,6 @@ public class Authentication {
 	public static User authenticateUser(String emailAddress, String hashedPassword)
 	{
         connection = Database.getConnection();
-        System.out.println(connection);
         PreparedStatement query = null;
         try 
     {
@@ -20,16 +19,17 @@ public class Authentication {
             query.setString(2, hashedPassword);
             ResultSet resultSet = query.executeQuery();
             User user = new User();
-            while (resultSet.next())
+            //if there is a result
+            if(resultSet.next())
             {
             user.setEmailAddress(resultSet.getString("EmailAddress"));
             user.setUsername(resultSet.getString("Username"));
             user.setFirstName(resultSet.getString("FirstName"));
             user.setLastName(resultSet.getString("LastName"));
             user.setBio(resultSet.getString("bio"));
-            }
             return user;
-        
+            }
+            return null; 
     }
     catch(Exception ex)
     {
@@ -105,7 +105,7 @@ public class Authentication {
             query.setString(3, hashedPassword);//hashed password
             query.setString(4, firstName);//first name
             query.setString(5, lastName);//last name
-            query.setString(6, "");//bio
+            query.setString(6, "I haven't set a bio yet!");//bio
             query.setInt(7, 1);//Secret question, not yet implemented
             query.setString(8, "");//Secret question answer, not yet implemented
             query.setString(9, "img/blank-profile-pic.png");//profile picture path

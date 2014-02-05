@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="css/style.css" type="text/css" /> <!-- stylesheet -->
         <div id='nav-bar'>
             <ul>
-                <li><a href=''>Home</a></li>
-                <li><a href=''>My Profile</a></li>
-                <li><a href=''>Following</a></li>
-                <li><a href=''>Followers</a></li>
-                <li><a href=''>Sign Out</a></li>
+                <li><a href='${pageContext.request.contextPath}/messages.jsp'>Home</a></li>
+                <li><a href='${pageContext.request.contextPath}/profile/'>My Profile</a></li>
+                <li><a href='${pageContext.request.contextPath}/following'>Following</a></li>
+                <li><a href='${pageContext.request.contextPath}/followers'>Followers</a></li>
+                <li><a href='${pageContext.request.contextPath}/Logout'>Sign Out</a></li>
             </ul>
         </div>

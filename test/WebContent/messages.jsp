@@ -53,6 +53,17 @@ function messageValidation()
  <div id="broadcastcontainer">
     <h1>Broadcasts</h1>
       <p><div id="message">
+      <div id="messageProfilePicture"><img src="img\blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
+      <div id="messageText">alligator</div>
+      <div id="deleteMessageButton"><img src="img\bin.png" alt="Profile picture" width="21" height="25"></div>
+      <div id="timestampArea">Posted by USERNAME 5 hours ago.</div>
+      </div></p>
+      <div id="message">
+      <div id="messageProfilePicture"><img src="img\blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
+      <div id="messageText">Hello</div>
+      <div id="deleteMessageButton"><img src="img\bin.png" alt="Profile picture" width="21" height="25"></div>
+      <div id="timestampArea">Posted by USERNAME 10 hours ago.</div>
+      </div>
  </div>
 
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->

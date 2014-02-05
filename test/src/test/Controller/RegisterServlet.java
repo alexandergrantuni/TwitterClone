@@ -80,7 +80,7 @@ public class RegisterServlet extends HttpServlet {
 			//Registration was successful
 			System.out.println("Registration successful");
 			request.getSession().setAttribute("activeUser", activeUser);
-			MessageMethods.addMessage(username, "hey guyz ive jsut regisetrered lol");
+			MessageMethods.sendMessage(username, "Hello everyone! I just registered.");
 			response.sendRedirect("registrationsuccessful.jsp");
 			}
 		}
