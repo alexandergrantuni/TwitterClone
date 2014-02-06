@@ -1,6 +1,7 @@
 package test.Controller;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import test.General.Authentication;
 import test.General.MessageMethods;
 import test.General.UserMethods;
+import test.Model.Message;
 import test.Model.User;
 
 /**
@@ -33,7 +35,6 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User) request.getSession().getAttribute("activeUser");
-		System.out.println((User)activeUser);
 		if(activeUser == null)
 		{
 			//User is not logged in so redirect to login page
@@ -45,20 +46,31 @@ public class ProfileServlet extends HttpServlet {
 			//http://stackoverflow.com/questions/14316487/java-getting-a-substring-from-a-string-starting-after-a-particular-character
 			String requestURI = request.getRequestURI();
 			String username = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
-			System.out.println(requestURI);
-			//System.out.println(username);
 			if(requestURI.equals(request.getContextPath()+"/profile/"))//if the URI simply ends in /profile/ with no username appended
 			{
 				//Display the active user's profile
-				System.out.println(UserMethods.getUserFromUsername(activeUser.getUsername()).getEmailAddress());
+				LinkedList<Message> activeUserMessages = MessageMethods.getUserMessages(activeUser.getUsername());
+				if(activeUserMessages.size() == 0)
+				{
+					request.setAttribute("noMessages", "You haven't posted any messages yet!");
+				}
 				request.setAttribute("profileUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-				request.setAttribute("messages", MessageMethods.getUserMessages(activeUser.getUsername()));
+				request.setAttribute("messages", activeUserMessages);
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 				return;
 			}
 			if(Authentication.usernameRegistered(username))//Is the username valid?
 			{
-				request.setAttribute("profileUser", UserMethods.getUserFromUsername(username));
+				User profileUser = UserMethods.getUserFromUsername(username);
+				for(User u : UserMethods.getFollowing(activeUser.getUsername()))
+				{
+					if(u.getUsername().equals(profileUser.getUsername()))
+					{
+						profileUser.setIsActiveUserFollowing(true);
+						break;
+					}
+				}
+				request.setAttribute("profileUser", profileUser);
 				request.setAttribute("messages", MessageMethods.getUserMessages(username));
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 				return;

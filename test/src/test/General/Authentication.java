@@ -27,8 +27,10 @@ public class Authentication {
             user.setFirstName(resultSet.getString("FirstName"));
             user.setLastName(resultSet.getString("LastName"));
             user.setBio(resultSet.getString("bio"));
+            connection.close();
             return user;
             }
+            connection.close();
             return null; 
     }
     catch(Exception ex)
@@ -62,7 +64,9 @@ public class Authentication {
 			query = (PreparedStatement) connection.prepareStatement("SELECT * FROM users WHERE Username = ?");
 	        query.setString(1, username);
 	        ResultSet resultSet = query.executeQuery();   
-	        return resultSet.first();
+	        boolean usernameRegistered = resultSet.first();
+	        connection.close();
+	        return usernameRegistered;
 		} 
         catch (SQLException e) 
         {
@@ -80,7 +84,9 @@ public class Authentication {
 			query = (PreparedStatement) connection.prepareStatement("SELECT * FROM users WHERE EmailAddress = ?");
 	        query.setString(1, emailAddress);
 	        ResultSet resultSet = query.executeQuery();   
-	        return resultSet.first();
+	        boolean emailRegistered = resultSet.first();
+	        connection.close();
+	        return emailRegistered;
 		} 
         catch (SQLException e) 
         {
@@ -110,7 +116,8 @@ public class Authentication {
             query.setString(8, "");//Secret question answer, not yet implemented
             query.setString(9, "img/blank-profile-pic.png");//profile picture path
             query.setInt(10, registerTime);
-            int result = query.executeUpdate();       
+            int result = query.executeUpdate();   
+            connection.close();
             return result == 1;
         
     }

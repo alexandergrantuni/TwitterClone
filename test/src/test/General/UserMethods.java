@@ -29,6 +29,7 @@ public class UserMethods {
             user.setLastName(resultSet.getString("LastName"));
             user.setBio(resultSet.getString("bio"));
             }
+            connection.close();
             return user;
         
     }
@@ -68,6 +69,7 @@ public class UserMethods {
             user.setLastName(resultSet.getString("LastName"));
             user.setBio(resultSet.getString("bio"));
             }
+            connection.close();
             return user;
         
     }
@@ -103,6 +105,7 @@ public class UserMethods {
             user = getUserFromUsername(resultSet.getString("UserId"));
             followerList.add(user);
             }
+            connection.close();
             return followerList;
         
     }
@@ -139,6 +142,7 @@ public class UserMethods {
             user = getUserFromUsername(resultSet.getString("FollowingUserId"));
             followerList.add(user);
             }
+            connection.close();
             return followerList;
         
     }
@@ -167,9 +171,69 @@ public class UserMethods {
             query = (PreparedStatement) connection.prepareStatement("INSERT INTO following (UserId, FollowingUserId) VALUES(?,?);");
             query.setString(1, username);
             query.setString(2, usernameToFollow);
-            int result = query.executeUpdate();       
+            int result = query.executeUpdate(); 
+            connection.close();
             return result == 1;
         
+    }
+    catch(Exception ex)
+    {
+            ex.printStackTrace();
+            try
+            {
+                query.close();
+                connection.close();
+            }
+            catch (SQLException sqle)
+            {
+                    sqle.printStackTrace();
+            }
+            
+    }
+        return false;
+	}
+	public static boolean unfollow(String username, String usernameToUnfollow)
+	{
+        Connection connection = Database.getConnection();
+        PreparedStatement query = null;
+        try 
+    {
+            query = (PreparedStatement) connection.prepareStatement("DELETE FROM following WHERE UserId=? AND FollowingUserId=?");
+            query.setString(1, username);
+            query.setString(2, usernameToUnfollow);
+            int result = query.executeUpdate(); 
+            connection.close();
+            return result == 1;
+        
+    }
+    catch(Exception ex)
+    {
+            ex.printStackTrace();
+            try
+            {
+                query.close();
+                connection.close();
+            }
+            catch (SQLException sqle)
+            {
+                    sqle.printStackTrace();
+            }
+            
+    }
+        return false;
+	}
+	public static boolean isFollowing(String username, String usernameBeingFollowed)
+	{
+        Connection connection = Database.getConnection();
+        PreparedStatement query = null;
+        try 
+    {
+            query = (PreparedStatement) connection.prepareStatement("SELECT * FROM following WHERE UserId = ? AND FollowingUserId = ?;");
+            query.setString(1, username);
+            query.setString(2, usernameBeingFollowed);
+            boolean success = query.executeQuery().next();
+            connection.close();
+            return success;
     }
     catch(Exception ex)
     {

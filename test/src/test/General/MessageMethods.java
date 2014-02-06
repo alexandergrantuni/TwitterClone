@@ -33,6 +33,7 @@ public class MessageMethods {
             {
             	System.out.println("Message failed to post.");
             }
+            connection.close();
             return result == 1;
         
     }
@@ -62,9 +63,9 @@ public class MessageMethods {
 	    {
 	            query = (PreparedStatement) connection.prepareStatement("call DeleteMessage(?)");
 	            query.setInt(1, MessageId);
-	            query.executeQuery();          
+	            query.executeQuery();  
+	            connection.close();
 	            return;
-	        
 	    }
 	    catch(Exception ex)
 	    {
@@ -93,7 +94,9 @@ public class MessageMethods {
 	            query.setInt(1, messageId);
 	            query.setString(2, user.getUsername());
 	            ResultSet resultSet = query.executeQuery();          
-	            return resultSet.first();
+	            boolean createdMessage = resultSet.first();
+	            connection.close();
+	            return createdMessage;
 	    }
 	    catch(Exception ex)
 	    {
@@ -129,6 +132,7 @@ public class MessageMethods {
 	            	msg.setMessageId(resultSet.getInt("MessageId"));
 	            	msg.setTimestamp(resultSet.getInt("Timestamp"));
 	            }
+	            connection.close();
 	            return msg;
 	    }
 	    catch(Exception ex)
@@ -167,6 +171,7 @@ public class MessageMethods {
 	            	msg.setTimestamp(resultSet.getInt("message.Timestamp"));
 	            	list.add(msg);
 	            }
+	            connection.close();
 	            return list;
 	    }
 	    catch(Exception ex)
@@ -205,6 +210,7 @@ public class MessageMethods {
 	            	msg.setTimestamp(resultSet.getInt("msg.Timestamp"));
 	            	list.add(msg);
 	            }
+	            connection.close();
 	            return list;
 	    }
 	    catch(Exception ex)
@@ -240,6 +246,7 @@ public class MessageMethods {
         	msg.setTimestamp(resultSet.getInt("Timestamp"));
         	list.add(msg);
         }
+        connection.close();
         return list;
 }
 catch(Exception ex)
@@ -268,7 +275,9 @@ return null;
 	        query = (PreparedStatement) connection.prepareStatement("SELECT messageId FROM message WHERE MessageId=?;");
 	        query.setInt(1, messageId);
 	        ResultSet resultSet = query.executeQuery();          
-	        return resultSet.next();
+	        boolean exists = resultSet.first();
+	        connection.close();
+	        return exists;
 	}
 	catch(Exception ex)
 	{

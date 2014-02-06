@@ -52,9 +52,9 @@ function loginFormValidation()
       <p><input type="password" name="userPassword" value="" placeholder="Password"></p>
       <p class="submit"><input type="submit" name="loginButton" value="Login"></p>
     </form>
-    <%if (request.getAttribute("errorMessage")!=null){%>
-      <p><center><font color="#ff0000" >Invalid email address and/or password. </font></center></p>
-<%}%>
+    <c:if test="${errorMessage != null }">
+    <p><center><font color="#ff0000" >Invalid email address and/or password. </font></center></p>
+    </c:if>
 </div>
 </div>
  

@@ -4,14 +4,12 @@ import java.util.*;
 
 public class User {
 	
-	private String username;
-	private String emailAddress;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private String bio;
-	private List<User> friendList;
-	private List<User> followingList;
+	private String username = "";
+	private String emailAddress = "";
+	private String firstName = "";
+	private String lastName = "";
+	private String bio = "";
+	private boolean isActiveUserFollowing = false;
 	
 	
 	public String getUsername()
@@ -24,15 +22,6 @@ public class User {
 		username = newUsername;
 	}
 	
-	public String getPassword()
-	{
-		return password;
-	}
-	
-	public void setPassword(String newPassword)
-	{
-		password = newPassword;
-	}
 	
 	public String getEmailAddress()
 	{
@@ -83,15 +72,14 @@ public class User {
 	{
 		return false;
 	}
-	
-	public List<User> getFollowers()
+
+	public boolean getIsActiveUserFollowing()
 	{
-		return friendList;
-	}
-	
-	public List<User> getFollowing()
-	{
-		return followingList;
+		return isActiveUserFollowing;
 	}
 
+	public void setIsActiveUserFollowing(boolean isFollowing)
+	{
+		isActiveUserFollowing = isFollowing;
+	}
 }

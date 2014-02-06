@@ -12,6 +12,30 @@
 <jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->
 <body>
 <script type="text/javascript">
+function deleteFollow(username)
+{
+	$.ajax({
+	    url: "${pageContext.request.contextPath}/following/"+username,
+	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
+	    success: 
+	        function(msg){
+	            alert("You have unfollowed "+username+".");
+	            location.reload();
+	        }                   
+	    });
+}
+function follow(username)
+{
+	$.ajax({
+	    url: "${pageContext.request.contextPath}/following/"+username,
+	    type:'POST',//Sends a POST request which tells the servlet to follow the user with the given username
+	    success: 
+	        function(msg){
+	            alert("You are now following "+username+".");
+	            location.reload();
+	        }                   
+	    });
+}
 function deleteMessage(messageId)
 {
 	$.ajax({
@@ -25,7 +49,6 @@ function deleteMessage(messageId)
 	    });
 }
 </script>
-<body>
 <div id="profilearea">
     <h1>${profileUser.username}'s Profile</h1>
     <div id="profilepicture">
@@ -36,12 +59,26 @@ function deleteMessage(messageId)
     <font color="#ffffff">${profileUser.bio}</font>
     </div>
     <c:if test="${activeUser.username != profileUser.username}">
-     <p class="submit"><input type="submit" name="followButton" value="Follow ${profileUser.username}"></p>
+    						<c:choose>
+							<c:when test="${profileUser.isActiveUserFollowing == true}">
+								<div id="deleteMessageButton">
+									<p class="submit"><input type="submit" name="unfollowButton" onclick="deleteFollow('${profileUser.username}')" value="Unfollow ${profileUser.username}"></p>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div id="deleteMessageButton">
+								<p class="submit"><input type="submit" name="followButton" onclick="follow('${profileUser.username}')" value="Follow ${profileUser.username}"></p>
+								</div>
+							</c:otherwise>
+						</c:choose>
     </c:if>
     
 </div>
 <div id="broadcastcontainer">
-    <h1>${profileUser.username }'s Broadcasts</h1>
+    <h1>${profileUser.username }'s Messages</h1>
+    <c:if test="${noMessages != null }">
+    <div id="whiteText"><center>${noMessages}</center></div>
+    </c:if>
     <c:forEach items="${messages}" var="individualMessage">
       <p><div id="message">
       <div id="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
@@ -55,6 +92,5 @@ function deleteMessage(messageId)
 </div>
 
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
-</body>
 </body>
 </html>

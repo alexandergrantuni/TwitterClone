@@ -51,6 +51,10 @@ public class MessageServlet extends HttpServlet {
 			{
 			//SHOW JUST FOLLOWING MESSAGES
 			List<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
+			if(messageList.size() == 0)
+			{
+				request.setAttribute("noMessages", "There are no messages here.  Get the ball rolling by posting one yourself!");
+			}
 			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 			request.setAttribute("messages", messageList);
 			request.setAttribute("title", "Messages from Followed Users");

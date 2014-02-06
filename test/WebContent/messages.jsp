@@ -65,6 +65,9 @@ function deleteMessage(messageId)
  </div>
  <div id="broadcastcontainer">
     <h1>${title}</h1>
+    <c:if test="${noMessages != null }">
+    <div id="whiteText"><center>${noMessages}</center></div>
+    </c:if>
     <c:forEach items="${messages}" var="individualMessage">
       <p><div id="message">
       <div id="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
