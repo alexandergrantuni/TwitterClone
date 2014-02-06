@@ -3,20 +3,20 @@ package test.Model;
 
 public class Message {
 	
-	private int broadcastId;
+	private int messageId;
 	
 	private User owner;
 	private int timestamp;
 	private String text;
 	
-	public int getBroadcastId()
+	public int getMessageId()
 	{
-		return broadcastId;
+		return messageId;
 	}
 	
-	public void setBroadcastId(int newBroadcastId)
+	public void setMessageId(int newMessageId)
 	{
-		broadcastId = newBroadcastId;
+		messageId = newMessageId;
 	}
 	
 	public User getOwner()

@@ -53,6 +53,7 @@ public class UserMethods {
 	{
         Connection connection = Database.getConnection();
         PreparedStatement query = null;
+        System.out.println(username);
         try 
     {
             query = (PreparedStatement) connection.prepareStatement("SELECT * FROM users WHERE Username = ?;");
@@ -75,7 +76,6 @@ public class UserMethods {
             ex.printStackTrace();
             try
             {
-                query.close();
                 connection.close();
             }
             catch (SQLException sqle)
@@ -157,5 +157,34 @@ public class UserMethods {
             
     }
         return null;
+	}
+	public static boolean follow(String username, String usernameToFollow)
+	{
+        Connection connection = Database.getConnection();
+        PreparedStatement query = null;
+        try 
+    {
+            query = (PreparedStatement) connection.prepareStatement("INSERT INTO following (UserId, FollowingUserId) VALUES(?,?);");
+            query.setString(1, username);
+            query.setString(2, usernameToFollow);
+            int result = query.executeUpdate();       
+            return result == 1;
+        
+    }
+    catch(Exception ex)
+    {
+            ex.printStackTrace();
+            try
+            {
+                query.close();
+                connection.close();
+            }
+            catch (SQLException sqle)
+            {
+                    sqle.printStackTrace();
+            }
+            
+    }
+        return false;
 	}
 }

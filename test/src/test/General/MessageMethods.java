@@ -12,7 +12,7 @@ import test.Model.*;
 
 public class MessageMethods {
 	
-	public static boolean addMessage(String username, String message)
+	public static boolean sendMessage(String username, String message)
 	{
 		 Connection connection = Database.getConnection();
     	Date now = new Date();
@@ -53,7 +53,7 @@ public class MessageMethods {
         return false;
 	}
 	
-	public static boolean deleteMessage(int MessageId)
+	public static void deleteMessage(int MessageId)
 	{
 		 Connection connection = Database.getConnection();
 	        System.out.println(connection);
@@ -62,8 +62,8 @@ public class MessageMethods {
 	    {
 	            query = (PreparedStatement) connection.prepareStatement("call DeleteMessage(?)");
 	            query.setInt(1, MessageId);
-	            ResultSet resultSet = query.executeQuery();          
-	            return resultSet.first();
+	            query.executeQuery();          
+	            return;
 	        
 	    }
 	    catch(Exception ex)
@@ -80,7 +80,6 @@ public class MessageMethods {
 	            }
 	            
 	    }
-	        return false;
 	}
 	
 	public static boolean createdMessage(User user, int messageId)
@@ -113,6 +112,42 @@ public class MessageMethods {
 	        return false;
 	}
 	
+	public static Message getMessageById(int messageId)
+	{
+		 Connection connection = Database.getConnection();
+	        PreparedStatement query = null;
+	        try 
+	    {
+	            query = (PreparedStatement) connection.prepareStatement("SELECT * FROM message WHERE MessageId=?;");
+	            query.setInt(1, messageId);
+	            ResultSet resultSet = query.executeQuery();
+	            Message msg = new Message();
+	            if(resultSet.next())
+	            {
+	            	msg.setOwner(UserMethods.getUserFromUsername(resultSet.getString("Username")));
+	            	msg.setText(resultSet.getString("Text"));
+	            	msg.setMessageId(resultSet.getInt("MessageId"));
+	            	msg.setTimestamp(resultSet.getInt("Timestamp"));
+	            }
+	            return msg;
+	    }
+	    catch(Exception ex)
+	    {
+	            ex.printStackTrace();
+	            try
+	            {
+	                query.close();
+	                connection.close();
+	            }
+	            catch (SQLException sqle)
+	            {
+	                    sqle.printStackTrace();
+	            }
+	            
+	    }
+		return null;
+	}
+	
 	public static LinkedList<Message> getUserMessages(String username)
 	{
 		 Connection connection = Database.getConnection();
@@ -128,7 +163,7 @@ public class MessageMethods {
 	            	Message msg = new Message();
 	            	msg.setOwner(UserMethods.getUserFromUsername(username));
 	            	msg.setText(resultSet.getString("message.Text"));
-	            	msg.setBroadcastId(resultSet.getInt("message.MessageId"));
+	            	msg.setMessageId(resultSet.getInt("message.MessageId"));
 	            	msg.setTimestamp(resultSet.getInt("message.Timestamp"));
 	            	list.add(msg);
 	            }
@@ -153,11 +188,103 @@ public class MessageMethods {
 	
 	public static List<Message> getFollowingMessages(String username)
 	{
+		 Connection connection = Database.getConnection();
+	        PreparedStatement query = null;
+	        try 
+	    {
+	            query = (PreparedStatement) connection.prepareStatement("SELECT * FROM message AS msg INNER JOIN following AS follow ON msg.Username = follow.FollowingUserId WHERE follow.UserId = ? ORDER BY msg.Timestamp DESC;");
+	            query.setString(1, username);
+	            ResultSet resultSet = query.executeQuery();          
+	           LinkedList<Message> list = new LinkedList<Message>();
+	            while(resultSet.next())
+	            {
+	            	Message msg = new Message();
+	            	msg.setOwner(UserMethods.getUserFromUsername(resultSet.getString("msg.Username")));
+	            	msg.setText(resultSet.getString("msg.Text"));
+	            	msg.setMessageId(resultSet.getInt("msg.MessageId"));
+	            	msg.setTimestamp(resultSet.getInt("msg.Timestamp"));
+	            	list.add(msg);
+	            }
+	            return list;
+	    }
+	    catch(Exception ex)
+	    {
+	            ex.printStackTrace();
+	            try
+	            {
+	                query.close();
+	                connection.close();
+	            }
+	            catch (SQLException sqle)
+	            {
+	                    sqle.printStackTrace();
+	            }
+	            
+	    }
 		return null;
 	}
 	public static List<Message> getAllMessages()
+	{		 Connection connection = Database.getConnection();
+    PreparedStatement query = null;
+    try 
+{
+        query = (PreparedStatement) connection.prepareStatement("SELECT * FROM message ORDER BY Timestamp DESC;");
+        ResultSet resultSet = query.executeQuery();          
+       LinkedList<Message> list = new LinkedList<Message>();
+        while(resultSet.next())
+        {
+        	Message msg = new Message();
+        	msg.setOwner(UserMethods.getUserFromUsername(resultSet.getString("Username")));
+        	msg.setText(resultSet.getString("Text"));
+        	msg.setMessageId(resultSet.getInt("MessageId"));
+        	msg.setTimestamp(resultSet.getInt("Timestamp"));
+        	list.add(msg);
+        }
+        return list;
+}
+catch(Exception ex)
+{
+        ex.printStackTrace();
+        try
+        {
+            query.close();
+            connection.close();
+        }
+        catch (SQLException sqle)
+        {
+                sqle.printStackTrace();
+        }
+        
+}
+return null;
+	}
+	
+	public static boolean messageExists(int messageId)
 	{
-		return null;
+		Connection connection = Database.getConnection();
+	    PreparedStatement query = null;
+	    try 
+	{
+	        query = (PreparedStatement) connection.prepareStatement("SELECT messageId FROM message WHERE MessageId=?;");
+	        query.setInt(1, messageId);
+	        ResultSet resultSet = query.executeQuery();          
+	        return resultSet.next();
+	}
+	catch(Exception ex)
+	{
+	        ex.printStackTrace();
+	        try
+	        {
+	            query.close();
+	            connection.close();
+	        }
+	        catch (SQLException sqle)
+	        {
+	                sqle.printStackTrace();
+	        }
+	        
+	}
+	return false;
 	}
 
 }

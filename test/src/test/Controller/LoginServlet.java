@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 			//Login was successful
 			System.out.println("Login successful");
 			request.getSession().setAttribute("activeUser", authenticatedUser);
-			response.sendRedirect("messages.jsp");
+			response.sendRedirect("messages");
 		}
 		else
 		{

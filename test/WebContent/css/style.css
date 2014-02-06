@@ -134,6 +134,11 @@ input[type=submit] {
   box-shadow: 0 1px whitesmoke;
 }
 
+#bio
+{
+	margin-top:15px;
+}
+
 #profilearea:before {
   content: '';
   position: absolute;

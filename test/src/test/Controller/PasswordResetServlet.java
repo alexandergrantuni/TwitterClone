@@ -44,14 +44,14 @@ public class PasswordResetServlet extends HttpServlet {
 		{
 			//This username is already in use so set the error message to 'The username '"+username+"' does not exist.'
 			request.setAttribute("errorMessage", "The username '"+username+"' has not been registered.");
-			request.getRequestDispatcher("passwordreset.jsp").forward(request, response);
+			request.getRequestDispatcher(request.getContextPath()+"/passwordreset.jsp").forward(request, response);
 			return;
 		}
 		if(!Authentication.emailAddressRegistered(emailAddress))
 		{
 			//This email address is already in use so set the error message to 'The email address '"+emailAddress+"' does not exist.'
 			request.setAttribute("errorMessage", "The email address '"+emailAddress+"' has not been registered.");
-			request.getRequestDispatcher("passwordreset.jsp").forward(request, response);
+			request.getRequestDispatcher(request.getContextPath()+"/passwordreset.jsp").forward(request, response);
 			return;
 		}
 	}
