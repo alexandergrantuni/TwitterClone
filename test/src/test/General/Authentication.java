@@ -50,6 +50,43 @@ public class Authentication {
         return null;
 	}
 	
+	public static boolean verifyUsernameAndPassword(String username, String password)
+	{
+        connection = Database.getConnection();
+        PreparedStatement query = null;
+        try 
+    {
+        	password = Security.getEncodedSha1Sum(password);
+            query = (PreparedStatement) connection.prepareStatement("SELECT * FROM users WHERE Username = ? AND Password = ?;");
+            query.setString(1, username);
+            query.setString(2, password);
+            ResultSet resultSet = query.executeQuery();
+            //if there is a result
+            if(resultSet.next())
+            {
+            	connection.close();
+            	return true;
+            }
+            connection.close();
+            return false; 
+    }
+    catch(Exception ex)
+    {
+            ex.printStackTrace();
+            try
+            {
+                query.close();
+                connection.close();
+            }
+            catch (SQLException sqle)
+            {
+                    sqle.printStackTrace();
+            }
+            
+    }
+        return false;
+	}
+	
 	public static boolean Logout(String email)
 	{
 		return true;
