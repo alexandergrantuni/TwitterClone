@@ -82,30 +82,30 @@ function follow(username)
 			<c:if test="${profileUser.username != individualFollowing.username}">
 				<!-- Don't show that the user is following themselves, just show other users -->
 				<p>
-				<div id="message">
-					<div id="messageProfilePicture">
+				<div id="user">
+					<div id="userProfilePicture">
 						<img
 							src="${pageContext.request.contextPath}/img/blank-profile-pic.png"
 							alt="Profile picture" width="45" height="30">
 					</div>
-					<div id="messageText">
+					<div id="usernameArea">
 						<a href="${pageContext.request.contextPath}/profile/${individualFollowing.username}">${individualFollowing.username}</a>
 					</div>
 					<c:if test="${activeUser.username != individualFollowing.username}">
 						<c:choose>
 							<c:when test="${individualFollowing.isActiveUserFollowing == true}">
-								<div id="deleteMessageButton">
+								<div id="followButton">
 									<button type="button" onclick="deleteFollow('${individualFollowing.username}')">Unfollow</button>
 								</div>
 							</c:when>
 							<c:otherwise>
-								<div id="deleteMessageButton">
+								<div id="followButton">
 									<button type="button" onclick="follow('${individualFollowing.username}')">Follow</button>
 								</div>
 							</c:otherwise>
 						</c:choose>
 					</c:if>
-					<div id="timestampArea">${individualFollowing.bio}</div>
+					<div id="bioArea">${individualFollowing.username}'s bio: ${individualFollowing.bio}</div>
 				</div>
 			</c:if>
 		</c:forEach>

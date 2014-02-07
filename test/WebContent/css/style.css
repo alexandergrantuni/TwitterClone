@@ -539,13 +539,14 @@ textarea
   background: rgba(0, 0, 0, 0.08);
   border-radius: 4px;
 }
-#user #deleteMessageButton
+#user #followButton
 {
 	float: right;
 	margin-left:25px;
+	margin-top:-20px;
 }
 
-#user #timestampArea
+#user #bioArea
 {
 	margin-top:10px;
 	margin-bottom:-20px;
@@ -556,17 +557,12 @@ textarea
 	
 }
 
-#user #messageText
+#user #usernameArea
 {
 	margin-top:-25px;
 	margin-left:55px;
 	word-wrap:break-word;
 	margin-right:50px;
-}
-
-#user #deleteMessageButton
-{
-	margin-top:-20px;
 }
 
 .login {
