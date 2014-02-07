@@ -5,6 +5,7 @@
                 <li><a href='${pageContext.request.contextPath}/profile/'>My Profile</a></li>
                 <li><a href='${pageContext.request.contextPath}/following'>Following</a></li>
                 <li><a href='${pageContext.request.contextPath}/followers'>Followers</a></li>
+                <li><a href='${pageContext.request.contextPath}/search.jsp'>Search</a></li>
                 <li><a href='${pageContext.request.contextPath}/Logout'>Sign Out</a></li>
             </ul>
         </div>

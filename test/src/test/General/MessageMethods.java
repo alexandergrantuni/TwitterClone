@@ -230,7 +230,8 @@ public class MessageMethods {
 		return null;
 	}
 	public static List<Message> getAllMessages()
-	{		 Connection connection = Database.getConnection();
+	{		 
+		Connection connection = Database.getConnection();
     PreparedStatement query = null;
     try 
 {

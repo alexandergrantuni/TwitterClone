@@ -13,17 +13,25 @@
 function searchFormValidation()
 {
 	var searchTerm=document.forms["searchForm"]["searchTerm"].value;
-	var type=document.forms["loginForm"]["userPassword"].value;
+	var type=document.forms["loginForm"]["searchSelect"].value;
+	if(searchTerm == "")
+	{
+		alert("You need to enter a search term");
+		return false;
+	}
 }
 </script>
 <body>
 <div class="container">
   <div class="login">
     <h1>Search ChitChat</h1>
-    <form name="searchForm" method="post" action="Search" onsubmit="return searchFormValidation()">
+    <form name="searchForm" method="post" action="search" onsubmit="return searchFormValidation()">
       <p><input type="text" name="searchTerm" value="" placeholder="Search term"></p>
-      <p><input type="password" name="userPassword" value="" placeholder="Password"></p>
-      <p class="submit"><input type="submit" name="loginButton" value="Search"></p>
+      <p><select name="searchSelect" placeholder="Search term">
+<option value="users">Search Users</option>
+<option value="messages">Search Messages</option>
+</select></p>
+      <p class="submit"><input type="submit" name="searchButton" value="Search"></p>
     </form>
 
 </div>
