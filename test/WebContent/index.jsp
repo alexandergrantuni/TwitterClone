@@ -9,7 +9,17 @@
 <title>Main page</title>
 </head>
 <body>
-
+<% 
+	//If the user is logged in go to the login page, if not go to the user's messages
+	if(request.getSession().getAttribute("activeUser") == null)
+	{
+		response.sendRedirect("login.jsp");
+	}
+	else
+	{
+		response.sendRedirect("messages");
+	}
+%>
 </body>
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
 </html>

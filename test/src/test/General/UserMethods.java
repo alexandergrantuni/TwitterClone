@@ -54,7 +54,6 @@ public class UserMethods {
 	{
         Connection connection = Database.getConnection();
         PreparedStatement query = null;
-        System.out.println(username);
         try 
     {
             query = (PreparedStatement) connection.prepareStatement("SELECT * FROM users WHERE Username = ?;");

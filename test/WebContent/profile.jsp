@@ -73,6 +73,7 @@ function deleteMessage(messageId)
 						</c:choose>
     </c:if>
     <p class="followButtons"><a href="${pageContext.request.contextPath}/followers/${profileUser.username }"><input type="submit" name="followerButton" onclick="" value="Followers"></a><a href="${pageContext.request.contextPath}/following/${profileUser.username }"><input type="submit" name="followingButton" onclick="" value="Following"></a></p>
+	<p class="editProfile"><a href="${pageContext.request.contextPath}/editprofile.jsp"><input type="submit" name="editProfileButton" onclick="" value="Edit Profile"></p></a>
 </div>
 <div id="broadcastcontainer">
     <h1>${profileUser.username }'s Messages</h1>

@@ -44,6 +44,11 @@ function loginFormValidation()
 }
 </script>
 <body>
+<% if(request.getSession().getAttribute("activeUser") != null)
+	{
+		response.sendRedirect("messages");
+	}
+%>
 <div class="container">
   <div class="login">
     <h1>ChitChat Login</h1>

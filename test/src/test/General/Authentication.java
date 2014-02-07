@@ -99,7 +99,6 @@ public class Authentication {
 	{
 
         connection = Database.getConnection();
-        System.out.println(connection);
         PreparedStatement query = null;
         try 
     {
@@ -136,16 +135,6 @@ public class Authentication {
             
     }
         return false;
-	}
-	
-	public static boolean Register(String emailAddress, String username, String hashedPassword,String firstName, String lastName, String bio)
-	{
-		return true;
-	}
-	
-	public static boolean Register(String emailAddress, String username, String hashedPassword,String firstName, String lastName,String bio, String profilePicture)
-	{
-		return true;
 	}
 
 }

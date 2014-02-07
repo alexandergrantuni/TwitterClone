@@ -359,6 +359,12 @@ text-align: center;
   width: 278px;
 }
 
+#editprofilecontainer #deleteProfile {
+  margin-top:5px;
+  margin-bottom:-15px;
+  margin-left:-15px;
+}
+
 #editprofilecontainer h1 {
 text-align: center;	
 }

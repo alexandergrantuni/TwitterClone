@@ -84,7 +84,24 @@ public class ProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String username = (String)request.getAttribute("username");
+		String email = (String)request.getAttribute("emailAddress");
+		String firstName = (String)request.getAttribute("firstName");
+		String lastName = (String)request.getAttribute("lastName");
+		String password = (String)request.getAttribute("password");
+		String bio = (String)request.getAttribute("bio");
+		String confirmPassword = (String)request.getAttribute("confirmpassword");
+		
+		User activeUser = (User)request.getSession().getAttribute("activeUser");
+		
+		if(!username.equals(activeUser.getUsername()) || !email.equals(activeUser.getEmailAddress()))
+		{
+			request.setAttribute("errorMessage", "You are unable to edit another user's details.");
+			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
+			return;
+		}
+		
+		
 	}
 
 }
