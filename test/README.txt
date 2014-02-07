@@ -31,8 +31,9 @@ POST - /Login - attempts to login a user
 
 Logout
 
+GET - /Logout - logs the user out
+
 Register
 
 GET - /Register/ - if the user is already logged in it redirects them to /messages if not they will be redirected to the register page
 POST - /Register/ - registers a new user so long as some requirements are met such as the username/email isn't already registered
-PUT - /Register/ - same as POST

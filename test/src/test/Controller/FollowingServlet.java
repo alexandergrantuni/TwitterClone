@@ -138,15 +138,6 @@ public class FollowingServlet extends HttpServlet {
 		}
 
 	/**
-	 * @see HttpServlet#doPut(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPut(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
-	}
-
-	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */

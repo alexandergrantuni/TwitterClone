@@ -36,7 +36,7 @@ public class RegisterServlet extends HttpServlet {
 		if(request.getSession().getAttribute("activeUser") != null)
 		{
 			//Already logged in
-			response.sendRedirect("messages.jsp");
+			response.sendRedirect("messages");
 		}
 		else
 		{
@@ -92,12 +92,6 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "Something went wrong and we're not sure what.  Try again later.");
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 		}
-	}
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);//Same as POST
 	}
 
 }

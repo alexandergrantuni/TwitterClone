@@ -32,25 +32,4 @@ public class LogoutServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath()+"/logout.jsp");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-	
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
-	}
-	
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
 }

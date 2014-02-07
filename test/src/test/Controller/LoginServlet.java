@@ -35,7 +35,16 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		if(request.getSession().getAttribute("activeUser") != null)
+		{
+			//Already logged in
+			response.sendRedirect("messages");
+		}
+		else
+		{
+			//Not logged in
+			response.sendRedirect("login.jsp");
+		}
 	}
 
 	/**
@@ -59,20 +68,6 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "Invalid email address and/or password");
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
-	}
-	
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);//Same as POST
-	}
-	
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }
