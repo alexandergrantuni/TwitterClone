@@ -46,7 +46,6 @@ public class MessageServlet extends HttpServlet {
 			//User is logged in
 			String requestURI = request.getRequestURI();
 			String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
-			System.out.println(argument);
 			if(requestURI.equals(request.getContextPath()+"/messages/") || requestURI.equals(request.getContextPath()+"/messages"))//if the URI simply ends in /followers(/) with no username appended
 			{
 			//SHOW JUST FOLLOWING MESSAGES

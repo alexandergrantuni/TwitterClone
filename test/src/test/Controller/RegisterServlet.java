@@ -77,19 +77,20 @@ public class RegisterServlet extends HttpServlet {
 			User activeUser = Authentication.authenticateUser(emailAddress, hashedPassword);
 			if(activeUser != null)
 			{
-			//Registration was successful
-			System.out.println("Registration successful");
-			request.getSession().setAttribute("activeUser", activeUser);
-			UserMethods.follow(username, username);//follow themselves so that they can see their own messages
-			MessageMethods.sendMessage(username, "Hello everyone! I just registered.");
-			response.sendRedirect(request.getContextPath()+"/registrationsuccessful.jsp");
+				//Registration was successful
+				System.out.println("Registration successful");
+				request.getSession().setAttribute("activeUser", activeUser);
+				UserMethods.follow(username, username);//follow themselves so that they can see their own messages
+				MessageMethods.sendMessage(username, "Hello everyone! I just registered.");
+				response.sendRedirect(request.getContextPath()+"/registrationsuccessful.jsp");
 			}
 		}
 		else
 		{
 			//Registration was unsuccessful
 			System.out.println("Registration unsuccessful");
-
+			request.setAttribute("errorMessage", "Something went wrong and we're not sure what.  Try again later.");
+			request.getRequestDispatcher("register.jsp").forward(request, response);
 		}
 	}
 	/**

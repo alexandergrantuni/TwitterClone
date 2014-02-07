@@ -58,7 +58,7 @@ function follow(username)
     						<c:choose>
 							<c:when test="${profileUser.isActiveUserFollowing == true}">
 								<div id="deleteMessageButton">
-									<p class="submit"><input type="submit" name="unfollowButton" onclick="deleteFollow('${profileUser.username}')" value="Unfollow ${profileUser.username}"></p>
+									<p class="submit"><input type="submit" name="followButton" onclick="deleteFollow('${profileUser.username}')" value="Unfollow ${profileUser.username}"></p>
 								</div>
 							</c:when>
 							<c:otherwise>
@@ -68,7 +68,8 @@ function follow(username)
 							</c:otherwise>
 						</c:choose>
 		</c:if>
-	</div>
+<p class="followButtons"><a href="${pageContext.request.contextPath}/followers/${profileUser.username }"><input type="submit" name="followerButton" onclick="" value="Followers"></a><a href="${pageContext.request.contextPath}/following/${profileUser.username }"><input type="submit" name="followingButton" onclick="" value="Following"></a></p>	
+</div>
 
 	<div id="broadcastcontainer">
 		<h1>${profileUser.username}'s followers</h1>

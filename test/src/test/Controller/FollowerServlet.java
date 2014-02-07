@@ -35,7 +35,6 @@ public class FollowerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		User activeUser = (User) request.getSession().getAttribute("activeUser");
-		System.out.println((User)activeUser);
 		if(activeUser == null)
 		{
 			//User is not logged in so redirect to login page

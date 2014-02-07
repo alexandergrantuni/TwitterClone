@@ -51,9 +51,9 @@ function deleteMessage(messageId)
 <jsp:include page="navigationbar.jsp" />
 	<div id="broadcastcontainer">
 		<h1>Search Results</h1>
-		<c:if test="${noResults != null }">
+		<c:if test="${errorMessage != null }">
 			<div id="whiteText">
-				<center>${noResults}</center>
+				<center>${errorMessage}</center>
 			</div>
 		</c:if>
 		<c:choose>
@@ -80,7 +80,7 @@ function deleteMessage(messageId)
 				<div id="timestampArea">
 					Posted by <a
 						href="${pageContext.request.contextPath}/profile/${individualMessage.owner.username}">${individualMessage.owner.username }</a>
-					5 hours ago.
+					${individualMessage.timePostedAgo() }
 				</div>
 			</div>
 		</c:forEach>

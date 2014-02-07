@@ -62,7 +62,7 @@ function deleteMessage(messageId)
     						<c:choose>
 							<c:when test="${profileUser.isActiveUserFollowing == true}">
 								<div id="deleteMessageButton">
-									<p class="submit"><input type="submit" name="unfollowButton" onclick="deleteFollow('${profileUser.username}')" value="Unfollow ${profileUser.username}"></p>
+									<p class="submit"><input type="submit" name="followButton" onclick="deleteFollow('${profileUser.username}')" value="Unfollow ${profileUser.username}"></p>
 								</div>
 							</c:when>
 							<c:otherwise>
@@ -72,7 +72,7 @@ function deleteMessage(messageId)
 							</c:otherwise>
 						</c:choose>
     </c:if>
-    
+    <p class="followButtons"><a href="${pageContext.request.contextPath}/followers/${profileUser.username }"><input type="submit" name="followerButton" onclick="" value="Followers"></a><a href="${pageContext.request.contextPath}/following/${profileUser.username }"><input type="submit" name="followingButton" onclick="" value="Following"></a></p>
 </div>
 <div id="broadcastcontainer">
     <h1>${profileUser.username }'s Messages</h1>
@@ -86,7 +86,7 @@ function deleteMessage(messageId)
       <c:if test="${activeUser.username == individualMessage.owner.username}">
       <div id="deleteMessageButton"><button type="submit"onclick="deleteMessage('${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
       </c:if>
-      <div id="timestampArea">Posted by ${individualMessage.owner.username } 5 hours ago.</div>
+      <div id="timestampArea">Posted by ${individualMessage.owner.username } ${individualMessage.timePostedAgo() }</div>
       </div>
 </c:forEach>
 </div>

@@ -44,7 +44,6 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String emailAddress = request.getParameter("emailAddress");
 		String hashedPassword = test.General.Security.getEncodedSha1Sum(request.getParameter("userPassword"));//password concatenated with email address
-		System.out.println("Authenticating user: "+emailAddress + " with password hash: "+hashedPassword);
 		User authenticatedUser = Authentication.authenticateUser(emailAddress, hashedPassword);
 		if(authenticatedUser != null)
 		{

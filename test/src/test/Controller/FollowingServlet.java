@@ -48,7 +48,6 @@ public class FollowingServlet extends HttpServlet {
 			// http://stackoverflow.com/questions/14316487/java-getting-a-substring-from-a-string-starting-after-a-particular-character
 			String requestURI = request.getRequestURI();
 			String username = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
-			System.out.println(requestURI);
 			if (requestURI.equals(request.getContextPath() + "/following/") || requestURI.equals(request.getContextPath()+ "/following"))// if the URI simply ends in
 											// /followers(/) with no username
 											// appended

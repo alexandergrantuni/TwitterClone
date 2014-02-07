@@ -13,12 +13,12 @@
 function searchFormValidation()
 {
 	var searchTerm=document.forms["searchForm"]["searchTerm"].value;
-	var type=document.forms["loginForm"]["searchSelect"].value;
-	if(searchTerm == "")
+	if(searchTerm.length == 0)
 	{
 		alert("You need to enter a search term");
 		return false;
 	}
+	return true;
 }
 </script>
 <body>
