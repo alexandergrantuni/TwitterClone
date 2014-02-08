@@ -558,7 +558,7 @@ textarea
 	resize:none;
 }
 
-#message {
+.message {
   position: relative;
   margin: 0 auto;
   padding: 20px 20px 20px;
@@ -566,7 +566,27 @@ textarea
   color:white;
 }
 
-#message:before
+.message a:link
+{
+	color:#ffffff;
+}
+
+.message a:visited
+{
+	color:#ffffff;
+}
+
+.message a:hover
+{
+	color:#ffffff;
+}
+
+.message a:active
+{
+	color:#ffffff;
+}
+
+.message:before
 {
   content: '';
   position: absolute;
@@ -578,24 +598,24 @@ textarea
   background: rgba(0, 0, 0, 0.08);
   border-radius: 4px;
 }
-#message #deleteMessageButton
+.message .deleteMessageButton
 {
 	float: right;
 	margin-left:25px;
 }
 
-#message #timestampArea
+.message .timestampArea
 {
 	margin-top:10px;
 	margin-bottom:-20px;
 }
 
-#message #messageProfilePicture
+.message .messageProfilePicture
 {
 	
 }
 
-#message #messageText
+.message .messageText
 {
 	margin-top:-25px;
 	margin-left:55px;
@@ -603,12 +623,12 @@ textarea
 	margin-right:50px;
 }
 
-#message #deleteMessageButton
+.message .deleteMessageButton
 {
 	margin-top:-20px;
 }
 
-#user {
+.user {
   position: relative;
   margin: 0 auto;
   padding: 20px 20px 20px;
@@ -616,7 +636,27 @@ textarea
   color:white;
 }
 
-#user:before
+.user a:link
+{
+	color:#ffffff;
+}
+
+.user a:visited
+{
+	color:#ffffff;
+}
+
+.user a:hover
+{
+	color:#ffffff;
+}
+
+.user a:active
+{
+	color:#ffffff;
+}
+
+.user:before
 {
   content: '';
   position: absolute;
@@ -628,25 +668,25 @@ textarea
   background: rgba(0, 0, 0, 0.08);
   border-radius: 4px;
 }
-#user #followButton
+.user .followButton
 {
 	float: right;
 	margin-left:25px;
 	margin-top:-20px;
 }
 
-#user #bioArea
+.user .bioArea
 {
 	margin-top:10px;
 	margin-bottom:-20px;
 }
 
-#user #userProfilePicture
+.user .userProfilePicture
 {
 	
 }
 
-#user #usernameArea
+.user .usernameArea
 {
 	margin-top:-25px;
 	margin-left:55px;

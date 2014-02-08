@@ -9,6 +9,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/style.css" type="text/css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
+	<script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
 <!-- stylesheet -->
 <title>ChitChat - Followers for ${profileUser.username}</title>
 </head>
@@ -80,31 +81,31 @@ function follow(username)
 			<c:if test="${profileUser.username != individualFollower.username}">
 				<!-- Don't show that the user is following themselves, just show other users -->
 				<p>
-				<div id="user">
-					<div id="userProfilePicture">
+				<div class="user">
+					<div class="userProfilePicture">
 						<img
 							src="${pageContext.request.contextPath}/img/blank-profile-pic.png"
 							alt="Profile picture" width="45" height="30">
 					</div>
-					<div id="usernameArea">
+					<div class="usernameArea">
 						<a href="profile/${individualFollower.username}">${individualFollower.username}</a>
 					</div>
 					
 					<c:if test="${activeUser.username != individualFollower.username}">
 					<c:choose>
 							<c:when test="${individualFollower.isActiveUserFollowing == true}">
-								<div id="followButton">
+								<div class="followButton">
 									<button type="button" onclick="deleteFollow('${individualFollower.username}')">Unfollow</button>
 								</div>
 							</c:when>
 							<c:otherwise>
-								<div id="followButton">
+								<div class="followButton">
 									<button type="button" onclick="follow('${individualFollower.username}')">Follow</button>
 								</div>
 							</c:otherwise>
 					</c:choose>
 					</c:if>
-					<div id="bioArea">${individualFollower.username}'s bio:
+					<div class="bioArea">${individualFollower.username}'s bio:
 						${individualFollower.bio}</div>
 				</div>
 			</c:if>

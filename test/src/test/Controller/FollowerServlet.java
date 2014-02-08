@@ -115,19 +115,6 @@ public class FollowerServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if(request.getSession().getAttribute("activeUser") != null)
-		{
-			String message = request.getParameter("message");
-			User user = (User)request.getSession().getAttribute("activeUser");
-			MessageMethods.sendMessage(user.getUsername(), message);
-			response.sendRedirect("messages.jsp");
-		}
-		else
-		{
-			//User is not logged in
-			response.sendRedirect("login.jsp");
-		}
 	}
 	
 	/**

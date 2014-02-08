@@ -7,10 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css" /> <!-- stylesheet -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
+<script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
 <title>ChitChat - Broadcasts</title>
 </head>
-<jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->
-<body>
+
 <script type="text/javascript">
 function deleteFollow(username)
 {
@@ -49,6 +49,8 @@ function deleteMessage(messageId)
 	    });
 }
 </script>
+<body onload="detectAndAddHashTags()">
+<jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->
 <div id="profilearea">
     <h1>${profileUser.username}'s Profile</h1>
     <div id="profilepicture">
@@ -74,7 +76,7 @@ function deleteMessage(messageId)
     </c:if>
     <p class="followButtons"><a href="${pageContext.request.contextPath}/followers/${profileUser.username }"><input type="submit" name="followerButton" onclick="" value="Followers"></a><a href="${pageContext.request.contextPath}/following/${profileUser.username }"><input type="submit" name="followingButton" onclick="" value="Following"></a></p>
 	<c:if test="${profileUser.username == activeUser.username }">
-	<p class="editProfile"><a href="${pageContext.request.contextPath}/editprofile.jsp"><input type="submit" name="editProfileButton" onclick="" value="Edit Profile"></p></a>
+	<p class="editProfile"><a href="${pageContext.request.contextPath}/editprofile.jsp"><input type="submit" name="editProfileButton" onclick="" value="Edit Profile"></a></p>
 	</c:if>
 </div>
 <div id="broadcastcontainer">
@@ -83,13 +85,13 @@ function deleteMessage(messageId)
     <div id="whiteText"><center>${noMessages}</center></div>
     </c:if>
     <c:forEach items="${messages}" var="individualMessage">
-      <p><div id="message">
-      <div id="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
-      <div id="messageText">${individualMessage.text }</div>
+      <p><div class="message">
+      <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
+      <div class="messageText">${individualMessage.text }</div>
       <c:if test="${activeUser.username == individualMessage.owner.username}">
-      <div id="deleteMessageButton"><button type="submit"onclick="deleteMessage('${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
+      <div class="deleteMessageButton"><button type="submit"onclick="deleteMessage('${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
       </c:if>
-      <div id="timestampArea">Posted by ${individualMessage.owner.username } ${individualMessage.timePostedAgo() }</div>
+      <div class="timestampArea">Posted by ${individualMessage.owner.username } ${individualMessage.timePostedAgo() }</div>
       </div>
 </c:forEach>
 </div>

@@ -16,7 +16,7 @@ function inputValidation()
 	var email=document.forms["registrationForm"]["emailAddress"].value;
 	var password=document.forms["registrationForm"]["userPassword"].value;
 	var username=document.forms["registrationForm"]["username"].value;
-	var emailRegularExpression=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;//Found online, did not write this regular expression myself
+	var emailRegularExpression=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;//Found online, did not write this regular expression myself http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
 	
 	if(firstName == "")
 	{

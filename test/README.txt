@@ -37,3 +37,17 @@ Register
 
 GET - /Register/ - if the user is already logged in it redirects them to /messages if not they will be redirected to the register page
 POST - /Register/ - registers a new user so long as some requirements are met such as the username/email isn't already registered
+
+AJAX
+
+Following/unfollowing friends and deleting messages.
+
+Javascript
+
+Javascript is used to turn all hashtagged strings such as '#hello' into a link to a message search using search's REST interfaces.  e.g /search/messages/hello for that hello hashtag.
+
+Javascript is also used for form validation.
+
+Security:
+
+Stored procedures and prepared statements.

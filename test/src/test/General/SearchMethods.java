@@ -53,7 +53,7 @@ public class SearchMethods {
 		    PreparedStatement query = null;
 		    try 
 		{
-		        query = (PreparedStatement) connection.prepareStatement("SELECT * FROM message WHERE Text LIKE ?;");
+		        query = (PreparedStatement) connection.prepareStatement("SELECT * FROM message WHERE Text LIKE ? ORDER BY Timestamp DESC;");
 		        query.setString(1, "%"+searchTerm+"%");
 		        ResultSet resultSet = query.executeQuery();          
 		        LinkedList<Message> list = new LinkedList<Message>();

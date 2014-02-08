@@ -6,10 +6,11 @@
 <head>
 <link rel="stylesheet"href="${pageContext.request.contextPath}/css/style.css" type="text/css" /><!-- stylesheet -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
+<script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ChitChat - Search Results</title>
 </head>
-<body>
+
 <script type="text/javascript">
 function deleteFollow(username)
 {
@@ -48,6 +49,7 @@ function deleteMessage(messageId)
 	    });
 }
 </script>
+<body onload="detectAndAddHashTags()">
 <jsp:include page="navigationbar.jsp" />
 	<div id="broadcastcontainer">
 		<h1>Search Results</h1>
@@ -60,16 +62,16 @@ function deleteMessage(messageId)
 			<c:when test="${userList == null}">
 <c:forEach items="${messageList}" var="individualMessage">
 			<p>
-			<div id="message">
-				<div id="messageProfilePicture">
+			<div class="message">
+				<div class="messageProfilePicture">
 					<img
 						src="${pageContext.request.contextPath}/img/blank-profile-pic.png"
 						alt="Profile picture" width="45" height="30">
 				</div>
-				<div id="messageText">${individualMessage.text }</div>
+				<div class="messageText">${individualMessage.text }</div>
 				<c:if
 					test="${activeUser.username == individualMessage.owner.username}">
-					<div id="deleteMessageButton">
+					<div class="deleteMessageButton">
 						<button type="submit"
 							onclick="deleteMessage('${individualMessage.messageId}')">
 							<img src="${pageContext.request.contextPath}/img/bin.png"
@@ -77,7 +79,7 @@ function deleteMessage(messageId)
 						</button>
 					</div>
 				</c:if>
-				<div id="timestampArea">
+				<div class="timestampArea">
 					Posted by <a
 						href="${pageContext.request.contextPath}/profile/${individualMessage.owner.username}">${individualMessage.owner.username }</a>
 					${individualMessage.timePostedAgo() }
@@ -90,30 +92,30 @@ function deleteMessage(messageId)
 			<c:if test="${profileUser.username != individualFollowing.username}">
 				<!-- Don't show that the user is following themselves, just show other users -->
 				<p>
-				<div id="user">
-					<div id="userProfilePicture">
+				<div class="user">
+					<div class="userProfilePicture">
 						<img
 							src="${pageContext.request.contextPath}/img/blank-profile-pic.png"
 							alt="Profile picture" width="45" height="30">
 					</div>
-					<div id="usernameArea">
+					<div class="usernameArea">
 						<a href="${pageContext.request.contextPath}/profile/${individualFollowing.username}">${individualFollowing.username}</a>
 					</div>
 					<c:if test="${activeUser.username != individualFollowing.username}">
 						<c:choose>
 							<c:when test="${individualFollowing.isActiveUserFollowing == true}">
-								<div id="followButton">
+								<div class="followButton">
 									<button type="button" onclick="deleteFollow('${individualFollowing.username}')">Unfollow</button>
 								</div>
 							</c:when>
 							<c:otherwise>
-								<div id="followButton">
+								<div class="followButton">
 									<button type="button" onclick="follow('${individualFollowing.username}')">Follow</button>
 								</div>
 							</c:otherwise>
 						</c:choose>
 					</c:if>
-					<div id="bioArea">${individualFollowing.username}'s bio: ${individualFollowing.bio}</div>
+					<div class="bioArea">${individualFollowing.username}'s bio: ${individualFollowing.bio}</div>
 				</div>
 			</c:if>
 		</c:forEach>

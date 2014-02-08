@@ -108,6 +108,7 @@ public class Authentication {
         catch (SQLException e) 
         {
 			e.printStackTrace();
+			
 			return false;
 		}
 	}
