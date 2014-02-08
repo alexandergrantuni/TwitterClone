@@ -49,10 +49,10 @@ function deleteFollow(username)
 	    });
 }
 
-function follow(path, username)
+function follow(username)
 {
-	alert("called follow");
-	alert(path+username);
+	var contextPath='<%=request.getContextPath()%>';
+	alert(contextPath);
 	$.ajax({
 	    url: "${pageContext.request.contextPath}/following/"+username,
 	    type:'POST',//Sends a POST request which tells the servlet to follow the user with the given username
