@@ -30,6 +30,7 @@
       <p><input type="password" name="oldPassword" value="" placeholder="Old Password"></p>
       <p><input type="password" name="newPassword" value="" placeholder="New Password"></p>
       <p><input type="password" name="confirmPassword" value="" placeholder="Confirm New Password"></p>
+
       <p class="submit"><input type="submit" name="editProfileButton" value="Submit"></p>
     </form>
     <c:if test="${errorMessage != null }">
