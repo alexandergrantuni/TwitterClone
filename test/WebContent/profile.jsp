@@ -10,7 +10,49 @@
 <script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
 <title>ChitChat - Broadcasts</title>
 </head>
+<script type="text/javascript">
+function deleteFollow(username)
+{
+	$.ajax({
+	    url: "${pageContext.request.contextPath}/following/"+username,
+	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
+	    success: 
+	        function(msg){
+	            alert("You have unfollowed "+username+".");
+	            location.reload();
+	        }                   
+	    });
+}
+function follow(username)
+{
+	$.ajax({
+	    url: "${pageContext.request.contextPath}/following/"+username,
+	    type:'POST',//Sends a POST request which tells the servlet to follow the user with the given username
+	    success: 
+	        function(msg){
+	            alert("You are now following "+username+".");
+	            location.reload();
+	        }                   
+	    });
+}
+function deleteMessage(messageId)
+{
+	$.ajax({
+	    url: "${pageContext.request.contextPath}/messages/"+messageId,
+	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
+	    success: 
+	        function(msg){
+	            alert("Your message has been deleted.");
+	            location.reload();
+	        }                   
+	    });
+}
 
+function viewMessage(Id)
+{
+            window.location = "${pageContext.request.contextPath}/messages/"+Id;
+}
+</script>
 
 <body onload="detectAndAddHashTags()">
 <jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->

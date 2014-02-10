@@ -76,6 +76,11 @@ public class ProfileServlet extends HttpServlet {
 						break;
 					}
 				}
+				LinkedList<Message> activeUserMessages = MessageMethods.getUserMessages(profileUser.getUsername());
+				if(activeUserMessages.size() == 0)
+				{
+					request.setAttribute("noMessages", profileUser.getUsername() +" hasn't posted any messages yet!");
+				}
 				request.setAttribute("profileUser", profileUser);
 				request.setAttribute("messages", MessageMethods.getUserMessages(username));
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
@@ -181,6 +186,20 @@ public class ProfileServlet extends HttpServlet {
 		}
 		
 		
+	}
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User activeUser = (User)request.getSession().getAttribute("activeUser");
+		if(activeUser == null)
+		{
+			//You can't search without being logged in, redirect to login screen
+			response.sendRedirect(request.getContextPath()+"/login.jsp");
+			return;
+		}
+		else
+		{
+			UserMethods.deleteAccount(activeUser);
+			request.getSession().setAttribute("activeUser", null);
+		}
 	}
 
 }

@@ -5,7 +5,7 @@ function detectAndAddHashTags()
     {
     	var hashTagRegex = /^#\w\w+/;//A regular expression for identifying hash tags
     	var current = messages[i].innerHTML;//Put the html for this message into a variable
-    	//messages[i].innerHTML = "hello";
+    	//alert(current);
 		var regexResult = hashTagRegex.exec(current);//Get the hash tag
 		current = current.replace(hashTagRegex, '<a href="/test/search/messages/'+regexResult[0].replace("#","")+'">' + regexResult[0] + '</a>');//The replace is done here because the search doesn't seem to support # in the url
 		//# is a special character sometimes used to link to anchors in webpages so this might be why

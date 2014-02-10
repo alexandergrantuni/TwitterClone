@@ -75,7 +75,7 @@ function viewMessage(Id)
     <div id="whiteText"><center>${noMessages}</center></div>
     </c:if>
     <c:forEach items="${messages}" var="individualMessage">
-      <p><div class="message" onclick="viewMessage('${individualMessage.messageId}')">
+      <p><div class="message">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>
       <c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">

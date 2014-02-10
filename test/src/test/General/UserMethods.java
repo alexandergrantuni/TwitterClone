@@ -251,4 +251,73 @@ public class UserMethods {
     }
         return false;
 	}
+	
+	public static void deleteFollows(User u)
+	{
+		Connection connection = Database.getConnection();
+	    PreparedStatement query = null;
+	    try 
+	{
+	        query = (PreparedStatement) connection.prepareStatement("DELETE FROM following WHERE UserId=? OR FollowingUserId=?;");
+	        if(u.getUsername().equals(""))
+	        {
+	        	return;
+	        }
+	        query.setString(1, u.getUsername());
+	        query.setString(2, u.getUsername());
+	        int result = query.executeUpdate();          
+	        connection.close();
+	}
+	catch(Exception ex)
+	{
+	        ex.printStackTrace();
+	        try
+	        {
+	            query.close();
+	            connection.close();
+	        }
+	        catch (SQLException sqle)
+	        {
+	                sqle.printStackTrace();
+	        }
+	        
+	}
+	}
+	
+	public static void deleteUser(User u)
+	{
+		Connection connection = Database.getConnection();
+	    PreparedStatement query = null;
+	    try 
+	{
+	        query = (PreparedStatement) connection.prepareStatement("DELETE FROM users WHERE Username=?;");
+	        if(u.getUsername().equals(""))
+	        {
+	        	return;
+	        }
+	        query.setString(1, u.getUsername());
+	        int result = query.executeUpdate();          
+	        connection.close();
+	}
+	catch(Exception ex)
+	{
+	        ex.printStackTrace();
+	        try
+	        {
+	            query.close();
+	            connection.close();
+	        }
+	        catch (SQLException sqle)
+	        {
+	                sqle.printStackTrace();
+	        }
+	        
+	}
+	}
+	public static void deleteAccount(User u)
+	{
+		deleteFollows(u);
+		MessageMethods.deleteAllMessages(u);
+		deleteUser(u);
+	}
 }

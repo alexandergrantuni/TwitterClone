@@ -296,5 +296,32 @@ return null;
 	}
 	return false;
 	}
+	
+	public static void deleteAllMessages(User u)
+	{
+		Connection connection = Database.getConnection();
+	    PreparedStatement query = null;
+	    try 
+	{
+	        query = (PreparedStatement) connection.prepareStatement("DELETE FROM message WHERE Username=?;");
+	        query.setString(1, u.getUsername());
+	        int result = query.executeUpdate();          
+	        connection.close();
+	}
+	catch(Exception ex)
+	{
+	        ex.printStackTrace();
+	        try
+	        {
+	            query.close();
+	            connection.close();
+	        }
+	        catch (SQLException sqle)
+	        {
+	                sqle.printStackTrace();
+	        }
+	        
+	}
+	}
 
 }
