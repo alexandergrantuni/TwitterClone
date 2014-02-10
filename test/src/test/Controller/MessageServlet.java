@@ -109,6 +109,12 @@ public class MessageServlet extends HttpServlet {
 		if(request.getSession().getAttribute("activeUser") != null)
 		{
 			String message = request.getParameter("message");
+			if(message.length() == 0)
+			{
+				request.setAttribute("sendMessageError", "You need to enter at least 1 character.");
+				request.getRequestDispatcher("/messages.jsp").forward(request, response);
+				return;
+			}
 			User user = (User)request.getSession().getAttribute("activeUser");
 			MessageMethods.sendMessage(user.getUsername(), message);
 			response.sendRedirect(request.getContextPath()+"/messages");

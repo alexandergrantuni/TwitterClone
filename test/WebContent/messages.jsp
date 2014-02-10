@@ -44,17 +44,7 @@ function deleteMessage(messageId)
 
 function viewMessage(Id)
 {
-    $.ajax({
-        url: "${pageContext.request.contextPath}/messages/"+messageId,
-        success: function(){
-            document.location = href;  // redirect browser to link
-        }
-    });
-}
-
-function appendContent()
-{
-
+            window.location = "${pageContext.request.contextPath}/messages/"+Id;
 }
 
 </script>
@@ -85,10 +75,10 @@ function appendContent()
     <div id="whiteText"><center>${noMessages}</center></div>
     </c:if>
     <c:forEach items="${messages}" var="individualMessage">
-      <p><div class="message" onclick="viewMessage('${individualMessage.messageId }')">
+      <p><div class="message" onclick="viewMessage('${individualMessage.messageId}')">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>
-      <c:if test="${activeUser.username == individualMessage.owner.username}">
+      <c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">
       <div class="deleteMessageButton"><button type="submit"onclick="deleteMessage('${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
       </c:if>
       <div class="timestampArea">Posted by <a href="${pageContext.request.contextPath}/profile/${individualMessage.owner.username}">${individualMessage.owner.username }</a> ${individualMessage.timePostedAgo() }</div>

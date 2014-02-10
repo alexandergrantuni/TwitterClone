@@ -9,6 +9,7 @@ public class User {
 	private String firstName = "";
 	private String lastName = "";
 	private String bio = "";
+	private boolean isAdmin = false;
 	private boolean isActiveUserFollowing = false;
 	
 	
@@ -63,16 +64,16 @@ public class User {
 		bio = newBio;
 	}
 	
-	public boolean isFollowing(User user)
+	public boolean getIsAdmin()
 	{
-		return false;
+		return isAdmin;
 	}
 	
-	public boolean follows(User user)
+	public void setIsAdmin(boolean admin)
 	{
-		return false;
+		isAdmin = admin;
 	}
-
+	
 	public boolean getIsActiveUserFollowing()
 	{
 		return isActiveUserFollowing;

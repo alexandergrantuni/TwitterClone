@@ -13,53 +13,8 @@ function detectAndAddHashTags()
     }
 }
 
-function deleteMessage(messageId)
+function test()
 {
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/messages/"+messageId,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("Your message has been deleted.");
-	            location.reload();
-	        }                   
-	    });
-}
-
-function viewMessage(Id)
-{
-    $.ajax({
-        url: "${pageContext.request.contextPath}/messages/"+messageId,
-        success: function(){
-            document.location = url;  // redirect browser to link
-        }
-    });
-}
-
-function deleteFollow(username)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("You have unfollowed "+username+".");
-	            location.reload();
-	        }                   
-	    });
-}
-
-function follow(username)
-{
-	var contextPath='<%=request.getContextPath()%>';
-	alert(contextPath);
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'POST',//Sends a POST request which tells the servlet to follow the user with the given username
-	    success: 
-	        function(msg){
-	            alert("You are now following "+username+".");
-	            location.reload();
-	        }                   
-	    });
+	alert("<%=request.getContextPath()%>")
+	return "<%=request.getContextPath()%>";
 }

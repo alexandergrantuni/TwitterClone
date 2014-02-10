@@ -1,5 +1,10 @@
 REST Interface:
 
+Types of Account 
+
+Administrator - Can delete other people's messages
+Normal user - Can post and delete their own messages.
+
 Search
 
 GET - /search/users/USERNAME - shows a list of users with a similar name
@@ -51,3 +56,4 @@ Javascript is also used for form validation.
 Security:
 
 Stored procedures and prepared statements.
+All passwords are encrypted using secure hash algorithm 1.

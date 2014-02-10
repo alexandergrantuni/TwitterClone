@@ -97,7 +97,6 @@ public class FollowerServlet extends HttpServlet {
 					if(profileUser.getUsername().equals(u.getUsername()))
 					{
 						profileUser.setIsActiveUserFollowing(true);
-						System.out.println("friends - "+profileUser.getUsername() + u.getUsername());
 					}
 				}
 				}

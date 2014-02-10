@@ -27,6 +27,7 @@ public class Authentication {
             user.setFirstName(resultSet.getString("FirstName"));
             user.setLastName(resultSet.getString("LastName"));
             user.setBio(resultSet.getString("bio"));
+            user.setIsAdmin(resultSet.getBoolean("IsAdministrator"));
             connection.close();
             return user;
             }

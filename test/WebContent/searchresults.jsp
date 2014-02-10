@@ -69,8 +69,7 @@ function deleteMessage(messageId)
 						alt="Profile picture" width="45" height="30">
 				</div>
 				<div class="messageText">${individualMessage.text }</div>
-				<c:if
-					test="${activeUser.username == individualMessage.owner.username}">
+				<c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">
 					<div class="deleteMessageButton">
 						<button type="submit"
 							onclick="deleteMessage('${individualMessage.messageId}')">
