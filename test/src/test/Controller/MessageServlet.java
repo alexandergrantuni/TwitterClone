@@ -133,11 +133,12 @@ public class MessageServlet extends HttpServlet {
 		String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
 		
 		int messageId = Integer.parseInt(argument);
+		User activeUser = (User)request.getSession().getAttribute("activeUser");
 		try
 		{
 		if(request.getSession().getAttribute("activeUser") != null)
 		{
-			if(MessageMethods.createdMessage((User)request.getSession().getAttribute("activeUser"), Integer.parseInt(argument)))
+			if(MessageMethods.createdMessage(activeUser, Integer.parseInt(argument)) || activeUser.getIsAdmin())
 			{
 				MessageMethods.deleteMessage(Integer.parseInt(argument));
 			}

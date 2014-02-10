@@ -3,7 +3,12 @@ REST Interface:
 Types of Account 
 
 Administrator - Can delete other people's messages
+
+Example of Admin account: admin@admin.com - google123
+
 Normal user - Can post and delete their own messages.
+
+Example of normal user: test2@test.com - google123
 
 Search
 
