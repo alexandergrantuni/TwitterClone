@@ -39,6 +39,10 @@
         Cancel: function() {//If the cancel button is pressed..
           $( this ).dialog( "close" );//Close the dialog box
         }
+      },
+      open: function() {//The open function is called when the dialog box is opened
+          $(this).siblings('.ui-dialog-buttonpane').find("button:contains('Cancel')").focus(); 
+        //This line makes the 'Cancel' button the default selected button so that the user is less likely to make an irreversible mistake
       }
     });
   });
@@ -52,7 +56,7 @@
   	    success: 
   	        function(msg){
   	            alert("Your profile has been deleted.");
-  	            location.reload();//reload the screen showing the user the logging screen since they are no longer logged in
+  	            location.reload();//reload the screen showing the user the login screen since they are no longer logged in
   	        }                   
   	    });
   }
@@ -86,7 +90,7 @@
     <c:if test="${errorMessage != null }">
     <div id="errorMessage"></div>
     </c:if>
-<div id="deleteProfile" onclick="showDialog()"><u>Delete Profile</u></div>
+    <div id="deleteAccount"><input type="submit" name="deleteAccountButton" onclick="showDialog()" value="Delete Account"></p></div>
 </div>
 <jsp:include page="footer.jsp" />
 </body>
