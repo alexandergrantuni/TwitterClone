@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css" /> <!-- stylesheet -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
 <script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
-<title>ChitChat - Broadcasts</title>
+<title>ChitChat - ${profileUser.username}'s Profile</title>
 </head>
 <script type="text/javascript">
 function deleteFollow(username)
