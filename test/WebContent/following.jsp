@@ -9,32 +9,6 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
 <script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
 <title>ChitChat - Users ${profileUser.username} is following</title>
-<script type="text/javascript">
-function deleteFollow(username)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("You have unfollowed "+username+".");
-	            location.reload();
-	        }                   
-	    });
-}
-function follow(username)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'POST',//Sends a POST request which tells the servlet to follow the user with the given username
-	    success: 
-	        function(msg){
-	            alert("You are now following "+username+".");
-	            location.reload();
-	        }                   
-	    });
-}
-</script>
 </head>
 <jsp:include page="navigationbar.jsp" />
 <!-- add the navigation bar to the top of the page -->
@@ -57,12 +31,12 @@ function follow(username)
     						<c:choose>
 							<c:when test="${profileUser.isActiveUserFollowing == true}">
 								<div id="deleteMessageButton">
-									<p class="submit"><input type="submit" name="followButton" onclick="deleteFollow('${profileUser.username}')" value="Unfollow ${profileUser.username}"></p>
+									<p class="submit"><input type="submit" name="followButton" onclick="deleteFollow('${pageContext.request.contextPath}','${profileUser.username}')" value="Unfollow ${profileUser.username}"></p>
 								</div>
 							</c:when>
 							<c:otherwise>
 								<div id="deleteMessageButton">
-								<p class="submit"><input type="submit" name="followButton" onclick="follow('${profileUser.username}')" value="Follow ${profileUser.username}"></p>
+								<p class="submit"><input type="submit" name="followButton" onclick="follow('${pageContext.request.contextPath}','${profileUser.username}')" value="Follow ${profileUser.username}"></p>
 								</div>
 							</c:otherwise>
 						</c:choose>
@@ -94,12 +68,12 @@ function follow(username)
 						<c:choose>
 							<c:when test="${individualFollowing.isActiveUserFollowing == true}">
 								<div class="followButton">
-									<button type="button" onclick="deleteFollow('${individualFollowing.username}')">Unfollow</button>
+									<button type="button" onclick="deleteFollow('${pageContext.request.contextPath}','${individualFollowing.username}')">Unfollow</button>
 								</div>
 							</c:when>
 							<c:otherwise>
 								<div class="followButton">
-									<button type="button" onclick="follow('${individualFollowing.username}')">Follow</button>
+									<button type="button" onclick="follow('${pageContext.request.contextPath}','${individualFollowing.username}')">Follow</button>
 								</div>
 							</c:otherwise>
 						</c:choose>

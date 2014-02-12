@@ -11,45 +11,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ChitChat - Search Results</title>
 </head>
-
-<script type="text/javascript">
-function deleteFollow(username)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("You have unfollowed "+username+".");
-	            location.reload();
-	        }                   
-	    });
-}
-function follow(username)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'POST',//Sends a POST request which tells the servlet to follow the user with the given username
-	    success: 
-	        function(msg){
-	            alert("You are now following "+username+".");
-	            location.reload();
-	        }                   
-	    });
-}
-function deleteMessage(messageId)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/messages/"+messageId,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("Your message has been deleted.");
-	            location.reload();
-	        }                   
-	    });
-}
-</script>
 <body onload="detectAndAddHashTags()">
 <jsp:include page="navigationbar.jsp" />
 	<div id="broadcastcontainer">
@@ -73,7 +34,7 @@ function deleteMessage(messageId)
 				<c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">
 					<div class="deleteMessageButton">
 						<button type="submit"
-							onclick="deleteMessage('${individualMessage.messageId}')">
+							onclick="deleteMessage('${pageContext.request.contextPath}','${individualMessage.messageId}')">
 							<img src="${pageContext.request.contextPath}/img/bin.png"
 								alt="Delete Message" width="21" height="25">
 						</button>
@@ -105,12 +66,12 @@ function deleteMessage(messageId)
 						<c:choose>
 							<c:when test="${individualFollowing.isActiveUserFollowing == true}">
 								<div class="followButton">
-									<button type="button" onclick="deleteFollow('${individualFollowing.username}')">Unfollow</button>
+									<button type="button" onclick="deleteFollow('${pageContext.request.contextPath}','${individualFollowing.username}')">Unfollow</button>
 								</div>
 							</c:when>
 							<c:otherwise>
 								<div class="followButton">
-									<button type="button" onclick="follow('${individualFollowing.username}')">Follow</button>
+									<button type="button" onclick="follow('${pageContext.request.contextPath}','${individualFollowing.username}')">Follow</button>
 								</div>
 							</c:otherwise>
 						</c:choose>

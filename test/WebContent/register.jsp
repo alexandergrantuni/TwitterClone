@@ -87,8 +87,8 @@ function inputValidation()
       <p><input type="text" name="firstName" value="" placeholder="First Name"></p>
       <p><input type="text" name="lastName" value="" placeholder="Last Name"></p>
       <p><input type="text" name="emailAddress" value="" placeholder="Email Address"></p>
-      <p><input type="password" name="userPassword" value="" placeholder="Password"></p>
       <p><input type="text" name="username" value="" placeholder="Enter a username"></p>
+      <p><input type="password" name="userPassword" value="" placeholder="Password"></p>
       <p class="submit"><input type="submit" name="Register" value="Register"></p>
     </form>
   </div>

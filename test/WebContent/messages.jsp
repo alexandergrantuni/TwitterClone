@@ -29,18 +29,6 @@ function messageValidation()
 	
 	return true;
 }
-function deleteMessage(messageId)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/messages/"+messageId,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("Your message has been deleted.");
-	            location.reload();
-	        }                   
-	    });
-}
 
 function viewMessage(Id)
 {
@@ -79,7 +67,7 @@ function viewMessage(Id)
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>
       <c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">
-      <div class="deleteMessageButton"><button type="submit"onclick="deleteMessage('${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
+      <div class="deleteMessageButton"><button type="submit"onclick="deleteMessage('${pageContext.request.contextPath}','${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
       </c:if>
       <div class="timestampArea">Posted by <a href="${pageContext.request.contextPath}/profile/${individualMessage.owner.username}">${individualMessage.owner.username }</a> ${individualMessage.timePostedAgo() }</div>
       </div>

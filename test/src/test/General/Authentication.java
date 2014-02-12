@@ -176,5 +176,48 @@ public class Authentication {
     }
         return false;
 	}
+	
+	public static boolean RegisterAdmin(String emailAddress, String username, String hashedPassword,String firstName, String lastName)
+	{
+
+        connection = Database.getConnection();
+        PreparedStatement query = null;
+        try 
+    {
+        	Date now = new Date();
+        	int registerTime = (int)(now.getTime()/1000);
+            query = (PreparedStatement) connection.prepareStatement("INSERT INTO users VALUES(?,?,?,?,?,?,?,?,?,?,?);");
+            query.setString(1, username);//username
+            query.setString(2, emailAddress);//email address
+            query.setString(3, hashedPassword);//hashed password
+            query.setString(4, firstName);//first name
+            query.setString(5, lastName);//last name
+            query.setString(6, "I haven't set a bio yet!");//bio
+            query.setInt(7, 1);//Secret question, not yet implemented
+            query.setString(8, "");//Secret question answer, not yet implemented
+            query.setString(9, "img/blank-profile-pic.png");//profile picture path
+            query.setInt(10, 1);//isAdmin
+            query.setInt(11, registerTime);//Register timestamp
+            int result = query.executeUpdate();   
+            connection.close();
+            return result == 1;
+        
+    }
+    catch(Exception ex)
+    {
+            ex.printStackTrace();
+            try
+            {
+                query.close();
+                connection.close();
+            }
+            catch (SQLException sqle)
+            {
+                    sqle.printStackTrace();
+            }
+            
+    }
+        return false;
+	}
 
 }

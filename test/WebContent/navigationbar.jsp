@@ -8,7 +8,7 @@
                 <li><a href='${pageContext.request.contextPath}/followers'>Followers</a></li>
                 <li><a href='${pageContext.request.contextPath}/search'>Search</a></li>
                 <c:if test="${activeUser.isAdmin == true }">
-                <li><a href='${pageContext.request.contextPath}/admin.jsp'>Admin</a></li>
+                <li><a href='${pageContext.request.contextPath}/admin'>Admin</a></li>
                 </c:if>
                 <li><a href='${pageContext.request.contextPath}/Logout'>Sign Out</a></li>
             </ul>
