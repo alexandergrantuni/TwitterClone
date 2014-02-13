@@ -40,12 +40,6 @@ function formatMessages()
 	detectAndAddHashTags();
 }
 
-function test()
-{
-	alert("<%=request.getContextPath()%>")
-	return "<%=request.getContextPath()%>";
-}
-
 function deleteFollow(context, username)
 {
 	$.ajax({

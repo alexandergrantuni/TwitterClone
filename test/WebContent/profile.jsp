@@ -97,6 +97,7 @@ function viewMessage(Id)
       <div class="deleteMessageButton"><button type="submit"onclick="deleteMessage('${pageContext.request.contextPath}','${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
       </c:if>
       <div class="timestampArea">Posted by ${individualMessage.owner.username } ${individualMessage.timePostedAgo() }</div>
+      <div class="viewIndividually"><u><a href="${pageContext.request.contextPath}/messages/${individualMessage.messageId }">View Individually</a></u></div>
       </div>
 </c:forEach>
 </div>

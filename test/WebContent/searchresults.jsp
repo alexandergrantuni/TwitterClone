@@ -45,6 +45,7 @@
 						href="${pageContext.request.contextPath}/profile/${individualMessage.owner.username}">${individualMessage.owner.username }</a>
 					${individualMessage.timePostedAgo() }
 				</div>
+				<div class="viewIndividually"><u><a href="${pageContext.request.contextPath}/messages/${individualMessage.messageId }">View Individually</a></u></div>
 			</div>
 		</c:forEach>
 			</c:when>

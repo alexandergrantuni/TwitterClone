@@ -58,6 +58,20 @@ public class RegisterServlet extends HttpServlet {
 		String lastName = request.getParameter("lastName");
 		String bio = "";
 		String profilePicture = "";//TODO SET THIS TO DEFAULT IMG URL
+		//Alphanumeric username regex, credit to http://stackoverflow.com/questions/8248277/how-to-determine-if-a-string-has-non-alphanumeric-characters
+		if(username.matches("^.*[^a-zA-Z0-9 ].*$"))
+		{
+			request.setAttribute("errorMessage", "Usernames must be alphanumeric");
+			request.getRequestDispatcher("register.jsp").forward(request, response);
+			return;
+		}
+		//Again, I didn't write this regular expression. Credit to: http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
+		if(!emailAddress.matches("[a-zA-Z0-9_.]*@[a-zA-Z]*.[a-zA-Z]*"))
+		{
+			request.setAttribute("errorMessage", "Invalid email address.");
+			request.getRequestDispatcher("register.jsp").forward(request, response);
+			return;
+		}
 		if(Authentication.usernameRegistered(username))
 		{
 			//This username is already in use so set the error message to 'Username is already in use.'

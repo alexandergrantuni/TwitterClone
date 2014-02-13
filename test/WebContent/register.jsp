@@ -91,6 +91,9 @@ function inputValidation()
       <p><input type="password" name="userPassword" value="" placeholder="Password"></p>
       <p class="submit"><input type="submit" name="Register" value="Register"></p>
     </form>
+    <c:if test="${errorMessage != null }">
+    <font color="red"><center>${errorMessage }</center></font>
+    </c:if>
   </div>
 </div>
 </body>

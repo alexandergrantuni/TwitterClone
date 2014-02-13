@@ -508,6 +508,7 @@ text-align: center;
   margin: 0 auto;
   padding: 20px 20px 20px;
   width: 610px;
+  color:white;
 }
 
 #broadcastcontainer h1 {
@@ -713,6 +714,8 @@ textarea
 {
 	float: right;
 	margin-left:25px;
+	margin-bottom:50px;
+	margin-top:-20px;
 }
 
 .message .timestampArea
@@ -734,9 +737,12 @@ textarea
 	margin-right:50px;
 }
 
-.message .deleteMessageButton
+
+.message .viewIndividually
 {
-	margin-top:-20px;
+	float: right;
+
+	margin-right:-90px;
 }
 
 .user {
