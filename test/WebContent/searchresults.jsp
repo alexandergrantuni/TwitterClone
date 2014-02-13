@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ChitChat - Search Results</title>
 </head>
-<body onload="detectAndAddHashTags()">
+<body onload="formatMessages()">
 <jsp:include page="navigationbar.jsp" />
 	<div id="broadcastcontainer">
 		<h1>Search Results</h1>

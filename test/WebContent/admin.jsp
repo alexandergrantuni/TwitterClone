@@ -16,50 +16,6 @@
   <link rel="stylesheet" href="/resources/demos/style.css">
 <jsp:include page="navigationbar.jsp" />
 <script>
-<!-- https://jqueryui.com/dialog/#modal-confirmation for base -->
-	  function showDialog()
-	  {
-	  $(function() {
-	    $( "#dialog-confirm" ).dialog({
-	      resizable: false,//I have left this as false since it can look a bit untidy if you resize it smaller than it is
-	      height:190,
-	      width:400,
-	      modal: true,
-	      draggable: false,//I want this to appear in only 1 position so this is set to not be draggable
-	      buttons: {
-	        "I'm sure!": function(){//If the button annotated with 'I'm sure!' is pressed...
-	        deleteAccount();//Call the delete message function
-	        $( this ).dialog( "close" );//Close the dialog box, not really needed since a redirect is done immediately after the account is deleted
-	        },
-	        Cancel: function() {//If the cancel button is pressed..
-	          $( this ).dialog( "close" );//Close the dialog box
-	        }
-	      },
-	      open: function() {//The open function is called when the dialog box is opened
-	          $(this).siblings('.ui-dialog-buttonpane').find("button:contains('Cancel')").focus(); 
-	        //This line makes the 'Cancel' button the default selected button so that the user is less likely to make an irreversible mistake
-	      }
-	    });
-	  });
-	  }
-	  //As you can see there is no argument to this function, this function delete's the active user's account.
-	  function deleteAccount()
-	  {
-	  	$.ajax({
-	  	    url: "${pageContext.request.contextPath}/admin/",//no argument required here
-	  	    type:'POST',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	  	    success: 
-	  	        function(msg){
-	  	            alert("");
-	  	            location.reload();//reload the screen showing the user the login screen since they are no longer logged in
-	  	        }                   
-	  	    });
-	  }
-	  
-	  $(function() {
-		    $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
-		    								//with the page before it is shown in the dialog box. 
-		  });
 	  function inputValidation()
 	  {
 	  	var firstName=document.forms["registrationForm"]["firstName"].value;
@@ -124,7 +80,7 @@
 	  		alert("Usernames must be between 3 and 15 characters long.");
 	  		return false;
 	  	}
-	  	
+	  	showDialog();
 	  	return true;
 	  }
 </script>
@@ -132,9 +88,6 @@
 <title>ChitChat - Admin Panel</title>
 </head>
 <body>
-  <div id="dialog-confirm" title="Are you sure about this?" >
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>You will not be able to remove these privileges once they have been set.</p>
-</div>
 <c:if test="${activeUser.isAdmin == false }">
 <% response.sendRedirect("404.jsp");//Secure the admin area to only admins, 404 if any non-admins try and access%>
 </c:if>

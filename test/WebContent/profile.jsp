@@ -54,7 +54,7 @@ function viewMessage(Id)
 }
 </script>
 
-<body onload="detectAndAddHashTags()">
+<body onload="formatMessages()">
 <jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->
 <div id="profilearea">
     <h1>${profileUser.username}'s Profile</h1>

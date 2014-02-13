@@ -15,7 +15,6 @@
 function messageValidation()
 {
 	var message=document.forms["sendMessageForm"]["message"].value;
-	
 	if(message.length == 0)
 	{
 		alert("You didn't enter a message.");
@@ -26,7 +25,6 @@ function messageValidation()
 		alert("Your message is too long.  Please enter a message which is less than 140 characters long.")
 		return false;
 	}
-	
 	return true;
 }
 
@@ -36,7 +34,7 @@ function viewMessage(Id)
 }
 
 </script>
-<body onload="detectAndAddHashTags()">
+<body onload="formatMessages()">
 
 <div id="profilearea">
     <h1>My Profile</h1>
