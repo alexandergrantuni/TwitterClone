@@ -50,54 +50,64 @@ public class MessageServlet extends HttpServlet {
 				String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
 				if(argument.equals("all"))
 				{
-					List<Message> messageList = MessageMethods.getAllMessages();
+					LinkedList<Message> messageList = MessageMethods.getAllMessages();
 					int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-
-					int k = 0;
-					List<Message> newMessages = new LinkedList<Message>();
-					int j = 0;
-					for(int i = messageCount; i < messageList.size();i++)
+					int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
+					
+					int index = getIndexByMessageId(messageList, lastMessageId);
+					int tens = (messageCount/10)-1;
+					LinkedList<Message> newMessages = new LinkedList<Message>();
+					int j =0;
+					if(messageCount < messageList.size()){
+						for(int i = index+(tens*10)+1; i < messageList.size();i++)
 						{
-						if(j == 10)
-						{
-							break;
-						}
+							if(j == 10)
+							{
+								break;
+							}
 							if(messageList.get(i) != null)
 							{
 								newMessages.add(messageList.get(i));
 							}
 							j++;
 						}
-					
-					request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-					request.setAttribute("messages", newMessages);
-					request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+						
+						request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+						request.setAttribute("messages", newMessages);
+						request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+						return;
+					}
 					return;
 				}
 				else if(argument.equals("messages"))
 				{
-					List<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
+					LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
 					int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-
-					int k = 0;
-					List<Message> newMessages = new LinkedList<Message>();
-					int j = 0;
-					for(int i = messageCount; i < messageList.size();i++)
+					int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
+					
+					int index = getIndexByMessageId(messageList, lastMessageId);
+					int tens = (messageCount/10)-1;
+					LinkedList<Message> newMessages = new LinkedList<Message>();
+					int j =0;
+					if(messageCount < messageList.size()){
+						for(int i = index+(tens*10)+1; i < messageList.size();i++)
 						{
-						if(j == 10)
-						{
-							break;
-						}
+							if(j == 10)
+							{
+								break;
+							}
 							if(messageList.get(i) != null)
 							{
 								newMessages.add(messageList.get(i));
 							}
 							j++;
 						}
-					
-					request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-					request.setAttribute("messages", newMessages);
-					request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+						
+						request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+						request.setAttribute("messages", newMessages);
+						request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+						return;
+					}
 					return;
 				}
 				else
@@ -191,6 +201,20 @@ public class MessageServlet extends HttpServlet {
 		}
 	}
 	
+	public int getIndexByMessageId(LinkedList<Message> messageList, int messageId)
+	{
+		int k = 0;
+		for(Message m : messageList)
+		{
+			if(m.getMessageId() == messageId)
+			{
+				return k;
+			}
+			k++;
+		}
+		return -1;
+	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -203,6 +227,12 @@ public class MessageServlet extends HttpServlet {
 			if(message.length() == 0)
 			{
 				request.setAttribute("sendMessageError", "You need to enter at least 1 character.");
+				request.getRequestDispatcher("/messages.jsp").forward(request, response);
+				return;
+			}
+			if(message.length() > 140)
+			{
+				request.setAttribute("sendMessageError", "The message you entered is too long!");
 				request.getRequestDispatcher("/messages.jsp").forward(request, response);
 				return;
 			}

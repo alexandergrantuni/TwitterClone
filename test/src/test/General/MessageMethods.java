@@ -191,7 +191,7 @@ public class MessageMethods {
 		return null;
 	}
 	
-	public static List<Message> getFollowingMessages(String username)
+	public static LinkedList<Message> getFollowingMessages(String username)
 	{
 		 Connection connection = Database.getConnection();
 	        PreparedStatement query = null;
@@ -229,7 +229,7 @@ public class MessageMethods {
 	    }
 		return null;
 	}
-	public static List<Message> getAllMessages()
+	public static LinkedList<Message> getAllMessages()
 	{		 
 		Connection connection = Database.getConnection();
     PreparedStatement query = null;
