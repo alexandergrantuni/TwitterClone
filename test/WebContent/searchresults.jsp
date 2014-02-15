@@ -8,11 +8,26 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css" /> <!-- stylesheet -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
 <script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
+
+	 <!-- Required for confirmation box -->
+	  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ChitChat - Search Results</title>
+<script>
+$(function() {
+    $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
+    								//with the page before it is shown in the dialog box. 
+  });
+</script>
 </head>
 <body onload="formatMessages()">
 <jsp:include page="navigationbar.jsp" />
+  <div id="dialog-confirm" title="Are you sure about this?" >
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your message will be permanently deleted.</p>
+</div>
 	<div id="broadcastcontainer">
 		<h1>Search Results</h1>
 		<c:if test="${errorMessage != null }">
@@ -34,7 +49,7 @@
 				<c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">
 					<div class="deleteMessageButton">
 						<button type="submit"
-							onclick="deleteMessage('${pageContext.request.contextPath}','${individualMessage.messageId}')">
+							onclick="showDeleteMessageDialog('${pageContext.request.contextPath}','${individualMessage.messageId}')">
 							<img src="${pageContext.request.contextPath}/img/bin.png"
 								alt="Delete Message" width="21" height="25">
 						</button>

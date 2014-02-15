@@ -3,51 +3,86 @@ function detectAndAddHashTags()
     var messages = document.getElementsByClassName("messageText");//Gets all messages by taking the messageText div classes which contain the text for each message
     for (var i = 0; i < messages.length; i++) //Go through each message checking if there are any hashtags
     {
-    	var hashTagRegex = /^#\w\w+/;//A regular expression for identifying hash tags
+    	var hashTagRegex = /(\S*#\[[^\]]+\])|(\S*#\S+)/gi;//A regular expression for identifying hash tags
     	var current = messages[i].innerHTML;//Put the html for this message into a variable
     	//if there is a string portion that matches the regular expression...
     	if(hashTagRegex.test(current))
     	{
-		var regexResult = hashTagRegex.exec(current);//Get the hash tag
-		current = current.replace(hashTagRegex, '<a href="/test/search/messages/'+regexResult[0].replace("#","")+'">' + regexResult[0] + '</a>');//The replace is done here because the search doesn't seem to support # in the url
+    		var myRe = /(\S*#\[[^\]]+\])|(\S*#\S+)/gi;
+    		var myArray;
+    		var hashTagArray = new Array();
+    		var k = 0;
+    		while ((myArray = myRe.exec(current)) !== null)
+    		{
+    		  hashTagArray[k] = myArray[0];
+    		  k++;
+    		}
+			if(current.indexOf("/search/messages") == -1)
+			{
+    		for(var j = 0; j < hashTagArray.length; j++)
+    			{
+
+    					current = current.replace(hashTagArray[j],'<a href="/test/search/messages/'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
+    					messages[i].innerHTML = current;
+    				
+    			}
+			}
 		//# is a special character sometimes used to link to anchors in webpages so this might be why
     	}
-        messages[i].innerHTML = current;
+        
     }
 }
 
 function detectAndAddWebsiteLinks()
 {
     var messages = document.getElementsByClassName("messageText");//Gets all messages by taking the messageText div classes which contain the text for each message
-    for (var i = 0; i < messages.length; i++) //Go through each message checking if there are any urls
+    for (var i = 0; i < messages.length; i++) //Go through each message checking if there are any hashtags
     {
-    	//I did not write this regex! All credits to: http://stackoverflow.com/questions/833469/regular-expression-for-url
-    	var urlRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;//A regular expression for identifying urls
+    	var hashTagRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;//A regular expression for identifying hash tags
     	var current = messages[i].innerHTML;//Put the html for this message into a variable
     	//if there is a string portion that matches the regular expression...
-    	if(urlRegex.test(current))
+    	if(hashTagRegex.test(current))
     	{
-    		var regexResult = urlRegex.exec(current);//Get the hash tag
-			current = current.replace(urlRegex, '<a href='+regexResult[0]+'>' + regexResult[0] + '</a>');//The replace is done here because the search doesn't seem to support # in the url
+    		var myRe = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+    		var myArray;
+    		var hashTagArray = new Array();
+    		var k = 0;
+    		while ((myArray = myRe.exec(current)) !== null)
+    		{
+    			alert(myArray[0]);
+    		  hashTagArray[k] = myArray[0];
+    		  k++;
+    		}
+    		for(var j = 0; j < hashTagArray.length; j++)
+    			{
+    				current = current.replace(hashTagArray[j],'<a href="/test/search/messages/'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
+    				messages[i].innerHTML = current;
+    			}
+		//# is a special character sometimes used to link to anchors in webpages so this might be why
     	}
-        messages[i].innerHTML = current;
+        
     }
 }
 
+
 function formatMessages()
 {
-	detectAndAddWebsiteLinks();
+	//detectAndAddWebsiteLinks();
 	detectAndAddHashTags();
 }
 
+
+
 function deleteFollow(context, username)
 {
+	
 	$.ajax({
 	    url: context+"/following/"+username,
 	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
 	    success: 
 	        function(msg){
 	            alert("You have unfollowed "+username+".");
+	            var messages = document.getElementsByClassName("messageText");
 	            location.reload();
 	        }                   
 	    });
@@ -72,8 +107,33 @@ function deleteMessage(context, messageId)
 	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
 	    success: 
 	        function(msg){
-	            alert("Your message has been deleted.");
 	            location.reload();
 	        }                   
 	    });
+}
+
+function showDeleteMessageDialog(context, messageId)
+{
+$(function() {
+  $( "#dialog-confirm" ).dialog({
+    resizable: false,//I have left this as false since it can look a bit untidy if you resize it smaller than it is
+    height:190,
+    width:400,
+    modal: true,
+    draggable: false,//I want this to appear in only 1 position so this is set to not be draggable
+    buttons: {
+      "Delete": function(){//If the button annotated with 'I'm sure!' is pressed...
+      deleteMessage(context, messageId);//Call the delete message function
+      $( this ).dialog( "close" );//Close the dialog box, not really needed since a redirect is done immediately after the account is deleted
+      },
+      Cancel: function() {//If the cancel button is pressed..
+        $( this ).dialog( "close" );//Close the dialog box
+      }
+    },
+    open: function() {//The open function is called when the dialog box is opened
+        $(this).siblings('.ui-dialog-buttonpane').find("button:contains('Cancel')").focus(); 
+      //This line makes the 'Cancel' button the default selected button so that the user is less likely to make an irreversible mistake
+    }
+  });
+});
 }

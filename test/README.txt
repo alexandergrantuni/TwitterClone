@@ -10,6 +10,11 @@ Normal user - Can post and delete their own messages.
 
 Example of normal user: test2@test.com - google123
 
+Admin
+
+GET - /admin - takes an administrator to the admin panel.  If the user is not an administrator throws a 404
+POST - /admin - creates a new administrator
+
 Search
 
 GET - /search/users/USERNAME - shows a list of users with a similar name
@@ -55,6 +60,7 @@ AJAX
 Following/unfollowing friends
 Deleting messages.
 AJAX is also used to delete the profile of a user.
+AJAX is also used to load more messages on the messages pages.
 
 Javascript
 

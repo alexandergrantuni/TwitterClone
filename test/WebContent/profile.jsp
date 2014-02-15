@@ -8,54 +8,25 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css" /> <!-- stylesheet -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
 <script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
+	 <!-- Required for confirmation box -->
+	  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
 <title>ChitChat - ${profileUser.username}'s Profile</title>
 </head>
 <script type="text/javascript">
-function deleteFollow(username)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("You have unfollowed "+username+".");
-	            location.reload();
-	        }                   
-	    });
-}
-function follow(username)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/following/"+username,
-	    type:'POST',//Sends a POST request which tells the servlet to follow the user with the given username
-	    success: 
-	        function(msg){
-	            alert("You are now following "+username+".");
-	            location.reload();
-	        }                   
-	    });
-}
-function deleteMessage(messageId)
-{
-	$.ajax({
-	    url: "${pageContext.request.contextPath}/messages/"+messageId,
-	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-	    success: 
-	        function(msg){
-	            alert("Your message has been deleted.");
-	            location.reload();
-	        }                   
-	    });
-}
-
-function viewMessage(Id)
-{
-            window.location = "${pageContext.request.contextPath}/messages/"+Id;
-}
+$(function() {
+    $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
+    								//with the page before it is shown in the dialog box. 
+  });
 </script>
 
 <body onload="formatMessages()">
 <jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->
+  <div id="dialog-confirm" title="Are you sure about this?" >
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your message will be permanently deleted.</p>
+</div>
 <div id="profilearea">
     <h1>${profileUser.username}'s Profile</h1>
     <div id="profilepicture">
@@ -94,7 +65,7 @@ function viewMessage(Id)
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>
       <c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">
-      <div class="deleteMessageButton"><button type="submit"onclick="deleteMessage('${pageContext.request.contextPath}','${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
+      <div class="deleteMessageButton"><button type="submit"onclick="showDeleteMessageDialog('${pageContext.request.contextPath}','${individualMessage.messageId}')"><img src="${pageContext.request.contextPath}/img/bin.png" alt="Delete Message" width="21" height="25"></button></div>
       </c:if>
       <div class="timestampArea">Posted by ${individualMessage.owner.username } ${individualMessage.timePostedAgo() }</div>
       <div class="viewIndividually"><u><a href="${pageContext.request.contextPath}/messages/${individualMessage.messageId }">View Individually</a></u></div>

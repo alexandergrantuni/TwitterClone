@@ -16,12 +16,12 @@ list-style-type: none;
 text-align: center;
 }
 
-a:link {color:#550000;}      /* unvisited link */
-a:visited {color:#555555;}  /* visited link */
-a:hover {color:#555555;}  /* mouse over link */
-a:active {color:#555555;}  /* selected link */ 
+a:link {color:#ffffff;}      /* unvisited link */
+a:visited {color:#ffffff;}  /* visited link */
+a:hover {color:#ffffff;}  /* mouse over link */
+a:active {color:#ffffff;}  /* selected link */ 
 
-    #nav-bar ul{position:relative;list-style:none;
+#nav-bar ul{position:relative;list-style:none;
 margin-left:auto;
 margin-right:auto;
 padding:0;
@@ -41,6 +41,25 @@ overflow:hidden;
   -webkit-box-shadow: 0 1px whitesmoke;
   box-shadow: 0 1px whitesmoke;
   }
+#nav-bar a:link
+{
+	color:#550000;
+}
+
+#nav-bar a:visited
+{
+	color:#555555;
+}
+
+#nav-bar a:hover
+{
+	color:#555555;
+}
+
+#nav-bar a:active
+{
+	color:#555555;
+}
 #nav-bar ul li{
     display: inline;
     margin:0 5px;
@@ -741,7 +760,6 @@ textarea
 .message .viewIndividually
 {
 	float: right;
-
 	margin-right:-90px;
 }
 

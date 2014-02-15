@@ -35,7 +35,8 @@ public class MessageServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User)request.getSession().getAttribute("activeUser");
-		if(activeUser == null)
+
+		if(activeUser == null & !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
 		{
 			//User is not logged in
 			response.sendRedirect(request.getContextPath()+"/login.jsp");
@@ -43,6 +44,67 @@ public class MessageServlet extends HttpServlet {
 		}
 		else
 		{
+			//This is how you check whether a request is AJAX or not according to http://stackoverflow.com/questions/14004877/jsp-servlet-how-to-identify-if-the-http-request-came-from-an-ajax-request
+			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))){
+				String requestURI = request.getRequestURI();
+				String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
+				if(argument.equals("all"))
+				{
+					List<Message> messageList = MessageMethods.getAllMessages();
+					int messageCount = Integer.parseInt((request.getParameter("messageCount")));
+
+					int k = 0;
+					List<Message> newMessages = new LinkedList<Message>();
+					int j = 0;
+					for(int i = messageCount; i < messageList.size();i++)
+						{
+						if(j == 10)
+						{
+							break;
+						}
+							if(messageList.get(i) != null)
+							{
+								newMessages.add(messageList.get(i));
+							}
+							j++;
+						}
+					
+					request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+					request.setAttribute("messages", newMessages);
+					request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+					return;
+				}
+				else if(argument.equals("messages"))
+				{
+					List<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
+					int messageCount = Integer.parseInt((request.getParameter("messageCount")));
+
+					int k = 0;
+					List<Message> newMessages = new LinkedList<Message>();
+					int j = 0;
+					for(int i = messageCount; i < messageList.size();i++)
+						{
+						if(j == 10)
+						{
+							break;
+						}
+							if(messageList.get(i) != null)
+							{
+								newMessages.add(messageList.get(i));
+							}
+							j++;
+						}
+					
+					request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+					request.setAttribute("messages", newMessages);
+					request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+					return;
+				}
+				else
+				{
+					return;
+				}
+				}
 			//User is logged in
 			String requestURI = request.getRequestURI();
 			String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
@@ -54,8 +116,22 @@ public class MessageServlet extends HttpServlet {
 			{
 				request.setAttribute("noMessages", "There are no messages here.  Get the ball rolling by posting one yourself!");
 			}
+			List<Message> cutList = new LinkedList<Message>();
+			int k = 0;
+			for(Message m : messageList)
+			{
+				if(k < 10)
+				{
+					cutList.add(m);
+				}
+				else
+				{
+					break;
+				}
+				k++;
+			}
 			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-			request.setAttribute("messages", messageList);
+			request.setAttribute("messages", cutList);
 			request.setAttribute("title", "Messages from Followed Users");
 			request.getRequestDispatcher("/messages.jsp").forward(request, response);
 			return;
@@ -64,8 +140,22 @@ public class MessageServlet extends HttpServlet {
 			{
 				//SHOW ALL MESSAGES
 				List<Message> messageList = MessageMethods.getAllMessages();
+				List<Message> cutList = new LinkedList<Message>();
+				int k = 0;
+				for(Message m : messageList)
+				{
+					if(k < 10)
+					{
+						cutList.add(m);
+					}
+					else
+					{
+						break;
+					}
+					k++;
+				}
 				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-				request.setAttribute("messages", messageList);
+				request.setAttribute("messages", cutList);
 				request.setAttribute("title", "All Messages");
 				request.getRequestDispatcher("/messages.jsp").forward(request, response);
 				return;
@@ -100,6 +190,7 @@ public class MessageServlet extends HttpServlet {
 			}
 		}
 	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

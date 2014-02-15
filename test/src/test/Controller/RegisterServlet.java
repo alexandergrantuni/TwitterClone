@@ -58,6 +58,20 @@ public class RegisterServlet extends HttpServlet {
 		String lastName = request.getParameter("lastName");
 		String bio = "";
 		String profilePicture = "";//TODO SET THIS TO DEFAULT IMG URL
+		//First name can only contain upper and lower case characters
+		if(firstName.matches("^.*[^a-zA-Z ].*$"))
+		{
+			request.setAttribute("errorMessage", "Your first name must contain only letters.");
+			request.getRequestDispatcher("register.jsp").forward(request, response);
+			return;
+		}
+		//Last name can only contain upper and lower case characters
+		if(lastName.matches("^.*[^a-zA-Z ].*$"))
+		{
+			request.setAttribute("errorMessage", "Your last name must contain only letters.");
+			request.getRequestDispatcher("register.jsp").forward(request, response);
+			return;
+		}
 		//Alphanumeric username regex, credit to http://stackoverflow.com/questions/8248277/how-to-determine-if-a-string-has-non-alphanumeric-characters
 		if(username.matches("^.*[^a-zA-Z0-9 ].*$"))
 		{
