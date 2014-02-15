@@ -51,22 +51,26 @@ function messageValidation()
   //  	});
 //    });
 $(document).ready(function(){
+	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
     $(window).scroll(function(){ 
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-    	var messages = document.getElementsByClassName("messageText");
-    	var numMessages = messages.length;
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
+    	var messages = document.getElementsByClassName("message");//get all messages
+    	var numMessages = messages.length;//get the number of messages
+    	var total = "${totalMessages}";//get the total number of messages that existed when the user loaded the page originally
     	if(messages.length < 10)
     		{
     			return;
     		}
     	var lastMessageId = "${messages[9].messageId}";
+    	fetching = true;
     	$.ajax({
     	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-    	    data: {messageCount: numMessages, lastMessage: lastMessageId},
+    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total},
     		    success: 
     		        function(msg){
-    		            $("#broadcastcontainer").append(msg);
-    		            formatMessages();
+    		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
+    		            formatMessages();//add hash tag links etc to messages
+    		            fetching = false;//no longer fetching, allow another fetch to occur
     		        }                  
     	    });
         }
@@ -109,10 +113,10 @@ $(function() {
     </c:if>
     <c:if test="${noMessages == null}">
     <c:if test="${title == 'All Messages' }">
-    Currently displaying all user messages.  Click <a href="${pageContext.request.contextPath}/messages/">here</a> to see the messages of people you're following.
+    Currently displaying all user messages.  Click <a href="${pageContext.request.contextPath}/messages/">here</a> to see the messages of people you're following.  <p>Scroll down to load older messages.</p>
     </c:if>
     <c:if test="${title == 'Messages from Followed Users' }">
-    Currently displaying followed user messages.  Click <a href="${pageContext.request.contextPath}/messages/all">here</a> to see all user messages.
+    Currently displaying followed user messages.  Click <a href="${pageContext.request.contextPath}/messages/all">here</a> to see all user messages. <p>Scroll down to load older messages.</p>
     </c:if>
     </c:if>
     <c:forEach items="${messages}" var="individualMessage">

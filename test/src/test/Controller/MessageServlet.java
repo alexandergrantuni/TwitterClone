@@ -53,13 +53,15 @@ public class MessageServlet extends HttpServlet {
 					LinkedList<Message> messageList = MessageMethods.getAllMessages();
 					int messageCount = Integer.parseInt((request.getParameter("messageCount")));
 					int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
+					int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+					
 					
 					int index = getIndexByMessageId(messageList, lastMessageId);
 					int tens = (messageCount/10)-1;
 					LinkedList<Message> newMessages = new LinkedList<Message>();
 					int j =0;
 					if(messageCount < messageList.size()){
-						for(int i = index+(tens*10)+1; i < messageList.size();i++)
+						for(int i = index+(tens*10)+1; i < totalMessages;i++)
 						{
 							if(j == 10)
 							{
@@ -142,6 +144,7 @@ public class MessageServlet extends HttpServlet {
 			}
 			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 			request.setAttribute("messages", cutList);
+			request.setAttribute("totalMessages", messageList.size());
 			request.setAttribute("title", "Messages from Followed Users");
 			request.getRequestDispatcher("/messages.jsp").forward(request, response);
 			return;
@@ -166,6 +169,7 @@ public class MessageServlet extends HttpServlet {
 				}
 				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("messages", cutList);
+				request.setAttribute("totalMessages", messageList.size());
 				request.setAttribute("title", "All Messages");
 				request.getRequestDispatcher("/messages.jsp").forward(request, response);
 				return;
@@ -180,6 +184,7 @@ public class MessageServlet extends HttpServlet {
 					messageList.add(MessageMethods.getMessageById(Integer.parseInt(argument)));
 					request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 					request.setAttribute("messages", messageList);
+					request.setAttribute("totalMessages", messageList.size());
 					request.setAttribute("title", "Displaying Message "+Integer.parseInt(argument));
 					request.getRequestDispatcher("/messages.jsp").forward(request, response);
 					return;
