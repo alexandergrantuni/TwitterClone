@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +18,7 @@ import test.General.Authentication;
 import test.General.Database;
 import test.General.MessageMethods;
 import test.General.Security;
+import test.General.ServletMethods;
 import test.General.UserMethods;
 import test.Model.Message;
 import test.Model.User;
@@ -52,16 +54,38 @@ public class ProfileServlet extends HttpServlet {
 			//http://stackoverflow.com/questions/14316487/java-getting-a-substring-from-a-string-starting-after-a-particular-character
 			String requestURI = request.getRequestURI();
 			String username = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
+			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+			{
+				//This is an AJAX request, process the AJAX request
+				ServletMethods.processProfileMessagesAJAX(request,response, requestURI, username, activeUser);
+				return;
+			}
 			if(requestURI.equals(request.getContextPath()+"/profile/"))//if the URI simply ends in /profile/ with no username appended
 			{
+				//Handle AJAX request
 				//Display the active user's profile
 				LinkedList<Message> activeUserMessages = MessageMethods.getUserMessages(activeUser.getUsername());
 				if(activeUserMessages.size() == 0)
 				{
 					request.setAttribute("noMessages", "You haven't posted any messages yet!");
 				}
+				List<Message> cutList = new LinkedList<Message>();
+				int k = 0;
+				for(Message m : activeUserMessages)
+				{
+					if(k < 10)
+					{
+						cutList.add(m);
+					}
+					else
+					{
+						break;
+					}
+					k++;
+				}
 				request.setAttribute("profileUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-				request.setAttribute("messages", activeUserMessages);
+				request.setAttribute("messages", cutList);
+				request.setAttribute("totalMessages", activeUserMessages.size());
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 				return;
 			}
@@ -81,15 +105,32 @@ public class ProfileServlet extends HttpServlet {
 				{
 					request.setAttribute("noMessages", profileUser.getUsername() +" hasn't posted any messages yet!");
 				}
+				List<Message> cutList = new LinkedList<Message>();
+				int k = 0;
+				for(Message m : activeUserMessages)
+				{
+					if(k < 10)
+					{
+						cutList.add(m);
+					}
+					else
+					{
+						break;
+					}
+					k++;
+				}
+				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("profileUser", profileUser);
-				request.setAttribute("messages", MessageMethods.getUserMessages(username));
+				request.setAttribute("totalMessages", activeUserMessages.size());
+				request.setAttribute("messages", cutList);
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 				return;
 			}
 			response.sendRedirect(request.getContextPath()+"/404.jsp");
-			}
 			
 		}
+		}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -113,17 +154,26 @@ public class ProfileServlet extends HttpServlet {
 			return;
 		}
 		
-		System.out.println(username);
-		System.out.println(email);
-		System.out.println(newPassword);
-		System.out.println(confirmNewPassword);
+		if(firstName.matches("^.*[^a-zA-Z ].*$"))
+		{
+			request.setAttribute("errorMessage", "Your first name must only contain letters.");
+			request.getRequestDispatcher("editprofile.jsp").forward(request, response);
+			return;
+		}
+		//Last name can only contain upper and lower case characters
+		if(lastName.matches("^.*[^a-zA-Z ].*$"))
+		{
+			request.setAttribute("errorMessage", "Your last name must only contain letters.");
+			request.getRequestDispatcher("editprofile.jsp").forward(request, response);
+			return;
+		}
+	
 		if(!username.equals(activeUser.getUsername()) || !email.equals(activeUser.getEmailAddress()))
 		{
 			request.setAttribute("errorMessage", "You are unable to edit another user's details.");
 			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 			return;
 		}
-		System.out.println("reached this part.1");
 		//If any fields have been left empty..
 		if(lastName.equals("") || firstName.equals("") || email.equals("") || username.equals(""))
 		{
@@ -131,7 +181,6 @@ public class ProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 			return;
 		}
-		System.out.println("reached this part.2");
 		//If the two entered passwords match
 		if(!newPassword.equals(confirmNewPassword))
 		{
@@ -148,14 +197,12 @@ public class ProfileServlet extends HttpServlet {
 			if(UserMethods.updateDetails(username,firstName, lastName, bio, confirmNewPassword))
 			{
             	//Update the current session with the up to date details of the user
-				System.out.println("this worked");
             	request.getSession().setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
                 response.sendRedirect(request.getContextPath()+"/editprofilesuccess.jsp");
                 return;
 			}
 			else
 			{
-				System.out.println("problem");
 	        	request.setAttribute("errorMessage", "Something went wrong.  Try again later.");
 	    		request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 	    		return;
@@ -163,8 +210,7 @@ public class ProfileServlet extends HttpServlet {
 		}
 		else
 		{
-			System.out.println("problem");
-        	request.setAttribute("errorMessage", "Incorrect username and/or password combination.");
+        	request.setAttribute("errorMessage", "You entered your old password incorrectly.");
     		request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
     		return;
 		}

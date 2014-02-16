@@ -21,6 +21,32 @@ $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
     								//with the page before it is shown in the dialog box. 
   });
+$(document).ready(function(){
+	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
+    $(window).scroll(function(){ 
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
+    	var messages = document.getElementsByClassName("message");//get all messages
+    	var numMessages = messages.length;//get the number of messages
+    	var total = "${totalMessages}";//get the total number of messages that existed when the user loaded the page originally
+    	if(messages.length < 10)
+    		{
+    			return;
+    		}
+    	var lastMessageId = "${messages[9].messageId}";
+    	fetching = true;//a new fetch is in progress set fetching to true
+    	$.ajax({
+    	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
+    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total},
+    		    success: 
+    		        function(msg){
+    		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
+    		            formatMessages();//add hash tag links etc to messages
+    		            fetching = false;//no longer fetching, allow another fetch to occur
+    		        }                  
+    	    });
+        }
+    	});
+    });
 </script>
 </head>
 <body onload="formatMessages()">
@@ -37,7 +63,7 @@ $(function() {
 		</c:if>
 		<c:choose>
 			<c:when test="${userList == null}">
-    <c:forEach items="${messageList}" var="individualMessage">
+    <c:forEach items="${messages}" var="individualMessage">
       <p><div class="message">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>

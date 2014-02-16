@@ -2,6 +2,7 @@ package test.Controller;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import test.General.SearchMethods;
+import test.General.ServletMethods;
 import test.General.UserMethods;
 import test.Model.Message;
 import test.Model.User;
@@ -88,13 +90,33 @@ public class SearchServlet extends HttpServlet {
 			}
 			else if(searchSelect.equals("messages"))
 			{
+				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+				{
+					ServletMethods.processSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);
+					return;
+				}
 				LinkedList<Message> messageList = new LinkedList<Message>();
 				messageList = SearchMethods.searchForMessages(searchTerm);
 				if(messageList.size() == 0)
 				{
 					request.setAttribute("errorMessage", "Your search returned no results.");
 				}
-				request.setAttribute("messageList", messageList);
+				List<Message> cutList = new LinkedList<Message>();
+				int k = 0;
+				for(Message m : messageList)
+				{
+					if(k < 10)
+					{
+						cutList.add(m);
+					}
+					else
+					{
+						break;
+					}
+					k++;
+				}
+				request.setAttribute("messages", cutList);
+				request.setAttribute("totalMessages", messageList.size());
 				request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
 				return;
 			}

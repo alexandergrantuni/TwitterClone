@@ -139,7 +139,7 @@
       <p class="submit"><input type="submit" name="editProfileButton" value="Submit"></p>
     </form>
     <c:if test="${errorMessage != null }">
-    <div id="errorMessage"><font color="red">${errorMessage }</font></div>
+    <div id="errorMessage"><font color="red"><center>${errorMessage }</center></font></div>
     </c:if>
     <div id="deleteAccount"><input type="submit" name="deleteAccountButton" onclick="showDialog()" value="Delete Account"></p></div>
 </div>

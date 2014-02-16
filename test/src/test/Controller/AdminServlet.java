@@ -18,13 +18,13 @@ import test.Model.User;
  * Servlet implementation class admin
  */
 @WebServlet({"/admin","/admin/*"})
-public class admin extends HttpServlet {
+public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public admin() {
+    public AdminServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

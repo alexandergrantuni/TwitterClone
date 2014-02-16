@@ -50,6 +50,11 @@ function messageValidation()
    // 	    });
   //  	});
 //    });
+
+$(function() {
+    $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
+    								//with the page before it is shown in the dialog box. 
+  });
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
     $(window).scroll(function(){ 
@@ -76,12 +81,6 @@ $(document).ready(function(){
         }
     	});
     });
-
-$(function() {
-    $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
-    								//with the page before it is shown in the dialog box. 
-  });
-	 
 </script>
 <body onload="formatMessages()">
   <div id="dialog-confirm" title="Are you sure about this?" >

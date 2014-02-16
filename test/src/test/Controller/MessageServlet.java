@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import test.General.MessageMethods;
+import test.General.ServletMethods;
 import test.General.UserMethods;
 import test.Model.Message;
 import test.Model.User;
@@ -48,75 +49,9 @@ public class MessageServlet extends HttpServlet {
 			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))){
 				String requestURI = request.getRequestURI();
 				String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
-				if(argument.equals("all"))
-				{
-					LinkedList<Message> messageList = MessageMethods.getAllMessages();
-					int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-					int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
-					int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
-					
-					
-					int index = getIndexByMessageId(messageList, lastMessageId);
-					int tens = (messageCount/10)-1;
-					LinkedList<Message> newMessages = new LinkedList<Message>();
-					int j =0;
-					if(messageCount < messageList.size()){
-						for(int i = index+(tens*10)+1; i < totalMessages;i++)
-						{
-							if(j == 10)
-							{
-								break;
-							}
-							if(messageList.get(i) != null)
-							{
-								newMessages.add(messageList.get(i));
-							}
-							j++;
-						}
-						
-						request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-						request.setAttribute("messages", newMessages);
-						request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
-						return;
-					}
-					return;
-				}
-				else if(argument.equals("messages"))
-				{
-					LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
-					int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-					int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
-					
-					int index = getIndexByMessageId(messageList, lastMessageId);
-					int tens = (messageCount/10)-1;
-					LinkedList<Message> newMessages = new LinkedList<Message>();
-					int j =0;
-					if(messageCount < messageList.size()){
-						for(int i = index+(tens*10)+1; i < messageList.size();i++)
-						{
-							if(j == 10)
-							{
-								break;
-							}
-							if(messageList.get(i) != null)
-							{
-								newMessages.add(messageList.get(i));
-							}
-							j++;
-						}
-						
-						request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-						request.setAttribute("messages", newMessages);
-						request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
-						return;
-					}
-					return;
-				}
-				else
-				{
-					return;
-				}
-				}
+				ServletMethods.processMessageMessagesAJAX(request, response, requestURI, activeUser, argument);//processes the AJAX request and sends back the old messages
+				return;
+			}
 			//User is logged in
 			String requestURI = request.getRequestURI();
 			String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
@@ -204,20 +139,6 @@ public class MessageServlet extends HttpServlet {
 				}
 			}
 		}
-	}
-	
-	public int getIndexByMessageId(LinkedList<Message> messageList, int messageId)
-	{
-		int k = 0;
-		for(Message m : messageList)
-		{
-			if(m.getMessageId() == messageId)
-			{
-				return k;
-			}
-			k++;
-		}
-		return -1;
 	}
 	
 
