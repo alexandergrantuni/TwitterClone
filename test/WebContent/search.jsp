@@ -24,6 +24,13 @@ function searchFormValidation()
 }
 </script>
 <body>
+<% 
+	//If the user is logged in go to the login page, if not go to the user's messages
+	if(request.getSession().getAttribute("activeUser") == null)
+	{
+		response.sendRedirect("login.jsp");
+	}
+%>
 <div class="container">
   <div class="login">
     <h1>Search ChitChat</h1>

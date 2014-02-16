@@ -21,6 +21,13 @@ $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
     								//with the page before it is shown in the dialog box. 
   });
+$(function() {
+	var total = "${totalMessages}";//get the total number of messages that existed when the user loaded the page originally
+	if(total > 10)
+	{
+		$("#moreResults").html("<center>There are more messages to be displayed.  Scroll down to the bottom to see more.</center>")
+	}
+  });
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
     $(window).scroll(function(){ 
@@ -61,6 +68,7 @@ $(document).ready(function(){
 				<center>${errorMessage}</center>
 			</div>
 		</c:if>
+		<div id="moreResults"></div>
 		<c:choose>
 			<c:when test="${userList == null}">
     <c:forEach items="${messages}" var="individualMessage">

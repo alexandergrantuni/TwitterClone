@@ -31,7 +31,6 @@ $(document).ready(function(){
     		{
     			return;
     		}
-    	alert("called");
     	var lastMessageId = "${messages[9].messageId}";
     	fetching = true;//a new fetch is in progress set fetching to true
     	$.ajax({
