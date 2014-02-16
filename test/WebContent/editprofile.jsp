@@ -60,6 +60,57 @@
 		    $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
 		    								//with the page before it is shown in the dialog box. 
 		  });
+	  function editProfileFormValidation()
+	  {
+			var email=document.forms["editProfileForm"]["email"].value;
+			var password=document.forms["editProfileForm"]["oldPassword"].value;
+			var firstName = document.forms["editProfileForm"]["firstName"].value;
+			var lastName = document.forms["editProfileForm"]["lastName"].value;
+			var newPassword = document.forms["editProfileForm"]["newPassword"].value;
+			var confirmNewPassword = document.forms["editProfileForm"]["confirmNewPassword"].value;
+			var emailRegex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;//found on stackoverflow
+			if ( email == "")
+			{
+				alert("You didn't enter an email address.");
+				return false;
+			}
+			if(email.length < 4 && email != "")
+			{
+				alert("Your email address is too short, check it's valid and try again.");	
+				return false;
+			}
+			if (!emailRegex.test(email))
+			{
+				alert("You entered an invalid email address.");
+				return false;
+			}
+			if(password.length < 8 || password.length > 18 && password != "")
+			{
+				alert("You entered your password incorrectly.");
+				return false;
+			}
+			if(password == "")
+			{
+				alert("You didn't enter a password.");
+				return false;
+			}
+			if(newPassword != confirmNewPassword)
+			{
+				alert("New passwords do not match!");
+				return false;
+			}
+			if(firstName == "")
+			{
+				alert("First name cannot be left blank!");
+				return false;
+			}
+			if(lastName == "")
+			{
+				alert("Last name cannot be left blank!");
+				return false;
+			}
+			return true;
+	  }
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ChitChat - Edit Profile</title>
@@ -75,7 +126,7 @@
 	}
 %>
 <div id="editprofilecontainer"><h1>Edit Profile</h1>
-    <form name="loginForm" method="post" action="profile" onsubmit="return profileFormValidation()">
+    <form name="editProfileForm" method="post" action="profile" onsubmit="return editProfileFormValidation()">
       <p><input type="text" name="username" value="${activeUser.username }" placeholder="Username" readonly></p>
       <p><input type="text" name="email" value="${activeUser.emailAddress }" placeholder="Email Address" readonly></p>
       <p><input type="text" name="firstName" value="${activeUser.firstName }" placeholder="First Name"></p>
@@ -83,12 +134,12 @@
       <p><input type="text" name="bio" value="${activeUser.bio }" placeholder="Bio"></p>
       <p><input type="password" name="oldPassword" value="" placeholder="Old Password"></p>
       <p><input type="password" name="newPassword" value="" placeholder="New Password"></p>
-      <p><input type="password" name="confirmPassword" value="" placeholder="Confirm New Password"></p>
+      <p><input type="password" name="confirmNewPassword" value="" placeholder="Confirm New Password"></p>
 
       <p class="submit"><input type="submit" name="editProfileButton" value="Submit"></p>
     </form>
     <c:if test="${errorMessage != null }">
-    <div id="errorMessage"></div>
+    <div id="errorMessage"><font color="red">${errorMessage }</font></div>
     </c:if>
     <div id="deleteAccount"><input type="submit" name="deleteAccountButton" onclick="showDialog()" value="Delete Account"></p></div>
 </div>

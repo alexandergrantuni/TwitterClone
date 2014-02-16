@@ -116,13 +116,14 @@ public class ProfileServlet extends HttpServlet {
 		System.out.println(username);
 		System.out.println(email);
 		System.out.println(newPassword);
+		System.out.println(confirmNewPassword);
 		if(!username.equals(activeUser.getUsername()) || !email.equals(activeUser.getEmailAddress()))
 		{
 			request.setAttribute("errorMessage", "You are unable to edit another user's details.");
 			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 			return;
 		}
-		
+		System.out.println("reached this part.1");
 		//If any fields have been left empty..
 		if(lastName.equals("") || firstName.equals("") || email.equals("") || username.equals(""))
 		{
@@ -130,59 +131,42 @@ public class ProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 			return;
 		}
-		
+		System.out.println("reached this part.2");
 		//If the two entered passwords match
-		if(newPassword.equals(confirmNewPassword))
+		if(!newPassword.equals(confirmNewPassword))
 		{
 			request.setAttribute("errorMessage", "The passwords you entered did not match.");
 			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 			return;
 		}
-		
+		System.out.println("reached this part.3");
 		//Verify that the username has the correct password
 		if(Authentication.verifyUsernameAndPassword(username, oldPassword))
 		{
-			Connection connection = Database.getConnection();
-    		PreparedStatement query = null;
-    		newPassword = Security.getEncodedSha1Sum(newPassword);
-	        try 
-	        {
-	        		//"SELECT * FROM users WHERE Username = ? AND Password = ?;");
-	                query = (PreparedStatement) connection.prepareStatement("UPDATE users SET FirstName=?, LastName=?, bio=?, Password=? WHERE Username=?");
-	                query.setString(1, username);
-	                query.setString(2, lastName);
-	                query.setString(3, bio);
-	                query.setString(4, newPassword);
-	                query.setString(5, username);
-	                int result = query.executeUpdate();
-	                //if there is a result
-	                if(result == 1)
-	                {
-	                	connection.close();	   
-	                	//Update the current session with the up to date details of the user
-	                	request.getSession().setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-		                response.sendRedirect(request.getContextPath()+"/editprofilesuccess.jsp");
-	        			return;
-	                }
-	                connection.close();
-                	request.setAttribute("errorMessage", "Something went wrong.  Try again later.");
-        			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
-        			return;
-	        }
-	        catch(Exception ex)
-	        {
-	                ex.printStackTrace();
-	                try
-	                {
-	                    query.close();
-	                    connection.close();
-	                }
-	                catch (SQLException sqle)
-	                {
-	                        sqle.printStackTrace();
-	                }
-	                
-	        }
+		//	System.out.println(username + " "+ lastName+ " "+ bio+ " "+ confirmNewPassword);
+		//	System.out.println(UserMethods.updateDetails(username, lastName, bio, confirmNewPassword));
+			if(UserMethods.updateDetails(username,firstName, lastName, bio, confirmNewPassword))
+			{
+            	//Update the current session with the up to date details of the user
+				System.out.println("this worked");
+            	request.getSession().setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+                response.sendRedirect(request.getContextPath()+"/editprofilesuccess.jsp");
+                return;
+			}
+			else
+			{
+				System.out.println("problem");
+	        	request.setAttribute("errorMessage", "Something went wrong.  Try again later.");
+	    		request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
+	    		return;
+			}
+		}
+		else
+		{
+			System.out.println("problem");
+        	request.setAttribute("errorMessage", "Incorrect username and/or password combination.");
+    		request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
+    		return;
 		}
 		
 		

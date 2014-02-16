@@ -284,6 +284,47 @@ public class UserMethods {
 	}
 	}
 	
+	public static boolean updateDetails(String username, String firstName, String lastName, String bio, String newPassword)
+	{
+		Connection connection = Database.getConnection();
+		PreparedStatement query = null;
+		newPassword = Security.getEncodedSha1Sum(newPassword);
+		System.out.println(username + " " + firstName + " " + lastName + " " +bio + " " + newPassword);
+        try 
+        {
+            query = (PreparedStatement) connection.prepareStatement("UPDATE users SET FirstName=?, LastName=?, bio=?, Password=? WHERE Username=?");
+            query.setString(1, firstName);
+            query.setString(2, lastName);
+            query.setString(3, bio);
+            query.setString(4, newPassword);
+            query.setString(5, username);
+            int result = query.executeUpdate();
+            //if there is a result
+            if(result == 1)
+            {
+            	connection.close();	   
+    			return true;
+            }
+            connection.close();
+            return false;
+        }
+        catch(Exception ex)
+        {
+                ex.printStackTrace();
+                try
+                {
+                    query.close();
+                    connection.close();
+                }
+                catch (SQLException sqle)
+                {
+                        sqle.printStackTrace();
+                }
+                
+        }
+        return false;
+	}
+	
 	public static void deleteUser(User u)
 	{
 		Connection connection = Database.getConnection();

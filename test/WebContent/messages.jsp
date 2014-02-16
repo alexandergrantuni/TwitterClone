@@ -62,7 +62,7 @@ $(document).ready(function(){
     			return;
     		}
     	var lastMessageId = "${messages[9].messageId}";
-    	fetching = true;
+    	fetching = true;//a new fetch is in progress set fetching to true
     	$.ajax({
     	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
     	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total},
