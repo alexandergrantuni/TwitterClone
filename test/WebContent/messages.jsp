@@ -35,21 +35,35 @@ function messageValidation()
 }
 
 
-
-//$(document).ready(function(){
-   // $(window).scroll(function(){ 
-    //	var newestMessage = </%= //request.getAttribute("newestMessageId") %>
-    //	$.ajax({
-    //	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-    //	    url: '/test/messages/',
-    //	    data: {newestMessageId: newestMessage},
-    //		    success: 
-    //		        function(msg){
-   // 		            $("#broadcastcontainer").prependTo(msg);
-   // 		        }                  
-   // 	    });
-  //  	});
-//    });
+//This function checks for new messages posted by other users since the page was loaded.
+//These new messages are displayed with "NEW!" just beside the 'Posted by' section
+$(document).ready(function(){
+	var isfetching = false;
+    $(window).scroll(function(){ 
+    	if(!isfetching)
+    	{
+    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    	var total = ${totalMessages} + newMessages.length;
+    	var pathname = window.location.pathname;
+    	isfetching = true;
+    	$.ajax({
+    	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
+    	    url: pathname + '/fetchNew',
+    	    data: {totalMessages: total},
+    		    success: 
+    		        function(html){
+    		            $("#newMessages").prepend(html);
+    		            isfetching = false;
+    		        },
+    	    error:
+    	    	function(html){
+    	    	isfetching = false;
+    	    	}
+    	    });
+    	
+    	}
+    	});
+    });
 
 $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
@@ -57,20 +71,23 @@ $(function() {
   });
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
-    $(window).scroll(function(){ 
+    $(window).scroll(function(){ //called when the user scrolls
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
     	var messages = document.getElementsByClassName("message");//get all messages
+    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    	var newMessageCount = newMessages.length;
     	var numMessages = messages.length;//get the number of messages
-    	var total = "${totalMessages}";//get the total number of messages that existed when the user loaded the page originally
+    	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
     	if(messages.length < 10)
     		{
     			return;
     		}
-    	var lastMessageId = "${messages[9].messageId}";
+    	var lastMessageId = "${messages[9].messageId}";//This is used so that we load messages only after this one because the index of the last message seen can change
+    												   //if a new message is posted by someone else
     	fetching = true;//a new fetch is in progress set fetching to true
     	$.ajax({
     	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total},
+    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total, newMessages: newMessageCount},
     		    success: 
     		        function(msg){
     		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
@@ -118,6 +135,7 @@ $(document).ready(function(){
     Currently displaying followed user messages.  Click <a href="${pageContext.request.contextPath}/messages/all">here</a> to see all user messages. <p>Scroll down to load older messages.</p>
     </c:if>
     </c:if>
+    <div id="newMessages"></div>
     <c:forEach items="${messages}" var="individualMessage">
       <p><div class="message">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>

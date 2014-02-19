@@ -59,15 +59,21 @@ public class ServletMethods {
 			int messageCount = Integer.parseInt((request.getParameter("messageCount")));
 			int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
 			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
-			
-			
+			int newMessageCount = Integer.parseInt(request.getParameter("newMessages"));
+			System.out.println("messageCount = "+messageCount);
+			System.out.println("lastMessage = "+lastMessageId);
+			System.out.println("totalMessages = "+totalMessages);
+			System.out.println("newMessagesCount = "+newMessageCount);
 			int index = getIndexByMessageId(messageList, lastMessageId);
 			int tens = (messageCount/10)-1;
 			LinkedList<Message> newMessages = new LinkedList<Message>();
 			int j =0;
-			if(messageCount < messageList.size()){
-				for(int i = index+(tens*10)+1; i < totalMessages;i++)
+			System.out.println(messageList.size());
+			if(messageCount < totalMessages){
+				for(int i = messageCount; i < totalMessages+newMessageCount;i++)
 				{
+					System.out.println("i = "+i);
+					System.out.println("j="+j);
 					if(j == 10)
 					{
 						break;
@@ -91,13 +97,14 @@ public class ServletMethods {
 			LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
 			int messageCount = Integer.parseInt((request.getParameter("messageCount")));
 			int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
-			
-			int index = getIndexByMessageId(messageList, lastMessageId);
-			int tens = (messageCount/10)-1;
+			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+			int newMessageCount = Integer.parseInt(request.getParameter("newMessages"));
+
 			LinkedList<Message> newMessages = new LinkedList<Message>();
 			int j =0;
-			if(messageCount < messageList.size()){
-				for(int i = index+(tens*10)+1; i < messageList.size();i++)
+			System.out.println(messageList.size());
+			if(messageCount < totalMessages){
+				for(int i = messageCount; i < totalMessages+newMessageCount;i++)
 				{
 					if(j == 10)
 					{
@@ -118,6 +125,47 @@ public class ServletMethods {
 			return;
 		}
 	}
+	
+	//Handles AJAX requests from /messages/*
+		public static void getNewMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String argument) throws ServletException, IOException
+		{
+			if(requestURI.equals("/test/messages/all/fetchNew"))
+			{
+				LinkedList<Message> messageList = MessageMethods.getAllMessages();
+				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+
+				LinkedList<Message> newMessages = new LinkedList<Message>();
+				int j =0;
+				int newCount = messageList.size() - totalMessages;
+				for(int i = 0; i < newCount; i++)
+				{
+					messageList.get(i).setIsNew(true);
+					newMessages.add(messageList.get(i));
+				}
+				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+				request.setAttribute("messages", newMessages);
+				request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+				return;
+			}
+			else if(requestURI.contains("/test/messages/fetchNew"))
+			{
+				LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
+				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+
+				LinkedList<Message> newMessages = new LinkedList<Message>();
+				int j =0;
+				int newCount = messageList.size() - totalMessages;
+				for(int i = 0; i < newCount; i++)
+				{
+					messageList.get(i).setIsNew(true);
+					newMessages.add(messageList.get(i));
+				}
+				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+				request.setAttribute("messages", newMessages);
+				request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+				return;
+			}
+		}
 	public static void processSearchMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String searchTerm) throws ServletException, IOException
 	{
 	LinkedList<Message> messageList = SearchMethods.searchForMessages(searchTerm);

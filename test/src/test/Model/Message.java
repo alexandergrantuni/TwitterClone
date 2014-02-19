@@ -10,6 +10,7 @@ public class Message {
 	private User owner;
 	private int timestamp;
 	private String text;
+	private boolean isNew;//used for displaying new messages using AJAX
 	
 	public int getMessageId()
 	{
@@ -49,6 +50,16 @@ public class Message {
 	public void setText(String newText)
 	{
 		text = newText;
+	}
+	
+	public boolean getIsNew()
+	{
+		return isNew;
+	}
+	
+	public void setIsNew(boolean setNew)
+	{
+		isNew = setNew;
 	}
 	
 	public String timePostedAgo()

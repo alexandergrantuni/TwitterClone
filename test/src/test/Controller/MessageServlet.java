@@ -49,6 +49,12 @@ public class MessageServlet extends HttpServlet {
 			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))){
 				String requestURI = request.getRequestURI();
 				String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
+				System.out.println("requestURI="+requestURI + " argument="+argument);
+				if(argument.equals("fetchNew"))
+				{
+					ServletMethods.getNewMessagesAJAX(request, response, requestURI, activeUser, argument);
+					return;
+				}
 				ServletMethods.processMessageMessagesAJAX(request, response, requestURI, activeUser, argument);//processes the AJAX request and sends back the old messages
 				return;
 			}

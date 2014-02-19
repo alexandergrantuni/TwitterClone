@@ -763,6 +763,82 @@ textarea
 	margin-right:-90px;
 }
 
+.newmessage {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px 20px 20px;
+  width: 570px;
+  color:white;
+}
+
+.newmessage a:link
+{
+	color:#ffffff;
+}
+
+.newmessage a:visited
+{
+	color:#ffffff;
+}
+
+.newmessage a:hover
+{
+	color:#ffffff;
+}
+
+.newmessage a:active
+{
+	color:#ffffff;
+}
+
+.newmessage:before
+{
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+.newmessage .deleteMessageButton
+{
+	float: right;
+	margin-left:25px;
+	margin-bottom:50px;
+	margin-top:-20px;
+}
+
+.newmessage .timestampArea
+{
+	margin-top:10px;
+	margin-bottom:-20px;
+}
+
+.newmessage .newmessageProfilePicture
+{
+	
+}
+
+.newmessage .messageText
+{
+	margin-top:-25px;
+	margin-left:55px;
+	word-wrap:break-word;
+	margin-right:50px;
+}
+
+
+.newmessage .viewIndividually
+{
+	float: right;
+	margin-right:-90px;
+}
+
+
+
 .user {
   position: relative;
   margin: 0 auto;
