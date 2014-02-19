@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <context>
-    <!-- Registers Database with JNDI Naming Service as a pooled DataSource -->
-
+<!-- http://stackoverflow.com/questions/21263341/jdbc-javax-naming-namenotfoundexception -->
 <Resource 
         name="jdbc/chitchat" 
         auth="Container" 

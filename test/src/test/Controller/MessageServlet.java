@@ -37,7 +37,7 @@ public class MessageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User)request.getSession().getAttribute("activeUser");
 
-		if(activeUser == null & !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+		if(activeUser == null)
 		{
 			//User is not logged in
 			response.sendRedirect(request.getContextPath()+"/login.jsp");

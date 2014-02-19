@@ -60,20 +60,16 @@ public class ServletMethods {
 			int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
 			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
 			int newMessageCount = Integer.parseInt(request.getParameter("newMessages"));
-			System.out.println("messageCount = "+messageCount);
-			System.out.println("lastMessage = "+lastMessageId);
-			System.out.println("totalMessages = "+totalMessages);
-			System.out.println("newMessagesCount = "+newMessageCount);
+
 			int index = getIndexByMessageId(messageList, lastMessageId);
 			int tens = (messageCount/10)-1;
 			LinkedList<Message> newMessages = new LinkedList<Message>();
 			int j =0;
-			System.out.println(messageList.size());
+			System.out.println("messageCount = " + messageCount+ "messageList.size() = "+messageList.size());
 			if(messageCount < totalMessages){
-				for(int i = messageCount; i < totalMessages+newMessageCount;i++)
+				for(int i = index+(tens*10)+1; i < totalMessages+newMessageCount;i++)
 				{
-					System.out.println("i = "+i);
-					System.out.println("j="+j);
+					System.out.println(i);
 					if(j == 10)
 					{
 						break;
@@ -100,12 +96,15 @@ public class ServletMethods {
 			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
 			int newMessageCount = Integer.parseInt(request.getParameter("newMessages"));
 
+			int index = getIndexByMessageId(messageList, lastMessageId);
+			int tens = (messageCount/10)-1;
 			LinkedList<Message> newMessages = new LinkedList<Message>();
 			int j =0;
-			System.out.println(messageList.size());
+			System.out.println("messageCount = " + messageCount+ "messageList.size() = "+messageList.size());
 			if(messageCount < totalMessages){
-				for(int i = messageCount; i < totalMessages+newMessageCount;i++)
+				for(int i = index+(tens*10)+1; i < totalMessages+newMessageCount;i++)
 				{
+					System.out.println(i);
 					if(j == 10)
 					{
 						break;
@@ -125,6 +124,7 @@ public class ServletMethods {
 			return;
 		}
 	}
+			
 	
 	//Handles AJAX requests from /messages/*
 		public static void getNewMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String argument) throws ServletException, IOException

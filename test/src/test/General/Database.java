@@ -1,7 +1,6 @@
 package test.General;
 
 import java.sql.*;
-
 import javax.annotation.Resource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
