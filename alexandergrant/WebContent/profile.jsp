@@ -20,22 +20,48 @@ $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
     								//with the page before it is shown in the dialog box. 
   });
+  
+$(document).ready(function(){
+	var isfetching = false;
+    $(window).scroll(function(){ 
+    	if(!isfetching)
+    	{
+    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    	var total = ${totalMessages} + newMessages.length;
+    	isfetching = true;
+    	$.ajax({
+    	    type:'GET',
+    	    data: {totalMessages: total},
+    		    success: 
+    		        function(html){
+    		            $("#newMessages").prepend(html);
+    		            detectAndAddHashTags();
+    		            isfetching = false;
+    		        },
+    	    error:
+    	    	function(html){
+    	    	isfetching = false;
+    	    	}
+    	    });
+    	}
+    	});
+    });
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
-    $(window).scroll(function(){ 
+    $(window).scroll(function(){ //called when the user scrolls
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
     	var messages = document.getElementsByClassName("message");//get all messages
     	var numMessages = messages.length;//get the number of messages
-    	var total = "${totalMessages}";//get the total number of messages that existed when the user loaded the page originally
+    	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
     	if(messages.length < 10)
     		{
     			return;
     		}
-    	var lastMessageId = "${messages[9].messageId}";
+    													  
     	fetching = true;//a new fetch is in progress set fetching to true
     	$.ajax({
-    	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total},
+    	    type:'GET',
+    	    data: {messageCount: numMessages, totalMessages: total},
     		    success: 
     		        function(msg){
     		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
@@ -86,6 +112,7 @@ $(document).ready(function(){
     <c:if test="${noMessages != null }">
     <div id="whiteText"><center>${noMessages}</center></div>
     </c:if>
+    <div id="newMessages"></div>
     <c:forEach items="${messages}" var="individualMessage">
       <p><div class="message">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>

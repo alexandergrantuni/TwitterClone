@@ -74,20 +74,17 @@ $(document).ready(function(){
     $(window).scroll(function(){ //called when the user scrolls
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
     	var messages = document.getElementsByClassName("message");//get all messages
-    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
-    	var newMessageCount = newMessages.length;
     	var numMessages = messages.length;//get the number of messages
     	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
     	if(messages.length < 10)
     		{
     			return;
     		}
-    	var lastMessageId = "${messages[9].messageId}";//This is used so that we load messages only after this one because the index of the last message seen can change
-    												   //if a new message is posted by someone else
+    													  
     	fetching = true;//a new fetch is in progress set fetching to true
     	$.ajax({
-    	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total, newMessages: newMessageCount},
+    	    type:'GET',
+    	    data: {messageCount: numMessages, totalMessages: total},
     		    success: 
     		        function(msg){
     		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page

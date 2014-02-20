@@ -47,6 +47,32 @@ public class ServletMethods {
 		}
 	}
 	
+	public static void processNewProfileMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, String username, User activeUser) throws ServletException, IOException
+	{
+		if(Authentication.usernameRegistered(username) || requestURI.equals(request.getContextPath()+"/profile/"))
+		{
+			System.out.println("fetching new profile messages");
+			if(requestURI.equals(request.getContextPath()+"/profile/"))
+			{
+				username = activeUser.getUsername();
+			}
+			LinkedList<Message> messageList = MessageMethods.getUserMessages(username);
+			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+
+			LinkedList<Message> newMessages = new LinkedList<Message>();
+			int j =0;
+			int newCount = messageList.size() - totalMessages;
+			for(int i = 0; i < newCount; i++)
+			{
+				messageList.get(i).setIsNew(true);
+				newMessages.add(messageList.get(i));
+			}
+			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+			request.setAttribute("messages", newMessages);
+			request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+		}
+	}
+	
 	//Handles AJAX requests from /messages/*
 	public static void processMessageMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String argument) throws ServletException, IOException
 	{
@@ -59,12 +85,10 @@ public class ServletMethods {
 			int newCount = messageList.size() - totalMessages;
 			LinkedList<Message> newMessages = new LinkedList<Message>();
 			int j =0;
-			System.out.println("messageCount = " + messageCount + " totalMessages = " + totalMessages);
 			if(messageCount < totalMessages)
 			{
 				for(int i = (messageCount+newCount); i < totalMessages+newCount;i++)
 				{
-					System.out.println("i = "+ i + " totalMessages+newCount = " + (totalMessages+newCount));
 					if(j == 10)
 					{
 						break;
@@ -85,7 +109,6 @@ public class ServletMethods {
 		{
 			LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
 			int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-			int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
 			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
 			
 			LinkedList<Message> newMessages = new LinkedList<Message>();
@@ -119,7 +142,7 @@ public class ServletMethods {
 	//Handles AJAX requests from /messages/*
 		public static void getNewMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String argument) throws ServletException, IOException
 		{
-			if(requestURI.equals("/test/messages/all/fetchNew"))
+			if(requestURI.equals(request.getContextPath() + "/messages/all/fetchNew"))
 			{
 				LinkedList<Message> messageList = MessageMethods.getAllMessages();
 				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
@@ -137,7 +160,7 @@ public class ServletMethods {
 				request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
 				return;
 			}
-			else if(requestURI.contains("/test/messages/fetchNew"))
+			else if(requestURI.contains(request.getContextPath() +"/messages/fetchNew"))
 			{
 				LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
 				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
@@ -159,7 +182,6 @@ public class ServletMethods {
 	public static void processSearchMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String searchTerm) throws ServletException, IOException
 	{
 		LinkedList<Message> messageList = SearchMethods.searchForMessages(searchTerm);
-		System.out.println("hello");
 		if(request.getParameter("messageCount") == null)
 		{
 			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
@@ -177,7 +199,6 @@ public class ServletMethods {
 			request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
 			return;
 		}
-		System.out.println("hello1");
 		int messageCount = Integer.parseInt((request.getParameter("messageCount")));
 		int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
 

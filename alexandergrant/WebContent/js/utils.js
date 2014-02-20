@@ -1,4 +1,4 @@
-function detectAndAddHashTags()
+function detectAndAddHashTags(context)
 {
     var messages = document.getElementsByClassName("messageText");//Gets all messages by taking the messageText div classes which contain the text for each message
     for (var i = 0; i < messages.length; i++) //Go through each message checking if there are any hashtags
@@ -22,7 +22,7 @@ function detectAndAddHashTags()
     		for(var j = 0; j < hashTagArray.length; j++)
     			{
 
-    					current = current.replace(hashTagArray[j],'<a href="/test/search/messages/'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
+    					current = current.replace(hashTagArray[j],'<a href=alexandergrant/search/messages/'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
     					messages[i].innerHTML = current;
     				
     			}

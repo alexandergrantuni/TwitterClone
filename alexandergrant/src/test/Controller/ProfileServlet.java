@@ -56,6 +56,11 @@ public class ProfileServlet extends HttpServlet {
 			String username = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
 			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
 			{
+				if(request.getParameter("messageCount") == null)
+				{
+					ServletMethods.processNewProfileMessagesAJAX(request, response, requestURI, username, activeUser);
+					return;
+				}
 				//This is an AJAX request, process the AJAX request
 				ServletMethods.processProfileMessagesAJAX(request,response, requestURI, username, activeUser);
 				return;
