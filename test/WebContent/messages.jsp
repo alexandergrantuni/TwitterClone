@@ -53,6 +53,7 @@ $(document).ready(function(){
     		    success: 
     		        function(html){
     		            $("#newMessages").prepend(html);
+    		            detectAndAddHashTags();
     		            isfetching = false;
     		        },
     	    error:

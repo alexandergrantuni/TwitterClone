@@ -19,57 +19,17 @@ public class ServletMethods {
 			{
 				username = activeUser.getUsername();
 			}
-		LinkedList<Message> messageList = MessageMethods.getUserMessages(username);
-		int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-		int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
-		int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
-		
-		
-		int index = getIndexByMessageId(messageList, lastMessageId);
-		int tens = (messageCount/10)-1;
-		LinkedList<Message> newMessages = new LinkedList<Message>();
-		int j =0;
-		if(messageCount < messageList.size()){
-			for(int i = index+(tens*10)+1; i < totalMessages;i++)
-			{
-				if(j == 10)
-				{
-					break;
-				}
-				if(messageList.get(i) != null)
-				{
-					newMessages.add(messageList.get(i));
-				}
-				j++;
-			}
-			
-			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-			request.setAttribute("messages", newMessages);
-			request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
-			return;
-		}
-	}
-}
-	//Handles AJAX requests from /messages/*
-	public static void processMessageMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String argument) throws ServletException, IOException
-	{
-		if(argument.equals("all"))
-		{
-			LinkedList<Message> messageList = MessageMethods.getAllMessages();
+			LinkedList<Message> messageList = MessageMethods.getUserMessages(username);
 			int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-			int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
 			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
-			int newMessageCount = Integer.parseInt(request.getParameter("newMessages"));
-
-			int index = getIndexByMessageId(messageList, lastMessageId);
-			int tens = (messageCount/10)-1;
+	
+			int newCount = messageList.size() - totalMessages;
 			LinkedList<Message> newMessages = new LinkedList<Message>();
 			int j =0;
-			System.out.println("messageCount = " + messageCount+ "messageList.size() = "+messageList.size());
-			if(messageCount < totalMessages){
-				for(int i = index+(tens*10)+1; i < totalMessages+newMessageCount;i++)
+			if(messageCount < totalMessages)
+			{
+				for(int i = (messageCount+newCount); i < totalMessages+newCount;i++)
 				{
-					System.out.println(i);
 					if(j == 10)
 					{
 						break;
@@ -80,12 +40,45 @@ public class ServletMethods {
 					}
 					j++;
 				}
-				
-				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
-				request.setAttribute("messages", newMessages);
-				request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
-				return;
 			}
+			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+			request.setAttribute("messages", newMessages);
+			request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+		}
+	}
+	
+	//Handles AJAX requests from /messages/*
+	public static void processMessageMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String argument) throws ServletException, IOException
+	{
+		if(argument.equals("all"))
+		{
+			LinkedList<Message> messageList = MessageMethods.getAllMessages();
+			int messageCount = Integer.parseInt((request.getParameter("messageCount")));
+			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+
+			int newCount = messageList.size() - totalMessages;
+			LinkedList<Message> newMessages = new LinkedList<Message>();
+			int j =0;
+			System.out.println("messageCount = " + messageCount + " totalMessages = " + totalMessages);
+			if(messageCount < totalMessages)
+			{
+				for(int i = (messageCount+newCount); i < totalMessages+newCount;i++)
+				{
+					System.out.println("i = "+ i + " totalMessages+newCount = " + (totalMessages+newCount));
+					if(j == 10)
+					{
+						break;
+					}
+					if(messageList.get(i) != null)
+					{
+						newMessages.add(messageList.get(i));
+					}
+					j++;
+				}
+			}
+			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+			request.setAttribute("messages", newMessages);
+			request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
 			return;
 		}
 		else if(argument.equals("messages"))
@@ -94,17 +87,14 @@ public class ServletMethods {
 			int messageCount = Integer.parseInt((request.getParameter("messageCount")));
 			int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
 			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
-			int newMessageCount = Integer.parseInt(request.getParameter("newMessages"));
-
-			int index = getIndexByMessageId(messageList, lastMessageId);
-			int tens = (messageCount/10)-1;
+			
 			LinkedList<Message> newMessages = new LinkedList<Message>();
+			int newCount = messageList.size() - totalMessages;
 			int j =0;
-			System.out.println("messageCount = " + messageCount+ "messageList.size() = "+messageList.size());
-			if(messageCount < totalMessages){
-				for(int i = index+(tens*10)+1; i < totalMessages+newMessageCount;i++)
+			if(messageCount < totalMessages)
+			{
+				for(int i = messageCount+newCount; i < totalMessages+newCount;i++)
 				{
-					System.out.println(i);
 					if(j == 10)
 					{
 						break;
@@ -115,6 +105,7 @@ public class ServletMethods {
 					}
 					j++;
 				}
+			}
 				
 				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("messages", newMessages);
@@ -123,7 +114,6 @@ public class ServletMethods {
 			}
 			return;
 		}
-	}
 			
 	
 	//Handles AJAX requests from /messages/*

@@ -29,6 +29,7 @@ public class UserMethods {
             user.setLastName(resultSet.getString("LastName"));
             user.setBio(resultSet.getString("bio"));
             }
+            resultSet.close();
             connection.close();
             return user;
         
@@ -69,6 +70,7 @@ public class UserMethods {
             	user.setBio(resultSet.getString("bio"));
             	user.setIsAdmin(resultSet.getBoolean("IsAdministrator"));
             }
+            resultSet.close();
             connection.close();
             return user;
         
@@ -142,7 +144,9 @@ public class UserMethods {
             user = getUserFromUsername(resultSet.getString("FollowingUserId"));
             followerList.add(user);
             }
+            resultSet.close();
             connection.close();
+            
             return followerList;
         
     }

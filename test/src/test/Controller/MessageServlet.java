@@ -36,7 +36,10 @@ public class MessageServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User)request.getSession().getAttribute("activeUser");
-
+		if("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) && activeUser == null)
+		{
+			return;
+		}
 		if(activeUser == null)
 		{
 			//User is not logged in
@@ -49,7 +52,6 @@ public class MessageServlet extends HttpServlet {
 			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))){
 				String requestURI = request.getRequestURI();
 				String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
-				System.out.println("requestURI="+requestURI + " argument="+argument);
 				if(argument.equals("fetchNew"))
 				{
 					ServletMethods.getNewMessagesAJAX(request, response, requestURI, activeUser, argument);

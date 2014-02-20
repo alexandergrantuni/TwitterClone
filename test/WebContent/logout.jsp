@@ -14,7 +14,7 @@
 <div class="container">
   <div class="login">
     <h1>Logged out</h1>
-    <div id="whiteText">You have been successfully logged out.</div>
+    <div id="whiteText">You have been successfully logged out.  Click <a href="${pageContext.request.contextPath}/login.jsp">here</a> to log in again.</div>
 </div>
 </body>
 </html>

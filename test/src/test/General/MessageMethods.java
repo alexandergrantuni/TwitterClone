@@ -210,6 +210,7 @@ public class MessageMethods {
 	            	msg.setTimestamp(resultSet.getInt("msg.Timestamp"));
 	            	list.add(msg);
 	            }
+	            resultSet.close();
 	            connection.close();
 	            return list;
 	    }

@@ -29,7 +29,6 @@ function detectAndAddHashTags()
 			}
 		//# is a special character sometimes used to link to anchors in webpages so this might be why
     	}
-        
     }
 }
 
@@ -38,36 +37,38 @@ function detectAndAddWebsiteLinks()
     var messages = document.getElementsByClassName("messageText");//Gets all messages by taking the messageText div classes which contain the text for each message
     for (var i = 0; i < messages.length; i++) //Go through each message checking if there are any hashtags
     {
-    	var hashTagRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;//A regular expression for identifying hash tags
+    	var hashTagRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;//A regular expression for identifying hash tags
     	var current = messages[i].innerHTML;//Put the html for this message into a variable
     	//if there is a string portion that matches the regular expression...
     	if(hashTagRegex.test(current))
     	{
-    		var myRe = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+    		var myRe = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     		var myArray;
     		var hashTagArray = new Array();
     		var k = 0;
     		while ((myArray = myRe.exec(current)) !== null)
     		{
-    			alert(myArray[0]);
     		  hashTagArray[k] = myArray[0];
     		  k++;
     		}
+			if(current.indexOf("/search/messages") == -1)
+			{
     		for(var j = 0; j < hashTagArray.length; j++)
     			{
-    				current = current.replace(hashTagArray[j],'<a href="/test/search/messages/'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
-    				messages[i].innerHTML = current;
+
+    					current = current.replace(hashTagArray[j],'<a href="'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
+    					messages[i].innerHTML = current;
+    				
     			}
+			}
 		//# is a special character sometimes used to link to anchors in webpages so this might be why
     	}
-        
     }
 }
 
 
 function formatMessages()
 {
-	//detectAndAddWebsiteLinks();
 	detectAndAddHashTags();
 }
 
@@ -82,7 +83,6 @@ function deleteFollow(context, username)
 	    success: 
 	        function(msg){
 	            alert("You have unfollowed "+username+".");
-	            var messages = document.getElementsByClassName("messageText");
 	            location.reload();
 	        }                   
 	    });
@@ -111,6 +111,7 @@ function deleteMessage(context, messageId)
 	        }                   
 	    });
 }
+
 
 function showDeleteMessageDialog(context, messageId)
 {
