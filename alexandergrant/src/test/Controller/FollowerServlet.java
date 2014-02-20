@@ -85,7 +85,7 @@ public class FollowerServlet extends HttpServlet {
 				{
 				//Do a loop to determine whether the active user is following the users in this other user's follower list
 				//This is done so that the correct follow/unfollow button can be displayed
-				for(User u : UserMethods.getFollowers(activeUser.getUsername()))
+				for(User u : UserMethods.getFollowing(activeUser.getUsername()))
 				{
 					for(User f : followerList)
 					{

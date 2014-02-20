@@ -158,32 +158,34 @@ public class ServletMethods {
 		}
 	public static void processSearchMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String searchTerm) throws ServletException, IOException
 	{
-	LinkedList<Message> messageList = SearchMethods.searchForMessages(searchTerm);
-	int messageCount = Integer.parseInt((request.getParameter("messageCount")));
-	int lastMessageId = Integer.parseInt(request.getParameter("lastMessage"));
-	
-	int index = getIndexByMessageId(messageList, lastMessageId);
-	int tens = (messageCount/10)-1;
-	LinkedList<Message> newMessages = new LinkedList<Message>();
-	int j =0;
-	if(messageCount < messageList.size()){
-		for(int i = index+(tens*10)+1; i < messageList.size();i++)
+		LinkedList<Message> messageList = SearchMethods.searchForMessages(searchTerm);
+		int messageCount = Integer.parseInt((request.getParameter("messageCount")));
+		int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+
+		int newCount = messageList.size() - totalMessages;
+		LinkedList<Message> newMessages = new LinkedList<Message>();
+		int j =0;
+		System.out.println("messageCount = " + messageCount + " totalMessages = " + totalMessages);
+		if(messageCount < totalMessages)
 		{
-			if(j == 10)
+			for(int i = (messageCount+newCount); i < totalMessages+newCount;i++)
 			{
-				break;
+				System.out.println("i = "+ i + " totalMessages+newCount = " + (totalMessages+newCount));
+				if(j == 10)
+				{
+					break;
+				}
+				if(messageList.get(i) != null)
+				{
+					newMessages.add(messageList.get(i));
+				}
+				j++;
 			}
-			if(messageList.get(i) != null)
-			{
-				newMessages.add(messageList.get(i));
-			}
-			j++;
 		}
-		
 		request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 		request.setAttribute("messages", newMessages);
 		request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
-	}
+		return;
 	}
 	public static int getIndexByMessageId(LinkedList<Message> messageList, int messageId)
 	{

@@ -8,42 +8,86 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css" /> <!-- stylesheet -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script><!-- jquery lib -->
 <script src="${pageContext.request.contextPath}/js/utils.js"></script><!-- My utils javascript file with useful functions I've created. -->
-
 	 <!-- Required for confirmation box -->
 	  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.9.1.js"></script>
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ChitChat - Search Results</title>
-<script>
+<title>ChitChat - Messages</title>
+</head>
+<jsp:include page="navigationbar.jsp" /> <!-- add the footer to the bottom of the page -->
+<script type="text/javascript">
+function messageValidation()
+{
+	var message=document.forms["sendMessageForm"]["message"].value;
+	if(message.length == 0)
+	{
+		alert("You didn't enter a message.");
+		return false;
+	}
+	if(message.length > 140)
+	{
+		alert("Your message is too long.  Please enter a message which is less than 140 characters long.")
+		return false;
+	}
+	
+	return true;
+}
+
+
+//This function checks for new messages posted by other users since the page was loaded.
+//These new messages are displayed with "NEW!" just beside the 'Posted by' section
+$(document).ready(function(){
+	var isfetching = false;
+    $(window).scroll(function(){ 
+    	if(!isfetching)
+    	{
+    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    	var total = ${totalMessages} + newMessages.length;
+    	var pathname = window.location.pathname;
+    	isfetching = true;
+    	$.ajax({
+    	    type:'GET',
+    	    url: pathname + '/fetchNew',
+    	    data: {totalMessages: total},
+    		    success: 
+    		        function(html){
+    		            $("#newMessages").prepend(html);
+    		            detectAndAddHashTags();
+    		            isfetching = false;
+    		        },
+    	    error:
+    	    	function(html){
+    	    	isfetching = false;
+    	    	}
+    	    });
+    	}
+    	});
+    });
+
 $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
     								//with the page before it is shown in the dialog box. 
   });
-$(function() {
-	var total = "${totalMessages}";//get the total number of messages that existed when the user loaded the page originally
-	if(total > 10)
-	{
-		$("#moreResults").html("<center>There are more messages to be displayed.  Scroll down to the bottom to see more.</center>")
-	}
-  });
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
-    $(window).scroll(function(){ 
+    $(window).scroll(function(){ //called when the user scrolls
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
     	var messages = document.getElementsByClassName("message");//get all messages
+    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    	var newMessageCount = newMessages.length;
     	var numMessages = messages.length;//get the number of messages
-    	var total = "${totalMessages}";//get the total number of messages that existed when the user loaded the page originally
+    	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
     	if(messages.length < 10)
     		{
     			return;
     		}
-    	var lastMessageId = "${messages[9].messageId}";
+    	var lastMessageId = "${messages[9].messageId}";//This is used so that we load messages only after this one because the index of the last message seen can change
+    												   //if a new message is posted by someone else
     	fetching = true;//a new fetch is in progress set fetching to true
     	$.ajax({
     	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total},
+    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total, newMessages: newMessageCount},
     		    success: 
     		        function(msg){
     		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
@@ -55,22 +99,43 @@ $(document).ready(function(){
     	});
     });
 </script>
-</head>
 <body onload="formatMessages()">
-<jsp:include page="navigationbar.jsp" />
   <div id="dialog-confirm" title="Are you sure about this?" >
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your message will be permanently deleted.</p>
 </div>
-	<div id="broadcastcontainer">
-		<h1>Search Results</h1>
-		<c:if test="${errorMessage != null }">
-			<div id="whiteText">
-				<center>${errorMessage}</center>
-			</div>
-		</c:if>
-		<div id="moreResults"></div>
-		<c:choose>
-			<c:when test="${userList == null}">
+<div id="profilearea">
+    <h1>My Profile</h1>
+    <div id="profilepicture">
+    <img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="100" height="75">
+    </div>
+        <center><font color="#ffffff" size="+1">My Bio</font></center>
+    <div id="bio">
+    <font color="#ffffff">${activeUser.bio }</font>
+    </div>
+  </div>
+ <div id="sendmessagecontainer">
+ <h1>Send Message</h1>
+ <div id="userMessageBox">
+    <form name="sendMessageForm" method="post" action="messages" onsubmit="return messageValidation()">
+      <p> <textarea name="message" rows="3" cols="50" maxlength="140"></textarea></p>
+      <p class="submit"><input type="submit" name="loginButton" value="Send Message"></p>
+    </form>
+</div>
+ </div>
+ <div id="broadcastcontainer">
+    <h1>${title}</h1>
+    <c:if test="${noMessages != null }">
+    <div id="whiteText"><center>${noMessages}</center></div>
+    </c:if>
+    <c:if test="${noMessages == null}">
+    <c:if test="${title == 'All Messages' }">
+    Currently displaying all user messages.  Click <a href="${pageContext.request.contextPath}/messages/">here</a> to see the messages of people you're following.  <p>Scroll down to load older messages.</p>
+    </c:if>
+    <c:if test="${title == 'Messages from Followed Users' }">
+    Currently displaying followed user messages.  Click <a href="${pageContext.request.contextPath}/messages/all">here</a> to see all user messages. <p>Scroll down to load older messages.</p>
+    </c:if>
+    </c:if>
+    <div id="newMessages"></div>
     <c:forEach items="${messages}" var="individualMessage">
       <p><div class="message">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
@@ -87,42 +152,8 @@ $(document).ready(function(){
       </div>
 
 </c:forEach>
-			</c:when>
-			<c:otherwise>
-<c:forEach items="${userList}" var="individualFollowing">
-			<c:if test="${profileUser.username != individualFollowing.username}">
-				<!-- Don't show that the user is following themselves, just show other users -->
-				<p>
-				<div class="user">
-					<div class="userProfilePicture">
-						<img
-							src="${pageContext.request.contextPath}/img/blank-profile-pic.png"
-							alt="Profile picture" width="45" height="30">
-					</div>
-					<div class="usernameArea">
-						<a href="${pageContext.request.contextPath}/profile/${individualFollowing.username}">${individualFollowing.username}</a>
-					</div>
-					<c:if test="${activeUser.username != individualFollowing.username}">
-						<c:choose>
-							<c:when test="${individualFollowing.isActiveUserFollowing == true}">
-								<div class="followButton">
-									<button type="button" onclick="deleteFollow('${pageContext.request.contextPath}','${individualFollowing.username}')">Unfollow</button>
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="followButton">
-									<button type="button" onclick="follow('${pageContext.request.contextPath}','${individualFollowing.username}')">Follow</button>
-								</div>
-							</c:otherwise>
-						</c:choose>
-					</c:if>
-					<div class="bioArea">${individualFollowing.username}'s bio: ${individualFollowing.bio}</div>
-				</div>
-			</c:if>
-		</c:forEach>
-			</c:otherwise>
-		</c:choose>
-	</div>
-	<jsp:include page="footer.jsp" />
+ </div>
+
+<jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
 </body>
 </html>
