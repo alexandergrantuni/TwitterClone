@@ -159,18 +159,35 @@ public class ServletMethods {
 	public static void processSearchMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String searchTerm) throws ServletException, IOException
 	{
 		LinkedList<Message> messageList = SearchMethods.searchForMessages(searchTerm);
+		System.out.println("hello");
+		if(request.getParameter("messageCount") == null)
+		{
+			int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+
+			LinkedList<Message> newMessages = new LinkedList<Message>();
+			int j =0;
+			int newCount = messageList.size() - totalMessages;
+			for(int i = 0; i < newCount; i++)
+			{
+				messageList.get(i).setIsNew(true);
+				newMessages.add(messageList.get(i));
+			}
+			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
+			request.setAttribute("messages", newMessages);
+			request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
+			return;
+		}
+		System.out.println("hello1");
 		int messageCount = Integer.parseInt((request.getParameter("messageCount")));
 		int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
 
 		int newCount = messageList.size() - totalMessages;
 		LinkedList<Message> newMessages = new LinkedList<Message>();
 		int j =0;
-		System.out.println("messageCount = " + messageCount + " totalMessages = " + totalMessages);
 		if(messageCount < totalMessages)
 		{
 			for(int i = (messageCount+newCount); i < totalMessages+newCount;i++)
 			{
-				System.out.println("i = "+ i + " totalMessages+newCount = " + (totalMessages+newCount));
 				if(j == 10)
 				{
 					break;

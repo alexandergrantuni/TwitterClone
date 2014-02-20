@@ -37,17 +37,20 @@ public class SearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			User activeUser = (User)request.getSession().getAttribute("activeUser");
 			String requestURI = request.getRequestURI();
+			System.out.println("in search1");
 			if(activeUser == null)
 			{
 				//You can't search without being logged in, redirect to login screen
 				response.sendRedirect(request.getContextPath()+"/login.jsp");
 				return;
 			}
+			System.out.println("in search2");
 			if(requestURI.equals(request.getContextPath()+"/search/") || requestURI.equals(request.getContextPath()+"/search"))
 			{
 				response.sendRedirect(request.getContextPath()+"/search.jsp");
 				return;
 			}
+			System.out.println("in search3");
 			String[] split = requestURI.split("/");
 			String searchSelect = split[split.length-2];
 			String searchTerm = split[split.length-1];
@@ -65,6 +68,7 @@ public class SearchServlet extends HttpServlet {
 				request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
 				return;
 			}
+			System.out.println("in search4");
 			//User is logged in
 			if(searchSelect.equals("users"))
 			{
@@ -90,8 +94,10 @@ public class SearchServlet extends HttpServlet {
 			}
 			else if(searchSelect.equals("messages"))
 			{
+				System.out.println("in search5");
 				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
 				{
+					System.out.println("in search6");
 					ServletMethods.processSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);
 					return;
 				}

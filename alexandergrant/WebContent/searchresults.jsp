@@ -29,6 +29,33 @@ $(function() {
 	}
   });
   
+//These new messages are displayed with "NEW!" just beside the 'Posted by' section
+$(document).ready(function(){
+	var isfetching = false;
+    $(window).scroll(function(){ 
+    	if(!isfetching)
+    	{
+    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    	var total = ${totalMessages} + newMessages.length;
+    	var pathname = window.location.pathname;
+    	isfetching = true;
+    	$.ajax({
+    	    type:'GET',
+    	    data: {totalMessages: total},
+    		    success: 
+    		        function(html){
+    		            $("#newMessages").prepend(html);
+    		            detectAndAddHashTags();
+    		            isfetching = false;
+    		        },
+    	    error:
+    	    	function(html){
+    	    	isfetching = false;
+    	    	}
+    	    });
+    	}
+    	});
+    });
   
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
@@ -59,6 +86,7 @@ $(document).ready(function(){
         }
     	});
     });
+  
 </script>
 </head>
 <body onload="formatMessages()">
