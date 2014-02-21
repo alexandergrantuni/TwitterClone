@@ -19,12 +19,10 @@ function detectAndAddHashTags(context)
     		}
 			if(current.indexOf("/search/messages") == -1)
 			{
-    		for(var j = 0; j < hashTagArray.length; j++)
+				for(var j = 0; j < hashTagArray.length; j++)
     			{
-
-    					current = current.replace(hashTagArray[j],'<a href=alexandergrant/search/messages/'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
-    					messages[i].innerHTML = current;
-    				
+    				current = current.replace(hashTagArray[j],'<a href=/alexandergrant/search/messages/'+hashTagArray[j].replace("#","")+'>' + hashTagArray[j] + '</a>');
+    				messages[i].innerHTML = current;
     			}
 			}
 		//# is a special character sometimes used to link to anchors in webpages so this might be why
