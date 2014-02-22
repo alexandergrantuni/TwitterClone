@@ -52,8 +52,11 @@ public class MessageServlet extends HttpServlet {
 			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))){
 				String requestURI = request.getRequestURI();
 				String argument = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
-				if(argument.equals("fetchNew"))
+				System.out.println("hello");
+				System.out.println(request.getParameter("messageCount"));
+				if(request.getParameter("messageCount") == null)
 				{
+					System.out.println("hello1");
 					ServletMethods.getNewMessagesAJAX(request, response, requestURI, activeUser, argument);
 					return;
 				}

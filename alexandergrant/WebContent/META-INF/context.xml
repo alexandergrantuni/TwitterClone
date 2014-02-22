@@ -1,30 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<context>
-<!-- http://stackoverflow.com/questions/21263341/jdbc-javax-naming-namenotfoundexception -->
-<Resource 
-        name="jdbc/chitchat" 
-        auth="Container" 
-        type="javax.sql.DataSource" 
-        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-        testWhileIdle="true"
-        testOnBorrow="true"
-        testOnReturn="false"
-        validationQuery="SELECT 1"
-        validationInterval="30000"
-        timeBetweenEvictionRunsMillis="30000"
-        maxActive="100" 
-        minIdle="10" 
-        maxWait="10000" 
-        initialSize="10"
-        removeAbandonedTimeout="300"
-        removeAbandoned="false"
-        logAbandoned="false"
-        minEvictableIdleTimeMillis="30000" 
-        jmxEnabled="true"
-        jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
-        username="alexandergrant" 
-        password="123.ag.pwd"
-        driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://arlia.computing.dundee.ac.uk:3306/alexandergrantdb"/>
-        </context>
+<Context>
+<Resource name="jdbc/chitchat" 
+    type="javax.sql.DataSource"
+    auth="Container" 
+	factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+	driverClassName="com.mysql.jdbc.Driver" 
+	url="jdbc:mysql://localhost:3306/alexandergrantdb"
+	username="root" password="root" 
+    jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+/>
+
+
+</Context>
 

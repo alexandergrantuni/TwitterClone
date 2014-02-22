@@ -42,26 +42,24 @@ $(document).ready(function(){
     $(window).scroll(function(){ 
     	if(!isfetching)
     	{
-    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
-    	var total = ${totalMessages} + newMessages.length;
-    	var pathname = window.location.pathname;
-    	isfetching = true;
-    	$.ajax({
-    	    type:'GET',
-    	    url: pathname + '/fetchNew',
-    	    data: {totalMessages: total},
-    		    success: 
-    		        function(html){
-    		            $("#newMessages").prepend(html);
-    		            detectAndAddHashTags();
-    		            isfetching = false;
-    		        },
-    	    error:
-    	    	function(html){
-    	    	isfetching = false;
-    	    	}
-    	    });
-    	}
+	    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+	    	var total = ${totalMessages} + newMessages.length;
+	    	isfetching = true;
+	    	$.ajax({
+	    	    type:'GET',
+	    	    data: {totalMessages: total},
+	    		    success: 
+	    		        function(html){
+	    		            $("#newMessages").prepend(html);
+	    		            detectAndAddHashTags();
+	    		            isfetching = false;
+	    		        },
+	    	    error:
+	    	    	function(html){
+	    	    	isfetching = false;
+	    	    	}
+	    	    });
+	    	}
     	});
     });
 

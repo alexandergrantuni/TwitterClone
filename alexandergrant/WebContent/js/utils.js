@@ -113,7 +113,6 @@ function deleteMessage(context, messageId)
 
 function showDeleteMessageDialog(context, messageId)
 {
-$(function() {
   $( "#dialog-confirm" ).dialog({
     resizable: false,//I have left this as false since it can look a bit untidy if you resize it smaller than it is
     height:190,
@@ -134,5 +133,4 @@ $(function() {
       //This line makes the 'Cancel' button the default selected button so that the user is less likely to make an irreversible mistake
     }
   });
-});
 }

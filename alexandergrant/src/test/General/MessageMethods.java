@@ -27,7 +27,7 @@ public class MessageMethods {
             int result = query.executeUpdate();      
             if(result ==1)
             {
-            	System.out.println("Message: '"+message+" was posted by "+username);
+            	System.out.println("Message: '"+message+"' was posted by "+username);
             }
             else
             {
@@ -61,9 +61,9 @@ public class MessageMethods {
 	        PreparedStatement query = null;
 	        try 
 	    {
-	            query = (PreparedStatement) connection.prepareStatement("call DeleteMessage(?)");
+	            query = (PreparedStatement) connection.prepareStatement("DELETE FROM message WHERE MessageId=?;");
 	            query.setInt(1, MessageId);
-	            query.executeQuery();  
+	            query.executeUpdate();  
 	            connection.close();
 	            return;
 	    }
@@ -86,7 +86,6 @@ public class MessageMethods {
 	public static boolean createdMessage(User user, int messageId)
 	{
 		 Connection connection = Database.getConnection();
-	        System.out.println(connection);
 	        PreparedStatement query = null;
 	        try 
 	    {

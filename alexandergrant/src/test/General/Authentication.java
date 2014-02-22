@@ -143,18 +143,16 @@ public class Authentication {
     {
         	Date now = new Date();
         	int registerTime = (int)(now.getTime()/1000);
-            query = (PreparedStatement) connection.prepareStatement("INSERT INTO users VALUES(?,?,?,?,?,?,?,?,?,?,?);");
+            query = (PreparedStatement) connection.prepareStatement("INSERT INTO users VALUES(?,?,?,?,?,?,?,?,?);");
             query.setString(1, username);//username
             query.setString(2, emailAddress);//email address
             query.setString(3, hashedPassword);//hashed password
             query.setString(4, firstName);//first name
             query.setString(5, lastName);//last name
             query.setString(6, "I haven't set a bio yet!");//bio
-            query.setInt(7, 1);//Secret question, not yet implemented
-            query.setString(8, "");//Secret question answer, not yet implemented
-            query.setString(9, "img/blank-profile-pic.png");//profile picture path
-            query.setInt(10, 0);//isAdmin
-            query.setInt(11, registerTime);//Register timestamp
+            query.setString(7, "img/blank-profile-pic.png");//profile picture path
+            query.setInt(8, 0);//isAdmin
+            query.setInt(9, registerTime);//Register timestamp
             int result = query.executeUpdate();   
             connection.close();
             return result == 1;
@@ -186,18 +184,16 @@ public class Authentication {
     {
         	Date now = new Date();
         	int registerTime = (int)(now.getTime()/1000);
-            query = (PreparedStatement) connection.prepareStatement("INSERT INTO users VALUES(?,?,?,?,?,?,?,?,?,?,?);");
+            query = (PreparedStatement) connection.prepareStatement("INSERT INTO users VALUES(?,?,?,?,?,?,?,?,?);");
             query.setString(1, username);//username
             query.setString(2, emailAddress);//email address
             query.setString(3, hashedPassword);//hashed password
             query.setString(4, firstName);//first name
             query.setString(5, lastName);//last name
             query.setString(6, "I haven't set a bio yet!");//bio
-            query.setInt(7, 1);//Secret question, not yet implemented
-            query.setString(8, "");//Secret question answer, not yet implemented
-            query.setString(9, "img/blank-profile-pic.png");//profile picture path
-            query.setInt(10, 1);//isAdmin
-            query.setInt(11, registerTime);//Register timestamp
+            query.setString(7, "img/blank-profile-pic.png");//profile picture path
+            query.setInt(8, 1);//isAdmin
+            query.setInt(9, registerTime);//Register timestamp
             int result = query.executeUpdate();   
             connection.close();
             return result == 1;

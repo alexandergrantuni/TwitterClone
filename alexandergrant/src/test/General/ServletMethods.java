@@ -1,6 +1,10 @@
 package test.General;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 import javax.servlet.ServletException;
@@ -137,12 +141,140 @@ public class ServletMethods {
 			}
 			return;
 		}
+
+	public static void createSchema(HttpServletResponse response){
+		Connection conn = Database.getConnection();
+		String sqlcreateSchema="Create database if not exists alexandergrantdb ;";
+		try{
+			java.sql.Statement statement=conn.createStatement();
+			statement.execute(sqlcreateSchema);
+			conn.close();
+		}catch (Exception et){
+			System.out.println("Can not create schema ");
+			try {
+				response.sendError(403);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		createUsers();
+		createMessages();
+		createFollowing();
+		/*
+		try {
+			PreparedStatement query = null;
+			query = conn.prepareStatement("DROP TABLE IF EXISTS `alexandergrantdb.secretquestion`;");
+			query.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		*/
+
+
+	}
+	
+	public static void createFollowing()
+	{
+		Connection conn = Database.getConnection();
+		PreparedStatement query = null;
+		try {
+			query = conn.prepareStatement("DROP TABLE IF EXISTS `following`;");
+
+		query.executeUpdate();
+		PreparedStatement q = null;
+		q = conn.prepareStatement("CREATE TABLE `following` ("
++"`FollowId` int(11) NOT NULL auto_increment,"
++"`UserId` varchar(20) default NULL,"
++"`FollowingUserId` varchar(20) default NULL,"
++"PRIMARY KEY  (`FollowId`),"
++"KEY `UserId` (`UserId`),"
++"KEY `FollowingUserId` (`FollowingUserId`),"
++"CONSTRAINT `FollowingUserId` FOREIGN KEY (`FollowingUserId`) REFERENCES `users` (`Username`),"
++"CONSTRAINT `UserId` FOREIGN KEY (`UserId`) REFERENCES `users` (`Username`)"
++") ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+		q.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void createMessages()
+	{
+		
+		Connection conn = Database.getConnection();
+		try {
+			PreparedStatement query = null;
+			query = conn.prepareStatement("DROP TABLE IF EXISTS `message`;");
+			query.executeUpdate();
+			PreparedStatement query2 = null;
+			query2 = conn.prepareStatement("CREATE TABLE `message` ("
+					  +"`MessageId` int(11) NOT NULL auto_increment,"
+					  +"`Text` varchar(140) default NULL,"
+					  +"`Timestamp` int(11) default NULL,"
+					  +"`Username` varchar(40) default NULL,"
+					  +"PRIMARY KEY  (`MessageId`),"
+					  +"KEY `Username` (`Username`),"
+					  +"CONSTRAINT `Username` FOREIGN KEY (`Username`) REFERENCES `users` (`Username`)"
+					+") ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+			query2.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void createUsers()
+	{
+		Connection conn = Database.getConnection();
+		try {
+			PreparedStatement query2 = null;
+			query2 = conn.prepareStatement("DROP TABLE IF EXISTS `following`;");
+			query2.executeUpdate();
+			PreparedStatement query = null;
+			query = conn.prepareStatement("DROP TABLE IF EXISTS `users`;");
+			query.executeUpdate();
+			PreparedStatement q = null;
+			q = conn.prepareStatement("CREATE TABLE `users` ("
+  +"`Username` varchar(20) NOT NULL default '0',"
+  +"`EmailAddress` varchar(255) NOT NULL default '',"
+  +"`Password` varchar(50) default NULL,"
+  +"`FirstName` varchar(255) default NULL,"
+  +"`LastName` varchar(255) default NULL,"
+  +"`bio` varchar(160) default NULL,"
+  +"`ProfilePicture` varchar(255) default NULL,"
+  +"`IsAdministrator` int(11) default NULL,"
+  +"`AccountCreationTimestamp` int(11) default NULL,"
+  +"PRIMARY KEY  (`Username`,`EmailAddress`)"
+  +") ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+			q.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+	}
+
+
+
 			
 	
 	//Handles AJAX requests from /messages/*
 		public static void getNewMessagesAJAX(HttpServletRequest request, HttpServletResponse response, String requestURI, User activeUser,String argument) throws ServletException, IOException
 		{
-			if(requestURI.equals(request.getContextPath() + "/messages/all/fetchNew"))
+			if(requestURI.equals(request.getContextPath() + "/messages/all"))
 			{
 				LinkedList<Message> messageList = MessageMethods.getAllMessages();
 				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
@@ -160,7 +292,7 @@ public class ServletMethods {
 				request.getRequestDispatcher("/messageSet.jsp").forward(request, response);
 				return;
 			}
-			else if(requestURI.contains(request.getContextPath() +"/messages/fetchNew"))
+			else if(requestURI.contains(request.getContextPath() +"/messages"))
 			{
 				LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
 				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
