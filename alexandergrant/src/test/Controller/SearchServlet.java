@@ -37,7 +37,12 @@ public class SearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			User activeUser = (User)request.getSession().getAttribute("activeUser");
 			String requestURI = request.getRequestURI();
-			if(activeUser == null && !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+			//if there is no active user, do nothing with AJAX
+			if("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) && activeUser == null)
+			{
+				return;
+			}
+			if(activeUser == null)
 			{
 				//You can't search without being logged in, redirect to login screen
 				response.sendRedirect(request.getContextPath()+"/login.jsp");

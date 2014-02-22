@@ -66,6 +66,7 @@
 			var password=document.forms["editProfileForm"]["oldPassword"].value;
 			var firstName = document.forms["editProfileForm"]["firstName"].value;
 			var lastName = document.forms["editProfileForm"]["lastName"].value;
+			var bio = document.forms["editProfileForm"]["bio"].value;
 			var newPassword = document.forms["editProfileForm"]["newPassword"].value;
 			var confirmNewPassword = document.forms["editProfileForm"]["confirmNewPassword"].value;
 			var emailRegex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;//found on stackoverflow
@@ -107,6 +108,11 @@
 			if(lastName == "")
 			{
 				alert("Last name cannot be left blank!");
+				return false;
+			}
+			if(bio.length == 0)
+			{
+				alert("Please enter a bio.")
 				return false;
 			}
 			return true;

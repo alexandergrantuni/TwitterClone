@@ -985,7 +985,18 @@ textarea
 	margin-right:-90px;
 }
 
-
+.login-help {
+  margin: 20px 0;
+  font-size: 11px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px #2a85a1;
+}
+ 
+.login-help a {
+  color: #cce7fa;
+  text-decoration: none;
+}
 
 .user {
   position: relative;

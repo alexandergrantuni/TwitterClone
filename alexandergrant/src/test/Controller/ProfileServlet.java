@@ -43,6 +43,11 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User) request.getSession().getAttribute("activeUser");
+		//if there is no active user, do nothing with AJAX
+		if("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) && activeUser == null)
+		{
+			return;
+		}
 		if(activeUser == null)
 		{
 			//User is not logged in so redirect to login page
@@ -188,6 +193,13 @@ public class ProfileServlet extends HttpServlet {
 		if(!newPassword.equals(confirmNewPassword))
 		{
 			request.setAttribute("errorMessage", "The passwords you entered did not match.");
+			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
+			return;
+		}
+		//If the bio is empty
+		if(bio.length() == 0)
+		{
+			request.setAttribute("errorMessage", "Please enter a bio.");
 			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 			return;
 		}
