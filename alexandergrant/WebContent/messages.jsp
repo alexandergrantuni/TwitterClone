@@ -136,10 +136,8 @@ $(document).ready(function(){
       <c:if test="${activeUser.username != individualMessage.owner.username && activeUser.isAdmin != true}">
       <div class="viewIndividually" style="margin-right:-20px; margin-top:10px;"><u><a href="${pageContext.request.contextPath}/messages/${individualMessage.messageId }">View Individually</a></u></div>
       </c:if>
-      <div class="timestampArea">Posted by <a href="${pageContext.request.contextPath}/profile/${individualMessage.owner.username}">${individualMessage.owner.username }</a> ${individualMessage.timePostedAgo() }</div>
-      
+      <div class="timestampArea">Posted by <a href="${pageContext.request.contextPath}/profile/${individualMessage.owner.username}">${individualMessage.owner.username }</a> ${individualMessage.timePostedAgo() }</div>   
       </div>
-
 </c:forEach>
  </div>
 

@@ -51,8 +51,7 @@ function loginFormValidation()
 		response.sendRedirect("messages");
 	}
 %>
-<div class="container">
-  <div class="login">
+<div class="smallcontainer">
     <h1>ChitChat Login</h1>
     <form name="loginForm" method="post" action="Login" onsubmit="return loginFormValidation()">
       <p><input type="text" name="emailAddress" value="" placeholder="Email Address"></p>
@@ -62,7 +61,6 @@ function loginFormValidation()
     <c:if test="${errorMessage != null }">
     <p><center><font color="#ff0000" >Invalid email address and/or password. </font></center></p>
     </c:if>
-</div>
 </div>
  
   <div class="login-help">

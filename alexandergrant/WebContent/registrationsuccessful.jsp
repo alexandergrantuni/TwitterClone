@@ -11,11 +11,9 @@
 <title>Registration Successful!</title>
 </head>
 <body>
-<div class="container">
-  <div class="login">
+<div class="smallcontainer">
     <h1>Registration Successful!</h1>
     <div id="whiteText">You have successfully registered an account for ChitChat.  Click <a href="${pageContext.request.contextPath}/messages">here</a> to continue.</div>
-</div>
 </div>
 </body>
 </html>

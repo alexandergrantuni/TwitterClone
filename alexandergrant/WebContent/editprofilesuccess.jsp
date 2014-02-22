@@ -17,11 +17,9 @@
 		response.sendRedirect("login.jsp");
 	}
 %>
-<div class="container">
-  <div class="login">
+<div class="smallcontainer">
     <h1>Success!</h1>
     <div id="whiteText">Your details were changed successfully.  Click <a href="${pageContext.request.contextPath}/messages">here</a> to continue.</div>
-</div>
 </div>
 <jsp:include page="footer.jsp" />
 </body>

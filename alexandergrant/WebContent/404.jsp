@@ -14,8 +14,6 @@
     <h1>404 Error</h1>
     <div id="whiteText"> The resource you are looking for does not exist.  If you think this may be incorrect, please contact the webmaster.</div>
  </div>
-
-</div>
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
 </body>
 </html>

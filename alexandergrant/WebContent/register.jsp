@@ -80,8 +80,7 @@ function inputValidation()
 }
 </script>
 <body>
-<div class="container">
-  <div class="login">
+<div class="smallcontainer">
     <h1>ChitChat Registration</h1>
     <form name="registrationForm" method="post" action="Register" onsubmit="return inputValidation()">
       <p><input type="text" name="firstName" value="" placeholder="First Name"></p>
@@ -95,7 +94,6 @@ function inputValidation()
     <font color="red"><center>${errorMessage }</center></font>
     </c:if>
   </div>
-</div>
 </body>
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
 </html>
