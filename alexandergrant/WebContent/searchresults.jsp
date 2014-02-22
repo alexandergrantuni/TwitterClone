@@ -27,75 +27,49 @@ $(function() {
 	setTimeout(fetchNewMessages, 5000);//start fetching
   });
   
-function fetchNewMessages()
-{
-	//This first part gets the newest message's messageId
-    var newMessages = document.getElementsByClassName("newmessage");//get all messages
-    var newestMessage = -1;
-    if(newMessages.length > 0)
-	{
-    	newestMessage = newMessages[0].id;
-	}
-    else
-    {
-    	var messages = document.getElementsByClassName("message");
-    	if(messages.length > 0)
-    	{
-    		newestMessage = messages[0].id;
-    	}
-    }
-    $.ajax({
-    	type:'GET',
-    	data: {newestMessageId: newestMessage},
-    		success: 
-    			function(html){
-    		    $("#newMessages").prepend(html);
-    		    detectAndAddHashTags();
-    		    },
-    });
-    setTimeout(fetchNewMessages, 5000);
-}
-  
+//Fetches older messages, this MUST be repeated in each jsp to support firefox.
+//The fetching variable is used so that only 1 fetch can take place at a time, on firefox if this is not here then multiple requests
+//will be returned and multiple copies of the same data will be displayed
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
-    $(window).scroll(function(){ //called when the user scrolls
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
-    	
-        //This part gets the oldest currently shown message	
-        var messages = document.getElementsByClassName("message");//get all messages
-        var oldestMessage = -1;
-        if(messages.length > 0)
-    	{
-        	oldestMessage = messages[messages.length-1].id;
-    	}
-        else
-        {
-        	var newMessages = document.getElementsByClassName("message");
-        	if(newMessages.length > 0)
-        	{
-        		oldestMessage = newMessages[messages.length-1].id;
-        	}
-        }
-    	var numMessages = messages.length;//get the number of messages
-    	if(numMessages.length < 10)
-    		{
-    			return;//there are no older messages
-    		}									  
-    	fetching = true;//a new fetch is in progress set fetching to true
-    	//This part sends the oldest currently shown message to the server so that more can be fetched
-    	$.ajax({
-    	    type:'GET',
-    	    data: {oldestMessageId: oldestMessage},
-    		    success: 
-    		        function(msg){
-    		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
-    		            formatMessages();//add hash tag links etc to messages
-    		            fetching = false;//no longer fetching, allow another fetch to occur
-    		        }                  
-    	    });
-        }
-    	});
-    });
+  $(window).scroll(function(){ //called when the user scrolls
+  	if($(window).scrollTop() + $(window).height() == $(document).height() & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
+          //This part gets the oldest currently shown message	
+          var messages = document.getElementsByClassName("message");//get all messages
+          var oldestMessage = -1;
+          if(messages.length > 0)
+      	{
+          	oldestMessage = messages[messages.length-1].id;
+      	}
+          else
+          {
+          	var newMessages = document.getElementsByClassName("message");
+          	if(newMessages.length > 0)
+          	{
+          		oldestMessage = newMessages[messages.length-1].id;
+          	}
+          }
+      	var numMessages = messages.length;//get the number of messages
+      	if(numMessages.length < 10)
+      		{
+      			return;//there are no older messages
+      		}									  
+      	fetching = true;//a new fetch is in progress set fetching to true
+      	//This part sends the oldest currently shown message to the server so that more can be fetched
+      	$.ajax({
+      		cache: false,//internet explorer support
+      	    type:'GET',
+      	    data: {oldestMessageId: oldestMessage},
+      		    success: 
+      		        function(msg){
+      		            $("#largecontainer").append(msg);//add the retrieved messages to the page
+      		            formatMessages();//add hash tag links etc to messages
+      		            fetching = false;//no longer fetching, allow another fetch to occur
+      		        }                  
+      	    });
+      }
+  	});
+  });
   
 </script>
 </head>
@@ -104,7 +78,7 @@ $(document).ready(function(){
   <div id="dialog-confirm" title="Are you sure about this?" style="display: none;">
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your message will be permanently deleted.</p>
 </div>
-	<div id="broadcastcontainer">
+	<div id="largecontainer">
 		<h1>Search Results</h1>
 		<c:if test="${errorMessage != null }">
 			<div id="whiteText">
@@ -133,8 +107,8 @@ $(document).ready(function(){
 </c:forEach>
 			</c:when>
 			<c:otherwise>
-<c:forEach items="${userList}" var="individualFollowing">
-			<c:if test="${profileUser.username != individualFollowing.username}">
+<c:forEach items="${userList}" var="individualUser">
+			<c:if test="${profileUser.username != individualUser.username}">
 				<!-- Don't show that the user is following themselves, just show other users -->
 				<p>
 				<div class="user">
@@ -144,23 +118,23 @@ $(document).ready(function(){
 							alt="Profile picture" width="45" height="30">
 					</div>
 					<div class="usernameArea">
-						<a href="${pageContext.request.contextPath}/profile/${individualFollowing.username}">${individualFollowing.username}</a>
+						<a href="${pageContext.request.contextPath}/profile/${individualUser.username}">${individualUser.username}</a>
 					</div>
-					<c:if test="${activeUser.username != individualFollowing.username}">
+					<c:if test="${activeUser.username != individualUser.username}">
 						<c:choose>
-							<c:when test="${individualFollowing.isActiveUserFollowing == true}">
+							<c:when test="${individualUser.isActiveUserFollowing == true}">
 								<div class="followButton">
-									<button type="button" onclick="deleteFollow('${pageContext.request.contextPath}','${individualFollowing.username}')">Unfollow</button>
+									<button type="button" onclick="deleteFollow('${pageContext.request.contextPath}','${individualUser.username}')">Unfollow</button>
 								</div>
 							</c:when>
 							<c:otherwise>
 								<div class="followButton">
-									<button type="button" onclick="follow('${pageContext.request.contextPath}','${individualFollowing.username}')">Follow</button>
+									<button type="button" onclick="follow('${pageContext.request.contextPath}','${individualUser.username}')">Follow</button>
 								</div>
 							</c:otherwise>
 						</c:choose>
 					</c:if>
-					<div class="bioArea">${individualFollowing.username}'s bio: ${individualFollowing.bio}</div>
+					<div class="bioArea">${individualUser.username}'s bio: ${individualUser.bio}</div>
 				</div>
 			</c:if>
 		</c:forEach>

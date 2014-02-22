@@ -342,10 +342,156 @@ text-align: center;
   text-decoration: underline;
 }
 
-.container {
-  margin: 50px auto;
-  width: 640px;
+.searchcontainer {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px 20px 20px;
+  width: 310px;
 }
+
+.searchcontainer:before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+
+.searchcontainer h1 {
+  margin: -20px -20px 21px;
+  line-height: 40px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+  text-shadow: 0 1px white;
+  background: #f3f3f3;
+  border-bottom: 1px solid #cfcfcf;
+  border-radius: 3px 3px 0 0;
+  background-image: -webkit-linear-gradient(top, whiteffd, #eef2f5);
+  background-image: -moz-linear-gradient(top, whiteffd, #eef2f5);
+  background-image: -o-linear-gradient(top, whiteffd, #eef2f5);
+  background-image: linear-gradient(to bottom, whiteffd, #eef2f5);
+  -webkit-box-shadow: 0 1px whitesmoke;
+  box-shadow: 0 1px whitesmoke;
+}
+ 
+.searchcontainer p {
+  margin: 20px 0 0;
+}
+ 
+.searchcontainer p:first-child {
+  margin-top: 0;
+}
+ 
+.searchcontainer input[type=text], .searchcontainer input[type=password] {
+  width: 278px;
+}
+
+.searchcontainer p.submit {
+  text-align: center;
+  display:block;
+}
+ 
+.searchcontainer-help {
+  margin: 20px 0;
+  font-size: 11px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px #2a85a1;
+}
+ 
+.searchcontainer-help a {
+  color: #cce7fa;
+  text-decoration: none;
+}
+ 
+.searchcontainer-help a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+.smallcontainer {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px 20px 20px;
+  width: 310px;
+  margin-top:50px;
+}
+
+.smallcontainer:before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+
+.smallcontainer h1 {
+  margin: -20px -20px 21px;
+  line-height: 40px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+  text-shadow: 0 1px white;
+  background: #f3f3f3;
+  border-bottom: 1px solid #cfcfcf;
+  border-radius: 3px 3px 0 0;
+  background-image: -webkit-linear-gradient(top, whiteffd, #eef2f5);
+  background-image: -moz-linear-gradient(top, whiteffd, #eef2f5);
+  background-image: -o-linear-gradient(top, whiteffd, #eef2f5);
+  background-image: linear-gradient(to bottom, whiteffd, #eef2f5);
+  -webkit-box-shadow: 0 1px whitesmoke;
+  box-shadow: 0 1px whitesmoke;
+}
+ 
+.smallcontainer p {
+  margin: 20px 0 0;
+}
+ 
+.smallcontainer p:first-child {
+  margin-top: 0;
+}
+ 
+.smallcontainer input[type=text], .smallcontainer input[type=password] {
+  width: 278px;
+}
+
+.smallcontainer p.submit {
+  text-align: center;
+  display:block;
+}
+ 
+.smallcontainer-help {
+  margin: 20px 0;
+  font-size: 11px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px #2a85a1;
+}
+ 
+.smallcontainer-help a {
+  color: #cce7fa;
+  text-decoration: none;
+}
+ 
+.smallcontainer-help a:hover {
+  text-decoration: underline;
+}
+
+
+
 
 #adminpanelcontainer {
 	margin-top:100px;
@@ -521,7 +667,7 @@ text-align: center;
   text-decoration: underline;
 }
 
-#broadcastcontainer {
+#largecontainer {
 	margin-top:100px;
   position: relative;
   margin: 0 auto;
@@ -530,7 +676,7 @@ text-align: center;
   color:white;
 }
 
-#broadcastcontainer h1 {
+#largecontainer h1 {
   margin: -20px -20px 21px;
   line-height: 40px;
   font-size: 15px;
@@ -549,7 +695,7 @@ text-align: center;
   box-shadow: 0 1px whitesmoke;
 }
 
-#broadcastcontainer:before {
+#largecontainer:before {
   content: '';
   position: absolute;
   top: -8px;
@@ -561,29 +707,29 @@ text-align: center;
   border-radius: 4px;
 }
  
-#broadcastcontainer p {
+#largecontainer p {
   margin: 20px 0 0;
 }
  
-#broadcastcontainer p:first-child {
+#largecontainer p:first-child {
   margin-top: 0;
 }
  
-#broadcastcontainer input[type=text], .broadcast input[type=password] {
+#largecontainer input[type=text], .broadcast input[type=password] {
   width: 278px;
 }
 
 
-#broadcastcontainer h1 {
+#largecontainer h1 {
 text-align: center;	
 }
 
-#broadcastcontainer p.submit {
+#largecontainer p.submit {
   text-align: center;
   display:block;
 }
  
-#broadcastcontainer-help {
+#largecontainer-help {
   margin: 20px 0;
   font-size: 11px;
   color: white;
@@ -591,14 +737,16 @@ text-align: center;
   text-shadow: 0 1px #2a85a1;
 }
  
-#broadcastcontainer-help a {
+#largecontainer-help a {
   color: #cce7fa;
   text-decoration: none;
 }
  
-#broadcastcontainer-help a:hover {
+#largecontainer-help a:hover {
   text-decoration: underline;
 }
+
+
 
 #sendmessagecontainer {
   position: relative;
@@ -910,6 +1058,7 @@ textarea
   margin: 0 auto;
   padding: 20px 20px 20px;
   width: 310px;
+  margin-top:50px;
 }
 
 .login:before {

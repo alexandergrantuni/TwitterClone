@@ -2,7 +2,6 @@
     pageEncoding="ISO-8859-1"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<body>
     <c:forEach items="${messages}" var="individualMessage">
     <!-- Used for display new messages with AJAX -->
     <c:if test="${individualMessage.isNew == true }">
@@ -35,5 +34,4 @@
       </div>
       </c:if>
 </c:forEach>
-</body>
 </html>

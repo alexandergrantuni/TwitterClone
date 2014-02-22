@@ -56,8 +56,7 @@ public class RegisterServlet extends HttpServlet {
 		String hashedPassword = test.General.Security.getEncodedSha1Sum(request.getParameter("userPassword"));
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
-		String bio = "";
-		String profilePicture = "";//TODO SET THIS TO DEFAULT IMG URL
+
 		//First name can only contain upper and lower case characters
 		if(firstName.matches("^.*[^a-zA-Z ].*$"))
 		{
@@ -79,8 +78,11 @@ public class RegisterServlet extends HttpServlet {
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 			return;
 		}
+		String EMAIL_PATTERN = 
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		//Again, I didn't write this regular expression. Credit to: http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
-		if(!emailAddress.matches("[a-zA-Z0-9_.]*@[a-zA-Z]*.[a-zA-Z]*"))
+		if(!emailAddress.matches(EMAIL_PATTERN))
 		{
 			request.setAttribute("errorMessage", "Invalid email address.");
 			request.getRequestDispatcher("register.jsp").forward(request, response);

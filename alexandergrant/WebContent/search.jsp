@@ -31,8 +31,7 @@ function searchFormValidation()
 		response.sendRedirect("login.jsp");
 	}
 %>
-<div class="container">
-  <div class="login">
+<div class="searchcontainer">
     <h1>Search ChitChat</h1>
     <form name="searchForm" method="post" action="search" onsubmit="return searchFormValidation()">
       <p><input type="text" name="searchTerm" value="" placeholder="Search term"></p>
@@ -42,8 +41,6 @@ function searchFormValidation()
 </select></p>
       <p class="submit"><input type="submit" name="searchButton" value="Search"></p>
     </form>
-
-</div>
 </div>
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
 </body>

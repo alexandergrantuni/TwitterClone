@@ -90,7 +90,7 @@ public class SearchServlet extends HttpServlet {
 			}
 			else if(searchSelect.equals("messages"))
 			{
-				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) && activeUser != null)
 				{
 					if(request.getParameter("oldestMessageId") == null)
 					{
@@ -110,7 +110,6 @@ public class SearchServlet extends HttpServlet {
 				int k = 0;
 				for(Message m : messageList)
 				{
-					System.out.println(m.getMessageId());
 					if(k < 10)
 					{
 						cutList.add(m);

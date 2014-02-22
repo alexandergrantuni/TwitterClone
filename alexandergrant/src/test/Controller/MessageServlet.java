@@ -87,7 +87,6 @@ public class MessageServlet extends HttpServlet {
 			}
 			request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 			request.setAttribute("messages", cutList);
-			request.setAttribute("totalMessages", messageList.size());
 			request.setAttribute("title", "Messages from Followed Users");
 			request.getRequestDispatcher("/messages.jsp").forward(request, response);
 			return;
@@ -112,7 +111,6 @@ public class MessageServlet extends HttpServlet {
 				}
 				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("messages", cutList);
-				request.setAttribute("totalMessages", messageList.size());
 				request.setAttribute("title", "All Messages");
 				request.getRequestDispatcher("/messages.jsp").forward(request, response);
 				return;
@@ -127,7 +125,6 @@ public class MessageServlet extends HttpServlet {
 					messageList.add(MessageMethods.getMessageById(Integer.parseInt(argument)));
 					request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 					request.setAttribute("messages", messageList);
-					request.setAttribute("totalMessages", messageList.size());
 					request.setAttribute("title", "Displaying Message "+Integer.parseInt(argument));
 					request.getRequestDispatcher("/messages.jsp").forward(request, response);
 					return;

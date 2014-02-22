@@ -109,6 +109,37 @@ function deleteMessage(context, messageId)
 	        }                   
 	    });
 }
+//checks for new messages every 5 seconds and adds them to the page if they exist
+//This is useful because the user does not have to refresh the page to see new messages
+function fetchNewMessages()
+{
+	//This first part gets the newest message's messageId
+    var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    var newestMessage = -1;
+    if(newMessages.length > 0)
+	{
+    	newestMessage = newMessages[0].id;
+	}
+    else
+    {
+    	var messages = document.getElementsByClassName("message");
+    	if(messages.length > 0)
+    	{
+    		newestMessage = messages[0].id;
+    	}
+    }
+    $.ajax({
+    	type:'GET',
+    	cache: false,
+    	data: {newestMessageId: newestMessage},
+    		success: 
+    			function(html){
+    		    $("#newMessages").prepend(html);
+    		    detectAndAddHashTags();
+    		    },
+    });
+    setTimeout(fetchNewMessages, 5000);
+}
 
 
 function showDeleteMessageDialog(context, messageId)

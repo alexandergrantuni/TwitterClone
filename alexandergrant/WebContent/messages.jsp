@@ -34,80 +34,51 @@ function messageValidation()
 	return true;
 }
 
-
-//This function checks for new messages posted by other users since the page was loaded.
-//These new messages are displayed with "NEW!" just beside the 'Posted by' section
-function fetchNewMessages()
-{
-	//This first part gets the newest message's messageId
-    var newMessages = document.getElementsByClassName("newmessage");//get all messages
-    var newestMessage = -1;
-    if(newMessages.length > 0)
-	{
-    	newestMessage = newMessages[0].id;
-	}
-    else
-    {
-    	var messages = document.getElementsByClassName("message");
-    	if(messages.length > 0)
-    	{
-    		newestMessage = messages[0].id;
-    	}
-    }
-    $.ajax({
-    	type:'GET',
-    	data: {newestMessageId: newestMessage},
-    		success: 
-    			function(html){
-    		    $("#newMessages").prepend(html);
-    		    detectAndAddHashTags();
-    		    },
-    });
-    setTimeout(fetchNewMessages, 5000);
-}
-
 $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
     								//with the page before it is shown in the dialog box.
     setTimeout(fetchNewMessages, 5000);//fetch new messages every 5 seconds
   });
+//Fetches older messages, this MUST be repeated in each jsp to support firefox.
+//The fetching variable is used so that only 1 fetch can take place at a time, on firefox if this is not here then multiple requests
+//will be returned and multiple copies of the same data will be displayed
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
     $(window).scroll(function(){ //called when the user scrolls
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
-    	
-        //This part gets the oldest currently shown message	
-        var messages = document.getElementsByClassName("message");//get all messages
-        var oldestMessage = -1;
-        if(messages.length > 0)
-    	{
-        	oldestMessage = messages[messages.length-1].id;
-    	}
-        else
-        {
-        	var newMessages = document.getElementsByClassName("message");
-        	if(newMessages.length > 0)
+    	if($(window).scrollTop() + $(window).height() == $(document).height() & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
+            //This part gets the oldest currently shown message	
+            var messages = document.getElementsByClassName("message");//get all messages
+            var oldestMessage = -1;
+            if(messages.length > 0)
         	{
-        		oldestMessage = newMessages[messages.length-1].id;
+            	oldestMessage = messages[messages.length-1].id;
         	}
-        }
-    	var numMessages = messages.length;//get the number of messages
-    	if(numMessages.length < 10)
-    		{
-    			return;//there are no older messages
-    		}									  
-    	fetching = true;//a new fetch is in progress set fetching to true
-    	//This part sends the oldest currently shown message to the server so that more can be fetched
-    	$.ajax({
-    	    type:'GET',
-    	    data: {oldestMessageId: oldestMessage},
-    		    success: 
-    		        function(msg){
-    		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
-    		            formatMessages();//add hash tag links etc to messages
-    		            fetching = false;//no longer fetching, allow another fetch to occur
-    		        }                  
-    	    });
+            else
+            {
+            	var newMessages = document.getElementsByClassName("message");
+            	if(newMessages.length > 0)
+            	{
+            		oldestMessage = newMessages[messages.length-1].id;
+            	}
+            }
+        	var numMessages = messages.length;//get the number of messages
+        	if(numMessages.length < 10)
+        		{
+        			return;//there are no older messages
+        		}									  
+        	fetching = true;//a new fetch is in progress set fetching to true
+        	//This part sends the oldest currently shown message to the server so that more can be fetched
+        	$.ajax({
+        		cache: false,//internet explorer support
+        	    type:'GET',
+        	    data: {oldestMessageId: oldestMessage},
+        		    success: 
+        		        function(msg){
+        		            $("#largecontainer").append(msg);//add the retrieved messages to the page
+        		            formatMessages();//add hash tag links etc to messages
+        		            fetching = false;//no longer fetching, allow another fetch to occur
+        		        }                  
+        	    });
         }
     	});
     });
@@ -140,7 +111,7 @@ $(document).ready(function(){
     </form>
 </div>
  </div>
- <div id="broadcastcontainer">
+ <div id="largecontainer">
     <h1>${title}</h1>
     <c:if test="${noMessages != null }">
     <div id="whiteText"><center>${noMessages}</center></div>

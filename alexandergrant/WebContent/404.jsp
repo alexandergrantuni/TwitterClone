@@ -10,7 +10,7 @@
 </head>
 
 <body>
- <div id="broadcastcontainer">
+ <div id="largecontainer">
     <h1>404 Error</h1>
     <div id="whiteText"> The resource you are looking for does not exist.  If you think this may be incorrect, please contact the webmaster.</div>
  </div>
