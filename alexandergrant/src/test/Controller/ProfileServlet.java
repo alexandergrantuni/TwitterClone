@@ -56,7 +56,7 @@ public class ProfileServlet extends HttpServlet {
 			String username = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
 			if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
 			{
-				if(request.getParameter("messageCount") == null)
+				if(request.getParameter("oldestMessageId") == null)
 				{
 					ServletMethods.processNewProfileMessagesAJAX(request, response, requestURI, username, activeUser);
 					return;

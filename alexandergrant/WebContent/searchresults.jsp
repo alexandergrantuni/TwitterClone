@@ -17,19 +17,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ChitChat - Search Results</title>
 <script>
+
 $(function() {
-    setTimeout(fetchNewMessages, 5000);//fetch new messages every 5 seconds
-  });
-$(function() {
-	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
+	var total = document.getElementsByClassName("message").length;//get all messages
 	if(total > 10)
 	{
 		$("#moreResults").html("<center>There are more messages to be displayed.  Scroll down to the bottom to see more.</center>")
 	}
+	setTimeout(fetchNewMessages, 5000);//start fetching
   });
   
-//This function checks for new messages posted by other users since the page was loaded.
-//These new messages are displayed with "NEW!" just beside the 'Posted by' section
 function fetchNewMessages()
 {
 	//This first part gets the newest message's messageId
@@ -47,7 +44,6 @@ function fetchNewMessages()
     		newestMessage = messages[0].id;
     	}
     }
-    isfetching = true;
     $.ajax({
     	type:'GET',
     	data: {newestMessageId: newestMessage},
@@ -55,12 +51,7 @@ function fetchNewMessages()
     			function(html){
     		    $("#newMessages").prepend(html);
     		    detectAndAddHashTags();
-    		    isfetching = false;
     		    },
-    	    error:
-    	    function(html){
-    	    isfetching = false;
-    	 }
     });
     setTimeout(fetchNewMessages, 5000);
 }
@@ -69,21 +60,32 @@ $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
     $(window).scroll(function(){ //called when the user scrolls
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
-    	var messages = document.getElementsByClassName("message");//get all messages
-    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
-    	var newMessageCount = newMessages.length;
+    	
+        //This part gets the oldest currently shown message	
+        var messages = document.getElementsByClassName("message");//get all messages
+        var oldestMessage = -1;
+        if(messages.length > 0)
+    	{
+        	oldestMessage = messages[messages.length-1].id;
+    	}
+        else
+        {
+        	var newMessages = document.getElementsByClassName("message");
+        	if(newMessages.length > 0)
+        	{
+        		oldestMessage = newMessages[messages.length-1].id;
+        	}
+        }
     	var numMessages = messages.length;//get the number of messages
-    	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
-    	if(messages.length < 10)
+    	if(numMessages.length < 10)
     		{
-    			return;
-    		}
-    	var lastMessageId = "${messages[9].messageId}";//This is used so that we load messages only after this one because the index of the last message seen can change
-    												   //if a new message is posted by someone else
+    			return;//there are no older messages
+    		}									  
     	fetching = true;//a new fetch is in progress set fetching to true
+    	//This part sends the oldest currently shown message to the server so that more can be fetched
     	$.ajax({
-    	    type:'GET',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
-    	    data: {messageCount: numMessages, lastMessage: lastMessageId, totalMessages: total, newMessages: newMessageCount},
+    	    type:'GET',
+    	    data: {oldestMessageId: oldestMessage},
     		    success: 
     		        function(msg){
     		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page

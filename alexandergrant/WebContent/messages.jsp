@@ -54,7 +54,6 @@ function fetchNewMessages()
     		newestMessage = messages[0].id;
     	}
     }
-    isfetching = true;
     $.ajax({
     	type:'GET',
     	data: {newestMessageId: newestMessage},
@@ -62,12 +61,7 @@ function fetchNewMessages()
     			function(html){
     		    $("#newMessages").prepend(html);
     		    detectAndAddHashTags();
-    		    isfetching = false;
     		    },
-    	    error:
-    	    function(html){
-    	    isfetching = false;
-    	 }
     });
     setTimeout(fetchNewMessages, 5000);
 }
@@ -81,18 +75,32 @@ $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
     $(window).scroll(function(){ //called when the user scrolls
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
-    	var messages = document.getElementsByClassName("message");//get all messages
+    	
+        //This part gets the oldest currently shown message	
+        var messages = document.getElementsByClassName("message");//get all messages
+        var oldestMessage = -1;
+        if(messages.length > 0)
+    	{
+        	oldestMessage = messages[messages.length-1].id;
+    	}
+        else
+        {
+        	var newMessages = document.getElementsByClassName("message");
+        	if(newMessages.length > 0)
+        	{
+        		oldestMessage = newMessages[messages.length-1].id;
+        	}
+        }
     	var numMessages = messages.length;//get the number of messages
-    	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
-    	if(messages.length < 10)
+    	if(numMessages.length < 10)
     		{
-    			return;
-    		}
-    													  
+    			return;//there are no older messages
+    		}									  
     	fetching = true;//a new fetch is in progress set fetching to true
+    	//This part sends the oldest currently shown message to the server so that more can be fetched
     	$.ajax({
     	    type:'GET',
-    	    data: {messageCount: numMessages, totalMessages: total},
+    	    data: {oldestMessageId: oldestMessage},
     		    success: 
     		        function(msg){
     		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page

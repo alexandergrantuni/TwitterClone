@@ -37,7 +37,7 @@ public class SearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			User activeUser = (User)request.getSession().getAttribute("activeUser");
 			String requestURI = request.getRequestURI();
-			if(activeUser == null)
+			if(activeUser == null && !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
 			{
 				//You can't search without being logged in, redirect to login screen
 				response.sendRedirect(request.getContextPath()+"/login.jsp");
@@ -92,7 +92,12 @@ public class SearchServlet extends HttpServlet {
 			{
 				if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
 				{
-					ServletMethods.processSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);
+					if(request.getParameter("oldestMessageId") == null)
+					{
+						ServletMethods.processNewSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);//retrieve new search messages
+						return;
+					}
+					ServletMethods.processOldSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);//processes the AJAX request and sends back the old messages
 					return;
 				}
 				LinkedList<Message> messageList = new LinkedList<Message>();
@@ -105,6 +110,7 @@ public class SearchServlet extends HttpServlet {
 				int k = 0;
 				for(Message m : messageList)
 				{
+					System.out.println(m.getMessageId());
 					if(k < 10)
 					{
 						cutList.add(m);
@@ -116,7 +122,6 @@ public class SearchServlet extends HttpServlet {
 					k++;
 				}
 				request.setAttribute("messages", cutList);
-				request.setAttribute("totalMessages", messageList.size());
 				request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
 				return;
 			}
