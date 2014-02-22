@@ -94,6 +94,11 @@ $(document).ready(function(){
     	});
     });
 </script>
+<% if(request.getSession().getAttribute("activeUser") == null)
+	{
+		response.sendRedirect("Login");
+	}
+%>
 <body onload="formatMessages()">
   <div id="dialog-confirm" title="Are you sure about this?" >
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your message will be permanently deleted.</p>
