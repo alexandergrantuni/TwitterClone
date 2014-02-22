@@ -44,7 +44,7 @@
     <p class="followButtons"><a href="${pageContext.request.contextPath}/followers/${profileUser.username }"><input type="submit" name="followerButton" onclick="" value="Followers"></a><a href="${pageContext.request.contextPath}/following/${profileUser.username }"><input type="submit" name="followingButton" onclick="" value="Following"></a></p>
 </div>
 
-	<div id="broadcastcontainer">
+	<div id="largecontainer">
 		<h1>${profileUser.username} is following</h1>
 		<c:if test="${notFollowing != null }">
 			<div id="whiteText">

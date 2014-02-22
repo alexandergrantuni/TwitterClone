@@ -103,7 +103,7 @@ $(document).ready(function(){
     	    data: {oldestMessageId: oldestMessage},
     		    success: 
     		        function(msg){
-    		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
+    		            $("#largecontainer").append(msg);//add the retrieved messages to the page
     		            formatMessages();//add hash tag links etc to messages
     		            fetching = false;//no longer fetching, allow another fetch to occur
     		        }                  
@@ -140,7 +140,7 @@ $(document).ready(function(){
     </form>
 </div>
  </div>
- <div id="broadcastcontainer">
+ <div id="largecontainer">
     <h1>${title}</h1>
     <c:if test="${noMessages != null }">
     <div id="whiteText"><center>${noMessages}</center></div>

@@ -87,7 +87,7 @@ $(document).ready(function(){
     	    data: {oldestMessageId: oldestMessage},
     		    success: 
     		        function(msg){
-    		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
+    		            $("#largecontainer").append(msg);//add the retrieved messages to the page
     		            formatMessages();//add hash tag links etc to messages
     		            fetching = false;//no longer fetching, allow another fetch to occur
     		        }                  
@@ -130,7 +130,7 @@ $(document).ready(function(){
 	<p class="editProfile"><a href="${pageContext.request.contextPath}/editprofile.jsp"><input type="submit" name="editProfileButton" onclick="" value="Edit Profile"></a></p>
 	</c:if>
 </div>
-<div id="broadcastcontainer">
+<div id="largecontainer">
     <h1>${profileUser.username }'s Messages</h1>
     <c:if test="${noMessages != null }">
     <div id="whiteText"><center>${noMessages}</center></div>

@@ -90,7 +90,6 @@ public class ProfileServlet extends HttpServlet {
 				}
 				request.setAttribute("profileUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("messages", cutList);
-				request.setAttribute("totalMessages", activeUserMessages.size());
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 				return;
 			}
@@ -126,7 +125,6 @@ public class ProfileServlet extends HttpServlet {
 				}
 				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("profileUser", profileUser);
-				request.setAttribute("totalMessages", activeUserMessages.size());
 				request.setAttribute("messages", cutList);
 				request.getRequestDispatcher("/profile.jsp").forward(request, response);
 				return;
@@ -193,12 +191,9 @@ public class ProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 			return;
 		}
-		System.out.println("reached this part.3");
 		//Verify that the username has the correct password
 		if(Authentication.verifyUsernameAndPassword(username, oldPassword))
 		{
-		//	System.out.println(username + " "+ lastName+ " "+ bio+ " "+ confirmNewPassword);
-		//	System.out.println(UserMethods.updateDetails(username, lastName, bio, confirmNewPassword));
 			if(UserMethods.updateDetails(username,firstName, lastName, bio, confirmNewPassword))
 			{
             	//Update the current session with the up to date details of the user

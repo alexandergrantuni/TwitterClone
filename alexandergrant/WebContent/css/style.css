@@ -521,7 +521,7 @@ text-align: center;
   text-decoration: underline;
 }
 
-#broadcastcontainer {
+#largecontainer {
 	margin-top:100px;
   position: relative;
   margin: 0 auto;
@@ -530,7 +530,7 @@ text-align: center;
   color:white;
 }
 
-#broadcastcontainer h1 {
+#largecontainer h1 {
   margin: -20px -20px 21px;
   line-height: 40px;
   font-size: 15px;
@@ -549,7 +549,7 @@ text-align: center;
   box-shadow: 0 1px whitesmoke;
 }
 
-#broadcastcontainer:before {
+#largecontainer:before {
   content: '';
   position: absolute;
   top: -8px;
@@ -561,29 +561,29 @@ text-align: center;
   border-radius: 4px;
 }
  
-#broadcastcontainer p {
+#largecontainer p {
   margin: 20px 0 0;
 }
  
-#broadcastcontainer p:first-child {
+#largecontainer p:first-child {
   margin-top: 0;
 }
  
-#broadcastcontainer input[type=text], .broadcast input[type=password] {
+#largecontainer input[type=text], .broadcast input[type=password] {
   width: 278px;
 }
 
 
-#broadcastcontainer h1 {
+#largecontainer h1 {
 text-align: center;	
 }
 
-#broadcastcontainer p.submit {
+#largecontainer p.submit {
   text-align: center;
   display:block;
 }
  
-#broadcastcontainer-help {
+#largecontainer-help {
   margin: 20px 0;
   font-size: 11px;
   color: white;
@@ -591,14 +591,16 @@ text-align: center;
   text-shadow: 0 1px #2a85a1;
 }
  
-#broadcastcontainer-help a {
+#largecontainer-help a {
   color: #cce7fa;
   text-decoration: none;
 }
  
-#broadcastcontainer-help a:hover {
+#largecontainer-help a:hover {
   text-decoration: underline;
 }
+
+
 
 #sendmessagecontainer {
   position: relative;

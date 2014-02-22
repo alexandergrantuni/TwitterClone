@@ -88,7 +88,7 @@ $(document).ready(function(){
     	    data: {oldestMessageId: oldestMessage},
     		    success: 
     		        function(msg){
-    		            $("#broadcastcontainer").append(msg);//add the retrieved messages to the page
+    		            $("#largecontainer").append(msg);//add the retrieved messages to the page
     		            formatMessages();//add hash tag links etc to messages
     		            fetching = false;//no longer fetching, allow another fetch to occur
     		        }                  
@@ -104,7 +104,7 @@ $(document).ready(function(){
   <div id="dialog-confirm" title="Are you sure about this?" style="display: none;">
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your message will be permanently deleted.</p>
 </div>
-	<div id="broadcastcontainer">
+	<div id="largecontainer">
 		<h1>Search Results</h1>
 		<c:if test="${errorMessage != null }">
 			<div id="whiteText">
