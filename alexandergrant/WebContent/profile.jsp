@@ -23,7 +23,7 @@ $(function() {
   
 $(document).ready(function(){
 	var isfetching = false;
-    $(window).scroll(function(){ 
+    $(window).mousemove(function(){ 
     	if(!isfetching)
     	{
     	var newMessages = document.getElementsByClassName("newmessage");//get all messages

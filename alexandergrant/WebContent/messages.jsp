@@ -39,7 +39,7 @@ function messageValidation()
 //These new messages are displayed with "NEW!" just beside the 'Posted by' section
 $(document).ready(function(){
 	var isfetching = false;
-    $(window).scroll(function(){ 
+    $(window).mousemove(function(){ 
     	if(!isfetching)
     	{
 	    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
