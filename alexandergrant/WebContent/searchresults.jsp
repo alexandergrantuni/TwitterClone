@@ -20,6 +20,7 @@
 $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
     								//with the page before it is shown in the dialog box. 
+    setTimeout(fetchNewMessages, 5000);//fetch new messages every 5 seconds
   });
 $(function() {
 	var total = ${totalMessages};//get the total number of messages that existed when the user loaded the page originally
@@ -29,32 +30,29 @@ $(function() {
 	}
   });
   
+//This function checks for new messages posted by other users since the page was loaded.
 //These new messages are displayed with "NEW!" just beside the 'Posted by' section
-$(document).ready(function(){
-	var isfetching = false;
-    $(window).mousemove(function(){ 
-    	if(!isfetching)
-    	{
-    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
-    	var total = ${totalMessages} + newMessages.length;
-    	isfetching = true;
-    	$.ajax({
-    	    type:'GET',
-    	    data: {totalMessages: total},
-    		    success: 
-    		        function(html){
-    		            $("#newMessages").prepend(html);
-    		            detectAndAddHashTags();
-    		            isfetching = false;
-    		        },
-    	    error:
-    	    	function(html){
-    	    	isfetching = false;
-    	    	}
-    	    });
-    	}
-    	});
-    });
+function fetchNewMessages()
+{
+  var newMessages = document.getElementsByClassName("newmessage");//get all messages
+  var total = ${totalMessages} + newMessages.length;
+  isfetching = true;
+  $.ajax({
+  	type:'GET',
+  	data: {totalMessages: total},
+  		success: 
+  			function(html){
+  		    $("#newMessages").prepend(html);
+  		    detectAndAddHashTags();
+  		    isfetching = false;
+  		    },
+  	    error:
+  	    function(html){
+  	    isfetching = false;
+  	 }
+  });
+  setTimeout(fetchNewMessages, 5000);
+}
   
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)

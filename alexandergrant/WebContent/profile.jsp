@@ -19,33 +19,29 @@
 $(function() {
     $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
     								//with the page before it is shown in the dialog box. 
+	setTimeout(fetchNewMessages, 5000);//fetch new messages every 5 seconds
   });
-  
-$(document).ready(function(){
-	var isfetching = false;
-    $(window).mousemove(function(){ 
-    	if(!isfetching)
-    	{
-    	var newMessages = document.getElementsByClassName("newmessage");//get all messages
-    	var total = ${totalMessages} + newMessages.length;
-    	isfetching = true;
-    	$.ajax({
-    	    type:'GET',
-    	    data: {totalMessages: total},
-    		    success: 
-    		        function(html){
-    		            $("#newMessages").prepend(html);
-    		            detectAndAddHashTags();
-    		            isfetching = false;
-    		        },
+function fetchNewMessages()
+{
+    var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    var total = ${totalMessages} + newMessages.length;
+    isfetching = true;
+    $.ajax({
+    	type:'GET',
+    	data: {totalMessages: total},
+    		success: 
+    			function(html){
+    		    $("#newMessages").prepend(html);
+    		    detectAndAddHashTags();
+    		    isfetching = false;
+    		    },
     	    error:
-    	    	function(html){
-    	    	isfetching = false;
-    	    	}
-    	    });
-    	}
-    	});
+    	    function(html){
+    	    isfetching = false;
+    	 }
     });
+    setTimeout(fetchNewMessages, 5000);
+}
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
     $(window).scroll(function(){ //called when the user scrolls
