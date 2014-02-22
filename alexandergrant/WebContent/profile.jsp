@@ -26,7 +26,6 @@ $(function() {
 //will be returned and multiple copies of the same data will be displayed
 $(document).ready(function(){
 	var fetching = false;//stops multiple requests from taking place (particularly on firefox)
-<<<<<<< HEAD
   $(window).scroll(function(){ //called when the user scrolls
   	if($(window).scrollTop() + $(window).height() == $(document).height() & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
           //This part gets the oldest currently shown message	
@@ -65,46 +64,6 @@ $(document).ready(function(){
       }
   	});
   });
-=======
-    $(window).scroll(function(){ //called when the user scrolls
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
-    	
-        //This part gets the oldest currently shown message	
-        var messages = document.getElementsByClassName("message");//get all messages
-        var oldestMessage = -1;
-        if(messages.length > 0)
-    	{
-        	oldestMessage = messages[messages.length-1].id;
-    	}
-        else
-        {
-        	var newMessages = document.getElementsByClassName("message");
-        	if(newMessages.length > 0)
-        	{
-        		oldestMessage = newMessages[messages.length-1].id;
-        	}
-        }
-    	var numMessages = messages.length;//get the number of messages
-    	if(numMessages.length < 10)
-    		{
-    			return;//there are no older messages
-    		}									  
-    	fetching = true;//a new fetch is in progress set fetching to true
-    	//This part sends the oldest currently shown message to the server so that more can be fetched
-    	$.ajax({
-    	    type:'GET',
-    	    data: {oldestMessageId: oldestMessage},
-    		    success: 
-    		        function(msg){
-    		            $("#largecontainer").append(msg);//add the retrieved messages to the page
-    		            formatMessages();//add hash tag links etc to messages
-    		            fetching = false;//no longer fetching, allow another fetch to occur
-    		        }                  
-    	    });
-        }
-    	});
-    });
->>>>>>> 61ffe151fba07b426b28626843e356a1ca0a8bcc
 </script>
 
 <body onload="formatMessages()">
