@@ -18,8 +18,6 @@
 <title>ChitChat - Search Results</title>
 <script>
 $(function() {
-    $( "#dialog-confirm" ).toggle();//This is important. This line toggles the visibility of the 'dialog-confirm' div directly below so that it does not interefere
-    								//with the page before it is shown in the dialog box. 
     setTimeout(fetchNewMessages, 5000);//fetch new messages every 5 seconds
   });
 $(function() {
@@ -88,7 +86,7 @@ $(document).ready(function(){
 </head>
 <body onload="formatMessages()">
 <jsp:include page="navigationbar.jsp" />
-  <div id="dialog-confirm" title="Are you sure about this?" >
+  <div id="dialog-confirm" title="Are you sure about this?" style="display: none;">
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your message will be permanently deleted.</p>
 </div>
 	<div id="broadcastcontainer">

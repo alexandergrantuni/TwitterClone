@@ -126,10 +126,10 @@ $(document).ready(function(){
     </c:if>
     <c:if test="${noMessages == null}">
     <c:if test="${title == 'All Messages' }">
-    Currently displaying all user messages.  Click <a href="${pageContext.request.contextPath}/messages/">here</a> to see the messages of people you're following.  <p>Scroll down to load older messages.</p>
+    Currently displaying all user messages.  Click <a href="${pageContext.request.contextPath}/messages/">here</a> to see the messages of people you're following.<p>Scroll to the bottom to load older messages.</p>  Don't refresh! New messages will load automatically.</p>
     </c:if>
     <c:if test="${title == 'Messages from Followed Users' }">
-    Currently displaying followed user messages.  Click <a href="${pageContext.request.contextPath}/messages/all">here</a> to see all user messages. <p>Scroll down to load older messages.</p>
+    Currently displaying followed user messages.  Click <a href="${pageContext.request.contextPath}/messages/all">here</a> to see all user messages. <p>Scroll to the bottom to load older messages.</p>  Don't refresh! New messages will load automatically.</p>
     </c:if>
     </c:if>
     <div id="newMessages"></div>
