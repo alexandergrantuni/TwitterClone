@@ -57,7 +57,6 @@ public class MessageMethods {
 	public static void deleteMessage(int MessageId)
 	{
 		 Connection connection = Database.getConnection();
-	        System.out.println(connection);
 	        PreparedStatement query = null;
 	        try 
 	    {

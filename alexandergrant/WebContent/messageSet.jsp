@@ -19,7 +19,7 @@
     <c:forEach items="${messages}" var="individualMessage">
     <!-- Used for display new messages with AJAX -->
     <c:if test="${individualMessage.isNew == true }">
-      <p><div class="newmessage">
+      <p><div class="newmessage" id="${individualMessage.messageId }">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>
       <c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">
@@ -34,7 +34,7 @@
 	</c:if>
 	<!-- Used for loading old messages with AJAX -->
 	<c:if test="${individualMessage.isNew != true}">
-      <p><div class="message">
+      <p><div class="message" id="${individualMessage.messageId }">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>
       <c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">

@@ -32,24 +32,37 @@ $(function() {
 //These new messages are displayed with "NEW!" just beside the 'Posted by' section
 function fetchNewMessages()
 {
-  var newMessages = document.getElementsByClassName("newmessage");//get all messages
-  var total = ${totalMessages} + newMessages.length;
-  isfetching = true;
-  $.ajax({
-  	type:'GET',
-  	data: {totalMessages: total},
-  		success: 
-  			function(html){
-  		    $("#newMessages").prepend(html);
-  		    detectAndAddHashTags();
-  		    isfetching = false;
-  		    },
-  	    error:
-  	    function(html){
-  	    isfetching = false;
-  	 }
-  });
-  setTimeout(fetchNewMessages, 5000);
+	//This first part gets the newest message's messageId
+    var newMessages = document.getElementsByClassName("newmessage");//get all messages
+    var newestMessage = -1;
+    if(newMessages.length > 0)
+	{
+    	newestMessage = newMessages[0].id;
+	}
+    else
+    {
+    	var messages = document.getElementsByClassName("message");
+    	if(messages.length > 0)
+    	{
+    		newestMessage = messages[0].id;
+    	}
+    }
+    isfetching = true;
+    $.ajax({
+    	type:'GET',
+    	data: {newestMessageId: newestMessage},
+    		success: 
+    			function(html){
+    		    $("#newMessages").prepend(html);
+    		    detectAndAddHashTags();
+    		    isfetching = false;
+    		    },
+    	    error:
+    	    function(html){
+    	    isfetching = false;
+    	 }
+    });
+    setTimeout(fetchNewMessages, 5000);
 }
   
 $(document).ready(function(){
@@ -101,7 +114,7 @@ $(document).ready(function(){
 			<c:when test="${userList == null}">
 			<div id="newMessages"></div>
     <c:forEach items="${messages}" var="individualMessage">
-      <p><div class="message">
+      <p><div class="message" id="${individualMessage.messageId }">
       <div class="messageProfilePicture"><img src="${pageContext.request.contextPath}/img/blank-profile-pic.png" alt="Profile picture" width="45" height="30"></div>
       <div class="messageText">${individualMessage.text }</div>
       <c:if test="${activeUser.username == individualMessage.owner.username || activeUser.isAdmin == true}">

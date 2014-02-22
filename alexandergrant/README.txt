@@ -5,8 +5,7 @@ Most javascript IN utils.js
 - Following/unfollowing friends
 - Deleting messages.
 - AJAX is also used to delete the profile of a user.
-- AJAX is used to load more old messages when the user scrolls down to the bottom of the page.
-- AJAX fetches new messages that other users have posted since the page was originally loaded every 5 seconds and adds them to the page so the user doesn't need to refresh to see new messages.
+- AJAX is used to load more old messages and to add new messages that other users have posted since the page was originally loaded.
 
 ---- Javascript ----
 
@@ -16,7 +15,7 @@ Most javascript IN utils.js
 
 - Javascript is also used for form validation.
 
----- RESTful Interface ----
+---- REST Interface ----
 
 -- Types of Account --
 
@@ -76,6 +75,6 @@ POST - /Register/ - registers a new user so long as some requirements are met su
 
 ---- Security ----
 
-- Prepared statements.
+- Stored procedures and prepared statements.
 - All passwords are encrypted using secure hash algorithm 1.
-- Server-side and client-side validation for all user input.
+- Server-side and client-side validation for all user commands

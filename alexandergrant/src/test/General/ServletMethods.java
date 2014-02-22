@@ -277,15 +277,17 @@ public class ServletMethods {
 			if(requestURI.equals(request.getContextPath() + "/messages/all"))
 			{
 				LinkedList<Message> messageList = MessageMethods.getAllMessages();
-				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+				int newestMessageId = Integer.parseInt(request.getParameter("newestMessageId"));
 
 				LinkedList<Message> newMessages = new LinkedList<Message>();
-				int j =0;
-				int newCount = messageList.size() - totalMessages;
-				for(int i = 0; i < newCount; i++)
+				for(int i = 0; i < messageList.size(); i++)
 				{
-					messageList.get(i).setIsNew(true);
-					newMessages.add(messageList.get(i));
+					System.out.println("messageList.get(i).getMessageId() = "+messageList.get(i).getMessageId()+ "newestMessageId = "+newestMessageId);
+					if(messageList.get(i).getMessageId() > newestMessageId)
+					{
+						messageList.get(i).setIsNew(true);
+						newMessages.add(messageList.get(i));
+					}
 				}
 				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("messages", newMessages);
@@ -295,15 +297,16 @@ public class ServletMethods {
 			else if(requestURI.contains(request.getContextPath() +"/messages"))
 			{
 				LinkedList<Message> messageList = MessageMethods.getFollowingMessages(activeUser.getUsername());
-				int totalMessages = Integer.parseInt(request.getParameter("totalMessages"));
+				int newestMessageId = Integer.parseInt(request.getParameter("newestMessageId"));
 
 				LinkedList<Message> newMessages = new LinkedList<Message>();
-				int j =0;
-				int newCount = messageList.size() - totalMessages;
-				for(int i = 0; i < newCount; i++)
+				for(int i = 0; i < messageList.size(); i++)
 				{
-					messageList.get(i).setIsNew(true);
-					newMessages.add(messageList.get(i));
+					if(messageList.get(i).getMessageId() > newestMessageId)
+					{
+						messageList.get(i).setIsNew(true);
+						newMessages.add(messageList.get(i));
+					}
 				}
 				request.setAttribute("activeUser", UserMethods.getUserFromUsername(activeUser.getUsername()));
 				request.setAttribute("messages", newMessages);
