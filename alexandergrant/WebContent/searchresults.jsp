@@ -56,17 +56,41 @@ $(document).ready(function(){
       		}									  
       	fetching = true;//a new fetch is in progress set fetching to true
       	//This part sends the oldest currently shown message to the server so that more can be fetched
-      	$.ajax({
-      		cache: false,//internet explorer support
-      	    type:'GET',
-      	    data: {oldestMessageId: oldestMessage},
-      		    success: 
-      		        function(msg){
-      		            $("#largecontainer").append(msg);//add the retrieved messages to the page
-      		            formatMessages();//add hash tag links etc to messages
-      		            fetching = false;//no longer fetching, allow another fetch to occur
-      		        }                  
-      	    });
+      	
+      	var search = "${searchTerm}";//get search term from POST search
+      	var select = "${searchSelect}";//get search select from POST search
+  		
+      	if(search)
+      	{
+      		//if the POST search was used
+          	$.ajax({
+          		cache: false,//internet explorer support
+          	    type:'GET',
+          	    data: {oldestMessageId: oldestMessage, searchTerm: search, searchSelect: select},
+          		    success: 
+          		        function(msg){
+          		            $("#largecontainer").append(msg);//add the retrieved messages to the page
+          		            formatMessages();//add hash tag links etc to messages
+          		            fetching = false;//no longer fetching, allow another fetch to occur
+          		        }                  
+          	    });
+          	return;
+      	}
+      	else
+      	{
+      		//if the RESTful GET search was used (hash tags)
+          	$.ajax({
+          		cache: false,//internet explorer support
+          	    type:'GET',
+          	    data: {oldestMessageId: oldestMessage},
+          		    success: 
+          		        function(msg){
+          		            $("#largecontainer").append(msg);//add the retrieved messages to the page
+          		            formatMessages();//add hash tag links etc to messages
+          		            fetching = false;//no longer fetching, allow another fetch to occur
+          		        }                  
+          	    });
+      	}
       }
   	});
   });

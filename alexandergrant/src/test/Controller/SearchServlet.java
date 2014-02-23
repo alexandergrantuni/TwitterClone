@@ -54,22 +54,32 @@ public class SearchServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath()+"/search.jsp");
 				return;
 			}
-			String[] split = requestURI.split("/");
-			String searchSelect = split[split.length-2];
-			String searchTerm = split[split.length-1];
-			searchTerm = searchTerm.replace("%20", " ");
-			if(split.length < 5 & !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+			String searchTerm = "";
+			String searchSelect = "";
+			if(request.getParameter("searchTerm") != null) //if post was used
 			{
-				request.setAttribute("errorMessage", "You need to enter a search term.");
-				request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
-				return;
+				searchTerm = request.getParameter("searchTerm");
+				searchSelect = request.getParameter("searchSelect");
 			}
-		
-			if(split.length > 5 & !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+			else//if the get search was used i.e /search/users/X or /search/messages/X
 			{
-				request.setAttribute("errorMessage", "You are trying to perform an invalid search.");
-				request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
-				return;
+				String[] split = requestURI.split("/");
+				searchSelect = split[split.length-2];
+				searchTerm = split[split.length-1];
+				searchTerm = searchTerm.replace("%20", " ");
+				if(split.length < 5 & !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+				{
+					request.setAttribute("errorMessage", "You need to enter a search term.");
+					request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
+					return;
+				}
+			
+				if(split.length > 5 & !"XMLHttpRequest".equals(request.getHeader("X-Requested-With")))
+				{
+					request.setAttribute("errorMessage", "You are trying to perform an invalid search.");
+					request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
+					return;
+				}
 			}
 			//User is logged in
 			if(searchSelect.equals("users"))//if users are being searched for, this won't be used in hash tags but implemented anyway
@@ -169,6 +179,8 @@ public class SearchServlet extends HttpServlet {
 				}
 			}
 			request.setAttribute("userList",userList);
+			request.setAttribute("searchTerm", searchTerm);
+			request.setAttribute("searchSelect", searchSelect);
 			request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
 			return;
 		}
@@ -195,6 +207,8 @@ public class SearchServlet extends HttpServlet {
 				k++;
 			}
 			request.setAttribute("messages", cutList);
+			request.setAttribute("searchTerm", searchTerm);
+			request.setAttribute("searchSelect", searchSelect);
 			request.getRequestDispatcher("/searchresults.jsp").forward(request, response);
 			return;
 		}
