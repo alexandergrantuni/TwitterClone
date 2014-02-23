@@ -53,17 +53,14 @@ public class FollowerServlet extends HttpServlet {
 				{
 					request.setAttribute("noFollowers", "You don't appear to have any followers!");
 				}
-				else
+				//Sets whether users that are following the active user are being followed by the active user
+				for(User u : UserMethods.getFollowing(activeUser.getUsername()))
 				{
-					//Sets whether users that are following the active user are being followed by the active user
-					for(User u : UserMethods.getFollowing(activeUser.getUsername()))
+					for(User f : followerList)
 					{
-						for(User f : followerList)
+						if(u.getUsername().equals(f.getUsername()))
 						{
-							if(u.getUsername().equals(f.getUsername()))
-							{
-								f.setIsActiveUserFollowing(true);
-							}
+							f.setIsActiveUserFollowing(true);
 						}
 					}
 				}
@@ -81,8 +78,6 @@ public class FollowerServlet extends HttpServlet {
 				{
 					request.setAttribute("noFollowers", "This user doesn't appear to have any followers!");
 				}
-				else
-				{
 				//Do a loop to determine whether the active user is following the users in this other user's follower list
 				//This is done so that the correct follow/unfollow button can be displayed
 				for(User u : UserMethods.getFollowing(activeUser.getUsername()))
@@ -98,7 +93,6 @@ public class FollowerServlet extends HttpServlet {
 					{
 						profileUser.setIsActiveUserFollowing(true);
 					}
-				}
 				}
 				request.setAttribute("profileUser", profileUser);
 				request.setAttribute("followerList", followerList);

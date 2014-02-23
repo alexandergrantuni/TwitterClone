@@ -37,7 +37,6 @@ public class SearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			User activeUser = (User)request.getSession().getAttribute("activeUser");
 			String requestURI = request.getRequestURI();
-			//if there is no active user, do nothing with AJAX
 			if("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) && activeUser == null)
 			{
 				return;
@@ -102,7 +101,11 @@ public class SearchServlet extends HttpServlet {
 						ServletMethods.processNewSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);//retrieve new search messages
 						return;
 					}
+					else if(request.getParameter("newestMessageId") == null)
+					{
 					ServletMethods.processOldSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);//processes the AJAX request and sends back the old messages
+					return;
+					}
 					return;
 				}
 				LinkedList<Message> messageList = new LinkedList<Message>();
