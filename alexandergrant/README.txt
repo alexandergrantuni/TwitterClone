@@ -34,9 +34,10 @@ POST - /admin - creates a new administrator
 
 -- Search --
 
+This is only used so that hash tags in messages can be linked to the search, not used otherwise!
+
 GET - /search/users/USERNAME - shows a list of users with a similar name
 GET - /search/messages/messagetext - shows a list of messages with a similar message
-POST - /search/messages/Username -- remove this
 
 -- Following --
 

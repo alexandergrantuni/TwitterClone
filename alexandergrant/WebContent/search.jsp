@@ -11,18 +11,6 @@
 <title>ChitChat - Search</title>
 </head>
 <jsp:include page="navigationbar.jsp" /> <!-- add the navigation bar to the top of the page -->
-<script>
-function searchFormValidation()
-{
-	var searchTerm=document.forms["searchForm"]["searchTerm"].value;
-	if(searchTerm.length == 0)
-	{
-		alert("You need to enter a search term");
-		return false;
-	}
-	return true;
-}
-</script>
 <body>
 <% 
 	//If the user is logged in go to the login page, if not go to the user's messages
