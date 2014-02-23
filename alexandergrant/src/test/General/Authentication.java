@@ -8,6 +8,7 @@ import test.Model.User;
 public class Authentication {
 	
 	private static Connection connection;
+	//Checks whether a username and password combination are correct
 	public static User authenticateUser(String emailAddress, String hashedPassword)
 	{
         connection = Database.getConnection();
@@ -50,7 +51,7 @@ public class Authentication {
     }
         return null;
 	}
-	
+	//Checks whether a username and password combination are correct
 	public static boolean verifyUsernameAndPassword(String username, String password)
 	{
         connection = Database.getConnection();
@@ -87,12 +88,8 @@ public class Authentication {
     }
         return false;
 	}
-	
-	public static boolean Logout(String email)
-	{
-		return true;
-	}
-	
+
+	//checks if a username has already been registered
 	public static boolean usernameRegistered(String username)
 	{
 		PreparedStatement query = null;
@@ -113,7 +110,7 @@ public class Authentication {
 			return false;
 		}
 	}
-	
+	//Checks if an email address has already been registered
 	public static boolean emailAddressRegistered(String emailAddress)
 	{
 		PreparedStatement query = null;
@@ -133,7 +130,7 @@ public class Authentication {
 			return false;
 		}
 	}
-	
+	//Registers a regular account
 	public static boolean Register(String emailAddress, String username, String hashedPassword,String firstName, String lastName)
 	{
 
@@ -175,6 +172,7 @@ public class Authentication {
         return false;
 	}
 	
+	//Registers an admin account
 	public static boolean RegisterAdmin(String emailAddress, String username, String hashedPassword,String firstName, String lastName)
 	{
 

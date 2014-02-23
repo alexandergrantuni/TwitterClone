@@ -29,7 +29,7 @@ public class FollowerServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
+	/** Used to display the followers of a user
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -104,18 +104,5 @@ public class FollowerServlet extends HttpServlet {
 			}
 			
 		}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-	
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-	}
 
 }

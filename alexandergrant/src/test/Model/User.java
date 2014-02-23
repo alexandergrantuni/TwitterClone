@@ -10,7 +10,8 @@ public class User {
 	private String lastName = "";
 	private String bio = "";
 	private boolean isAdmin = false;
-	private boolean isActiveUserFollowing = false;
+	private boolean isActiveUserFollowing = false;//if true the active user is following this user, used to determine whether to show follow
+	//or unfollow buttons
 	
 	
 	public String getUsername()

@@ -9,7 +9,7 @@ Most javascript IN utils.js
 
 ---- Javascript ----
 
-- Javascript is used to turn all hashtagged strings such as '#hello' into a link to a message search using search's REST interfaces.  e.g /search/messages/hello for that hello hashtag.
+- Javascript is used to turn all hashtagged strings such as '#hello' into a link to a hashtag search using search's REST interfaces.  e.g /search/hashtag/hello for that hello hashtag.
 
 - I used javascript to display a jquery dialog box asking the user if they really want to delete their account in the editprofile page
 
@@ -30,19 +30,19 @@ Example of normal user: test3@test3.com - google123
 -- Admin -- 
 
 GET - /admin - takes an administrator to the admin panel.  If the user is not an administrator throws a 404
-POST - /admin - creates a new administrator
+POST - /admin - creates a new administrator account
 
 -- Search --
 
-This is only used so that hash tags in messages can be linked to the search, not used otherwise!
+The GET method of search is solely used for searches on hash tags, similar to facebook's facebook.com/hashtag/example
 
-GET - /search/users/USERNAME - shows a list of users with a similar name
-GET - /search/messages/messagetext - shows a list of messages with a similar message
+GET - /search/hashtag/example - shows a list of messages with the hash tag given by the passed string, e.g in this case messages containing #example
+POST - /search - performs a search using POST
 
 -- Following --
 
-GET - /following/USERNAME - shows who the user with the given username is following
-POST - /following/USERNAME - follows the user with the given username
+GET - /following/username - shows who the user with the given username is following
+POST - /following/username - follows the user with the given username
 DELETE - /following/username - unfollows the user with the given username
 
 -- Messages --
@@ -56,7 +56,7 @@ DELETE - /messages/messageId - deletes a message with the given Id only if the a
 -- Profile --
 
 GET - /profile/ - displays the active user's profile
-GET - /profile/USERNAME - display's the profile of the user with the given username
+GET - /profile/username - display's the profile of the user with the given username
 DELETE - /profile - deletes the active user's profile
 
 -- Login --
@@ -76,6 +76,6 @@ POST - /Register/ - registers a new user so long as some requirements are met su
 
 ---- Security ----
 
-- Stored procedures and prepared statements.
+- Prepared statements.
 - All passwords are encrypted using secure hash algorithm 1.
-- Server-side and client-side validation for all user commands
+- Server-side and client-side validation for all user entry.

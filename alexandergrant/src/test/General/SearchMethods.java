@@ -10,7 +10,7 @@ import test.Model.Message;
 import test.Model.User;
 
 public class SearchMethods {
-
+	//Returns a linked list of users based on a given search term
 	public static LinkedList<User> searchForUsers(String searchTerm)
 	{
 		 Connection connection = Database.getConnection();
@@ -46,7 +46,7 @@ public class SearchMethods {
 		}
 		return null;
 	}
-	
+	//returns a linked list of messages based on a given search term
 	public static LinkedList<Message> searchForMessages(String searchTerm)
 	{
 		 Connection connection = Database.getConnection();

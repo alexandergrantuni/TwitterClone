@@ -88,6 +88,7 @@ public class RegisterServlet extends HttpServlet {
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 			return;
 		}
+		//check if the username has already been registered, if it has display an error
 		if(Authentication.usernameRegistered(username))
 		{
 			//This username is already in use so set the error message to 'Username is already in use.'
@@ -95,6 +96,7 @@ public class RegisterServlet extends HttpServlet {
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 			return;
 		}
+		//check if the email address provided has already been registered, if it has display an error
 		if(Authentication.emailAddressRegistered(emailAddress))
 		{
 			//This email address is already in use so set the error message to 'Email address is already in use.'
@@ -102,6 +104,7 @@ public class RegisterServlet extends HttpServlet {
 			request.getRequestDispatcher("register.jsp").forward(request, response);
 			return;
 		}
+		//attempt to register
 		if(Authentication.Register(emailAddress, username, hashedPassword, firstName, lastName))
 		{
 			User activeUser = Authentication.authenticateUser(emailAddress, hashedPassword);
@@ -111,10 +114,11 @@ public class RegisterServlet extends HttpServlet {
 				System.out.println("Registration successful");
 				request.getSession().setAttribute("activeUser", activeUser);
 				UserMethods.follow(username, username);//follow themselves so that they can see their own messages
-				MessageMethods.sendMessage(username, "Hello everyone! I just registered.");
-				response.sendRedirect(request.getContextPath()+"/registrationsuccessful.jsp");
+				MessageMethods.sendMessage(username, "Hello everyone! I just registered.");//send a message telling everyone you've registered
+				response.sendRedirect(request.getContextPath()+"/registrationsuccessful.jsp");//go to the registration successful page
 			}
 		}
+		//Lots of things could cause this, so display a generic error
 		else
 		{
 			//Registration was unsuccessful

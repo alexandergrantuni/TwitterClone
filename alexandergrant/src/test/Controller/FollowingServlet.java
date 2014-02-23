@@ -31,6 +31,7 @@ public class FollowingServlet extends HttpServlet {
 	}
 
 	/**
+	 * Used to display the users that a user is following
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
@@ -52,7 +53,7 @@ public class FollowingServlet extends HttpServlet {
 											// /followers(/) with no username
 											// appended
 			{
-				LinkedList<User> followingList = UserMethods.getFollowing(activeUser.getUsername());
+				LinkedList<User> followingList = UserMethods.getFollowing(activeUser.getUsername());//get all users the active user is following
 				if(followingList.size() == 1)// 1 because the user follows themselves so that they can see their own messages
 				{
 					request.setAttribute("notFollowing", "You don't appear to be following anyone!");
@@ -70,7 +71,7 @@ public class FollowingServlet extends HttpServlet {
 			if (Authentication.usernameRegistered(username))// Is the username
 															// valid?
 			{
-				User profileUser = UserMethods.getUserFromUsername(username);
+				User profileUser = UserMethods.getUserFromUsername(username);//profile user is the user we are trying to find the users they are following for
 				LinkedList<User> followingList = UserMethods.getFollowing(username);
 				if (followingList.size() == 1)// 1 because the user follows themselves so that they can see their own messages
 				{
@@ -121,6 +122,7 @@ public class FollowingServlet extends HttpServlet {
 			String username = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
 			if(Authentication.usernameRegistered(username))//Is the username valid?
 			{
+				//if the active user is not already following the user then follow that user
 				if(!UserMethods.isFollowing(activeUser.getUsername(), username))
 				{
 					UserMethods.follow(activeUser.getUsername(), username);
@@ -135,6 +137,7 @@ public class FollowingServlet extends HttpServlet {
 		}
 
 	/**
+	 * Used to delete a follower
 	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
@@ -154,6 +157,7 @@ public class FollowingServlet extends HttpServlet {
 			String username = requestURI.substring(request.getRequestURI().lastIndexOf("/") + 1);
 			if(Authentication.usernameRegistered(username))//Is the username valid?
 			{
+				//if the active user is following the user then stop following that user
 				if(UserMethods.isFollowing(activeUser.getUsername(), username))
 				{
 					UserMethods.unfollow(activeUser.getUsername(), username);

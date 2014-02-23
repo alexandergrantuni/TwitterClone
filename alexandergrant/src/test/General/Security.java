@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Security {
 	//REFERENCED METHOD
+	//hashes a string using SHA1
 	//Credit to: http://nuin.blogspot.co.uk/2011/03/quick-tip-sha1-or-md5-checksum-strings.html
 	public static String getEncodedSha1Sum( String key ) {
 	    try {

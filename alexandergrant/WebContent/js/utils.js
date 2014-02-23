@@ -17,11 +17,11 @@ function detectAndAddHashTags(context)
     		  hashTagArray[k] = myArray[0];
     		  k++;
     		}
-			if(current.indexOf("/search/messages") == -1)
+			if(current.indexOf("/search/hashtag/") == -1)//if we've not already formatted this hashtag then turn it into a link
 			{
 				for(var j = 0; j < hashTagArray.length; j++)
     			{
-    				current = current.replace(hashTagArray[j],'<a href=/alexandergrant/search/messages/'+hashTagArray[j].replace("#","")+'>' + hashTagArray[j] + '</a>');
+    				current = current.replace(hashTagArray[j],'<a href=/alexandergrant/search/hashtag/'+hashTagArray[j].replace("#","")+'>' + hashTagArray[j] + '</a>');
     				messages[i].innerHTML = current;
     			}
 			}
@@ -29,7 +29,7 @@ function detectAndAddHashTags(context)
     	}
     }
 }
-
+//NOT CURRENTLY WORKING, regular expression doesn't appear to support multiple website links in 1 message
 function detectAndAddWebsiteLinks()
 {
     var messages = document.getElementsByClassName("messageText");//Gets all messages by taking the messageText div classes which contain the text for each message
@@ -71,10 +71,11 @@ function formatMessages()
 }
 
 
-
+//AJAX for unfollowing a user
+//context is the base start of the url, in this case alexandergrant/
+//username is the username of the user to follow
 function deleteFollow(context, username)
 {
-	
 	$.ajax({
 	    url: context+"/following/"+username,
 	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
@@ -85,6 +86,9 @@ function deleteFollow(context, username)
 	        }                   
 	    });
 }
+//AJAX for following a user
+//context is the base start of the url, in this case alexandergrant/
+//username is the username of the user to follow
 function follow(context, username)
 {
 	$.ajax({
@@ -97,7 +101,9 @@ function follow(context, username)
 	        }                   
 	    });
 }
-
+//AJAX for deleting a message
+//context is the base start of the url, in this case alexandergrant/
+//messageId is the identifier of the message to delete
 function deleteMessage(context, messageId)
 {
 	$.ajax({
@@ -116,32 +122,32 @@ function fetchNewMessages()
 	//This first part gets the newest message's messageId
     var newMessages = document.getElementsByClassName("newmessage");//get all messages
     var newestMessage = -1;
-    if(newMessages.length > 0)
+    if(newMessages.length > 0)//if a new message exists, the first one is the newest overall message
 	{
     	newestMessage = newMessages[0].id;
 	}
     else
     {
     	var messages = document.getElementsByClassName("message");
-    	if(messages.length > 0)
+    	if(messages.length > 0)//if there are more than 1 message
     	{
     		newestMessage = messages[0].id;
     	}
     }
     $.ajax({
     	type:'GET',
-    	cache: false,
+    	cache: false,//internet explorer support
     	data: {newestMessageId: newestMessage},
     		success: 
     			function(html){
     		    $("#newMessages").prepend(html);
-    		    detectAndAddHashTags();
+    		    detectAndAddHashTags();//add hash tag links to new messages
     		    },
     });
-    setTimeout(fetchNewMessages, 5000);
+    setTimeout(fetchNewMessages, 5000);//check for more new messages again in 5 seconds
 }
 
-
+//Displays a dialog using jquery ui asking the user if they are sure that they want to delete a message
 function showDeleteMessageDialog(context, messageId)
 {
   $( "#dialog-confirm" ).dialog({

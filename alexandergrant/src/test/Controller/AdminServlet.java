@@ -53,20 +53,54 @@ public class AdminServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User)request.getSession().getAttribute("activeUser");
+		if(activeUser == null)
+		{
+			//if the user isn't logged in, send them to the login page
+			response.sendRedirect(request.getContextPath()+"/login.jsp");
+			return;
+		}
 		if(!activeUser.getIsAdmin())
 		{
 			//if they're not an admin, they can't use admin functionality
 			response.sendRedirect(request.getContextPath()+"/404.jsp");
 			return;
 		}
-		Date now = new Date();
 		String username = request.getParameter("username");
 		String emailAddress = request.getParameter("emailAddress");
 		String hashedPassword = test.General.Security.getEncodedSha1Sum(request.getParameter("userPassword"));
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
-		String bio = "";
-		String profilePicture = "";//TODO SET THIS TO DEFAULT IMG URL
+		//First name can only contain upper and lower case characters
+		if(firstName.matches("^.*[^a-zA-Z ].*$"))
+		{
+			request.setAttribute("errorMessage", "Your first name must contain only letters.");
+			request.getRequestDispatcher("admin.jsp").forward(request, response);
+			return;
+		}
+		//Last name can only contain upper and lower case characters
+		if(lastName.matches("^.*[^a-zA-Z ].*$"))
+		{
+			request.setAttribute("errorMessage", "Your last name must contain only letters.");
+			request.getRequestDispatcher("admin.jsp").forward(request, response);
+			return;
+		}
+		//Alphanumeric username regex, credit to http://stackoverflow.com/questions/8248277/how-to-determine-if-a-string-has-non-alphanumeric-characters
+		if(username.matches("^.*[^a-zA-Z0-9 ].*$"))
+		{
+			request.setAttribute("errorMessage", "Usernames must be alphanumeric");
+			request.getRequestDispatcher("admin.jsp").forward(request, response);
+			return;
+		}
+		String EMAIL_PATTERN = 
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		//Again, I didn't write this regular expression. Credit to: http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
+		if(!emailAddress.matches(EMAIL_PATTERN))
+		{
+			request.setAttribute("errorMessage", "Invalid email address.");
+			request.getRequestDispatcher("admin.jsp").forward(request, response);
+			return;
+		}
 		if(Authentication.usernameRegistered(username))
 		{
 			//This username is already in use so set the error message to 'Username is already in use.'

@@ -36,10 +36,14 @@ public class MessageServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User)request.getSession().getAttribute("activeUser");
+		
+		//if it's an ajax request and there is no active user quit, this is done so that ajax doesn't send back login page html etc and add 
+		//them to pages
 		if("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) && activeUser == null)
 		{
 			return;
 		}
+		//check if the user is logged in
 		if(activeUser == null)
 		{
 			//User is not logged in
@@ -148,6 +152,7 @@ public class MessageServlet extends HttpServlet {
 	
 
 	/**
+	 * Used to post a message
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -178,6 +183,7 @@ public class MessageServlet extends HttpServlet {
 	}
 	
 	/**
+	 * Called when the user wants to delete a message
 	 * @see HttpServlet#doDelete(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -188,17 +194,17 @@ public class MessageServlet extends HttpServlet {
 		User activeUser = (User)request.getSession().getAttribute("activeUser");
 		try
 		{
-		if(request.getSession().getAttribute("activeUser") != null)
-		{
-			if(MessageMethods.createdMessage(activeUser, Integer.parseInt(argument)) || activeUser.getIsAdmin())
+			if(request.getSession().getAttribute("activeUser") != null)
 			{
-				MessageMethods.deleteMessage(Integer.parseInt(argument));
+				if(MessageMethods.createdMessage(activeUser, messageId) || activeUser.getIsAdmin())
+				{
+					MessageMethods.deleteMessage(messageId);
+				}
+				else
+				{
+					request.setAttribute("errorMessage", "You can only delete your own messages!");
+				}
 			}
-			else
-			{
-				request.setAttribute("errorMessage", "You can only delete your own messages!");
-			}
-		}
 		}
 		catch(java.lang.NumberFormatException nfe)
 		{

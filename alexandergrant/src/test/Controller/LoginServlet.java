@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
     }
 
 	/**
+	 * When Login is accessed if the user is logged in go to their messages and if not go to login.jsp
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,6 +49,7 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	/**
+	 * Attempts to log the user in
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

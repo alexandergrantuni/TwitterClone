@@ -141,14 +141,15 @@ public class ProfileServlet extends HttpServlet {
 	
 
 	/**
+	 * Used by users to edit their profile
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Take in the account attributes from the edit profile form
 		String username = (String)request.getParameter("username");
 		String email = (String)request.getParameter("email");
 		String firstName = (String)request.getParameter("firstName");
 		String lastName = (String)request.getParameter("lastName");
-		
 		String bio = (String)request.getParameter("bio");
 		String oldPassword = (String)request.getParameter("oldPassword");
 		String newPassword = (String)request.getParameter("newPassword");
@@ -158,10 +159,11 @@ public class ProfileServlet extends HttpServlet {
 		
 		if(activeUser == null)
 		{
+			//if the user is not logged in send them to the login page
             response.sendRedirect(request.getContextPath()+"/login.jsp");
 			return;
 		}
-		
+		//check that the user's first name contains only letters
 		if(firstName.matches("^.*[^a-zA-Z ].*$"))
 		{
 			request.setAttribute("errorMessage", "Your first name must only contain letters.");
@@ -175,7 +177,7 @@ public class ProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("editprofile.jsp").forward(request, response);
 			return;
 		}
-	
+		//make sure the user is editing their own details
 		if(!username.equals(activeUser.getUsername()) || !email.equals(activeUser.getEmailAddress()))
 		{
 			request.setAttribute("errorMessage", "You are unable to edit another user's details.");
@@ -215,6 +217,7 @@ public class ProfileServlet extends HttpServlet {
 			}
 			else
 			{
+				//An unknown error occured so display a generic error message
 	        	request.setAttribute("errorMessage", "Something went wrong.  Try again later.");
 	    		request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
 	    		return;
@@ -222,6 +225,7 @@ public class ProfileServlet extends HttpServlet {
 		}
 		else
 		{
+			//The old password was entered incorrectly so display an error
         	request.setAttribute("errorMessage", "You entered your old password incorrectly.");
     		request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
     		return;
@@ -229,6 +233,7 @@ public class ProfileServlet extends HttpServlet {
 		
 		
 	}
+	//used to delete a user account
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User activeUser = (User)request.getSession().getAttribute("activeUser");
 		if(activeUser == null)
@@ -239,8 +244,10 @@ public class ProfileServlet extends HttpServlet {
 		}
 		else
 		{
+			//delete the account and invalidate the session
 			UserMethods.deleteAccount(activeUser);
 			request.getSession().setAttribute("activeUser", null);
+			request.getSession().invalidate();
 		}
 	}
 

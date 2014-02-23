@@ -10,7 +10,7 @@ import test.Model.User;
 
 public class UserMethods {
 
-	
+	//Returns the user object which has the given email address
 	public static User getUserFromEmailAddress(String emailAddress)
 	{
         Connection connection = Database.getConnection();
@@ -50,7 +50,7 @@ public class UserMethods {
     }
         return null;
 	}
-	
+	//Returns the user object which has the given username
 	public static User getUserFromUsername(String username)
 	{
         Connection connection = Database.getConnection();
@@ -90,7 +90,7 @@ public class UserMethods {
     }
         return null;
 	}
-	
+	//Returns a list of followers for the user with the given username
 	public static LinkedList<User> getFollowers(String username)
 	{
         Connection connection = Database.getConnection();
@@ -127,7 +127,7 @@ public class UserMethods {
     }
         return null;
 	}
-	
+	//Returns a list of users that are following the given user
 	public static LinkedList<User> getFollowing(String username)
 	{
         Connection connection = Database.getConnection();
@@ -166,6 +166,7 @@ public class UserMethods {
     }
         return null;
 	}
+	//Makes 1 user (argument 1) follow another user (argument 2)
 	public static boolean follow(String username, String usernameToFollow)
 	{
         Connection connection = Database.getConnection();
@@ -196,6 +197,7 @@ public class UserMethods {
     }
         return false;
 	}
+	//Makes 1 user (argument 1) unfollow another user (argument 2)
 	public static boolean unfollow(String username, String usernameToUnfollow)
 	{
         Connection connection = Database.getConnection();
@@ -226,6 +228,7 @@ public class UserMethods {
     }
         return false;
 	}
+	//Returns true if 1 user (argument 1) is following another user (argument 2)
 	public static boolean isFollowing(String username, String usernameBeingFollowed)
 	{
         Connection connection = Database.getConnection();
@@ -255,7 +258,7 @@ public class UserMethods {
     }
         return false;
 	}
-	
+	//Deletes all followings and follows for a given user
 	public static void deleteFollows(User u)
 	{
 		Connection connection = Database.getConnection();
@@ -287,7 +290,7 @@ public class UserMethods {
 	        
 	}
 	}
-	
+	//Updates a user's details with the given parameter values
 	public static boolean updateDetails(String username, String firstName, String lastName, String bio, String newPassword)
 	{
 		Connection connection = Database.getConnection();
@@ -328,7 +331,7 @@ public class UserMethods {
         }
         return false;
 	}
-	
+	//Deletes a user
 	public static void deleteUser(User u)
 	{
 		Connection connection = Database.getConnection();
@@ -359,6 +362,7 @@ public class UserMethods {
 	        
 	}
 	}
+	//Deletes a user's account
 	public static void deleteAccount(User u)
 	{
 		deleteFollows(u);
