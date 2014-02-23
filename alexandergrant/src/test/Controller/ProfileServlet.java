@@ -70,7 +70,8 @@ public class ProfileServlet extends HttpServlet {
 				ServletMethods.processProfileMessagesAJAX(request,response, requestURI, username, activeUser);
 				return;
 			}
-			if(requestURI.equals(request.getContextPath()+"/profile/"))//if the URI simply ends in /profile/ with no username appended
+			//if the URI simply ends in /profile/ or /profile with no username appended
+			if(requestURI.equals(request.getContextPath()+"/profile/") || requestURI.equals(request.getContextPath()+"/profile"))
 			{
 				//Handle AJAX request
 				//Display the active user's profile

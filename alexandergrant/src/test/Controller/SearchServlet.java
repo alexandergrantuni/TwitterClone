@@ -114,6 +114,7 @@ public class SearchServlet extends HttpServlet {
 					}
 					else if(request.getParameter("newestMessageId") == null)
 					{
+						
 					ServletMethods.processOldSearchMessagesAJAX(request, response, requestURI, activeUser, searchTerm);//processes the AJAX request and sends back the old messages
 					return;
 					}

@@ -17,6 +17,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>ChitChat - Search Results</title>
 <script>
+//checks for new messages every 5 seconds and adds them to the page if they exist
+//This is useful because the user does not have to refresh the page to see new messages
+function fetchNewMessages()
+{
+	//This first part gets the newest message's messageId
+  var newMessages = document.getElementsByClassName("newmessage");//get all messages
+  var newestMessage = -1;
+  if(newMessages.length > 0)//if a new message exists, the first one is the newest overall message
+	{
+  	newestMessage = newMessages[0].id;
+	}
+  else
+  {
+  	var messages = document.getElementsByClassName("message");
+  	if(messages.length > 0)//if there are more than 1 message
+  	{
+  		newestMessage = messages[0].id;
+  	}
+  }
+	var search = "${searchTerm}";//get search term from POST search
+  	var select = "${searchSelect}";//get search select from POST search
+	
+  	//So, if select has a value. This means that a post search is being displayed so send the searchTerm and searchSelect to the server
+  	//so that new messages can be displayed
+  	if(select)
+  	{
+  		$.ajax({
+  			type:'GET',
+  			cache: false,//internet explorer support
+  			data: {newestMessageId: newestMessage, searchTerm: search, searchSelect: select},
+  				success: 
+  					function(messages){
+  		   			 $("#newMessages").prepend(messages);
+  		   			 detectAndAddHashTags();//add hash tag links to new messages
+  		   			 },
+ 		 	});
+  	}
+  	//So, if search does not have a value. This means that a GET (hashtag) search is being displayed so just send the newest message Id
+  	//to the server
+  	else
+  	{
+  		$.ajax({
+  			type:'GET',
+  			cache: false,//internet explorer support
+  			data: {newestMessageId: newestMessage},
+  				success: 
+  					function(messages){
+  		   			 $("#newMessages").prepend(messages);
+  		   			 detectAndAddHashTags();//add hash tag links to new messages
+  		   			 },
+ 		 	});
+  	}
+  setTimeout(fetchNewMessages, 5000);//check for more new messages again in 5 seconds
+}
 
 $(function() {
 	var total = document.getElementsByClassName("message").length;//get all messages
@@ -60,7 +114,7 @@ $(document).ready(function(){
       	var search = "${searchTerm}";//get search term from POST search
       	var select = "${searchSelect}";//get search select from POST search
   		
-      	if(search)
+      	if(select)
       	{
       		//if the POST search was used
           	$.ajax({
@@ -68,13 +122,12 @@ $(document).ready(function(){
           	    type:'GET',
           	    data: {oldestMessageId: oldestMessage, searchTerm: search, searchSelect: select},
           		    success: 
-          		        function(msg){
-          		            $("#largecontainer").append(msg);//add the retrieved messages to the page
+          		        function(messages){
+          		            $("#largecontainer").append(messages);//add the retrieved messages to the page
           		            formatMessages();//add hash tag links etc to messages
           		            fetching = false;//no longer fetching, allow another fetch to occur
           		        }                  
           	    });
-          	return;
       	}
       	else
       	{
@@ -84,8 +137,8 @@ $(document).ready(function(){
           	    type:'GET',
           	    data: {oldestMessageId: oldestMessage},
           		    success: 
-          		        function(msg){
-          		            $("#largecontainer").append(msg);//add the retrieved messages to the page
+          		        function(messages){
+          		            $("#largecontainer").append(messages);//add the retrieved messages to the page
           		            formatMessages();//add hash tag links etc to messages
           		            fetching = false;//no longer fetching, allow another fetch to occur
           		        }                  

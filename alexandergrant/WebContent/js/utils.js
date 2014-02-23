@@ -21,11 +21,11 @@ function detectAndAddHashTags(context)
 			{
 				for(var j = 0; j < hashTagArray.length; j++)
     			{
+					//Create the link and remove the hashtag so it links to /search/hashtag/example
     				current = current.replace(hashTagArray[j],'<a href=/alexandergrant/search/hashtag/'+hashTagArray[j].replace("#","")+'>' + hashTagArray[j] + '</a>');
     				messages[i].innerHTML = current;
     			}
 			}
-		//# is a special character sometimes used to link to anchors in webpages so this might be why
     	}
     }
 }
@@ -53,13 +53,12 @@ function detectAndAddWebsiteLinks()
 			{
     		for(var j = 0; j < hashTagArray.length; j++)
     			{
-
-    					current = current.replace(hashTagArray[j],'<a href="'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
-    					messages[i].innerHTML = current;
+    				
+    				current = current.replace(hashTagArray[j],'<a href="'+hashTagArray[j].replace("#","")+'">' + hashTagArray[j] + '</a>');
+    				messages[i].innerHTML = current;
     				
     			}
 			}
-		//# is a special character sometimes used to link to anchors in webpages so this might be why
     	}
     }
 }
@@ -139,8 +138,8 @@ function fetchNewMessages()
     	cache: false,//internet explorer support
     	data: {newestMessageId: newestMessage},
     		success: 
-    			function(html){
-    		    $("#newMessages").prepend(html);
+    			function(messages){
+    		    $("#newMessages").prepend(messages);
     		    detectAndAddHashTags();//add hash tag links to new messages
     		    },
     });
