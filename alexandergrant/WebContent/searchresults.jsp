@@ -21,21 +21,22 @@
 //This is useful because the user does not have to refresh the page to see new messages
 function fetchNewMessages()
 {
-	//This first part gets the newest message's messageId
-  var newMessages = document.getElementsByClassName("newmessage");//get all messages
-  var newestMessage = -1;
-  if(newMessages.length > 0)//if a new message exists, the first one is the newest overall message
+	//Goes through all div message classes and retrieves the div id which holds the message id for the message in that div
+	//finds the 'newest' shown message, i.e the top currently shown message on the page
+  	var newMessages = document.getElementsByClassName("newmessage");//get all messages
+ 	var newestMessage = -1;
+ 	if(newMessages.length > 0)//if a new message exists, the first one is the newest overall message
 	{
-  	newestMessage = newMessages[0].id;
+  		newestMessage = newMessages[0].id;
 	}
-  else
-  {
-  	var messages = document.getElementsByClassName("message");
-  	if(messages.length > 0)//if there are more than 1 message
+  	else
   	{
-  		newestMessage = messages[0].id;
-  	}
-  }
+  		var messages = document.getElementsByClassName("message");
+  		if(messages.length > 0)//if there are more than 1 message
+  		{
+  			newestMessage = messages[0].id;
+  		}
+ 	}
 	var search = "${searchTerm}";//get search term from POST search
   	var select = "${searchSelect}";//get search select from POST search
 	
@@ -89,37 +90,37 @@ $(document).ready(function(){
   $(window).scroll(function(){ //called when the user scrolls
   	if($(window).scrollTop() + $(window).height() == $(document).height() & !fetching) {//if the user is at the bottom of the page and a fetch is not going on
           //This part gets the oldest currently shown message	
-          var messages = document.getElementsByClassName("message");//get all messages
-          var oldestMessage = -1;
-          if(messages.length > 0)
+        var messages = document.getElementsByClassName("message");//get all messages
+        var oldestMessage = -1;
+        if(messages.length > 0)
       	{
           	oldestMessage = messages[messages.length-1].id;
       	}
-          else
-          {
-          	var newMessages = document.getElementsByClassName("message");
-          	if(newMessages.length > 0)
-          	{
-          		oldestMessage = newMessages[messages.length-1].id;
-          	}
-          }
+        else
+        {
+         	var newMessages = document.getElementsByClassName("message");
+          		if(newMessages.length > 0)
+          		{
+          			oldestMessage = newMessages[messages.length-1].id;
+          		}
+       	}
       	var numMessages = messages.length;//get the number of messages
       	if(numMessages.length < 10)
-      		{
-      			return;//there are no older messages
-      		}									  
+      	{
+      		return;//there are no older messages
+      	}									  
       	fetching = true;//a new fetch is in progress set fetching to true
       	//This part sends the oldest currently shown message to the server so that more can be fetched
       	
       	var search = "${searchTerm}";//get search term from POST search
       	var select = "${searchSelect}";//get search select from POST search
   		
-      	if(select)
+      	if(select)//if the POST search was used
       	{
-      		//if the POST search was used
           	$.ajax({
           		cache: false,//internet explorer support
           	    type:'GET',
+          	    //Data holds the oldest message id, search term and the type of search e.g users or messages
           	    data: {oldestMessageId: oldestMessage, searchTerm: search, searchSelect: select},
           		    success: 
           		        function(messages){

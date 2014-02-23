@@ -1,4 +1,4 @@
-Most javascript IN utils.js
+Most javascript and AJAX should be easy to find. It is mostly found in utils.js otherwise it should be in the relevant jsp file e.g to load older messages this isn't in utils.js but in messages.jsp, profile.jsp and searchresults.jsp.
 
 ---- AJAX ----
 

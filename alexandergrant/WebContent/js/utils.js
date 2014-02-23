@@ -1,3 +1,4 @@
+//detects hash tags in messges and turns them into links to a search
 function detectAndAddHashTags(context)
 {
     var messages = document.getElementsByClassName("messageText");//Gets all messages by taking the messageText div classes which contain the text for each message
@@ -63,7 +64,7 @@ function detectAndAddWebsiteLinks()
     }
 }
 
-
+//calls all message formatting functions
 function formatMessages()
 {
 	detectAndAddHashTags();
@@ -110,7 +111,7 @@ function deleteMessage(context, messageId)
 	    type:'DELETE',//Sends a DELETE request which tells the servlet to delete the message with the given messageId
 	    success: 
 	        function(msg){
-	            location.reload();
+	    		location.reload(true);
 	        }                   
 	    });
 }
@@ -119,6 +120,8 @@ function deleteMessage(context, messageId)
 function fetchNewMessages()
 {
 	//This first part gets the newest message's messageId
+	//Goes through all div message classes and retrieves the div id which holds the message id for the message in that div
+	//finds the 'newest' shown message, i.e the top currently shown message on the page
     var newMessages = document.getElementsByClassName("newmessage");//get all messages
     var newestMessage = -1;
     if(newMessages.length > 0)//if a new message exists, the first one is the newest overall message
