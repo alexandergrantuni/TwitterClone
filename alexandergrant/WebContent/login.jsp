@@ -66,7 +66,6 @@ function loginFormValidation()
   <div class="login-help">
     <p>Not registered? <a href="register.jsp">Register here!</a></p>
   </div>
-</div>
 <jsp:include page="footer.jsp" /> <!-- add the footer to the bottom of the page -->
 </body>
 

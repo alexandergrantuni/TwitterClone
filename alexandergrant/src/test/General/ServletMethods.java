@@ -117,21 +117,19 @@ public class ServletMethods {
 	private static LinkedList<Message> getOldMessages(LinkedList<Message> messageList, int oldestMessageId)
 	{
 		LinkedList<Message> newMessages = new LinkedList<Message>();
-		int index = getIndexByMessageId(messageList, oldestMessageId);
-		int nextMessageIndex = index+1;
 		int j =0;
-		for(int i = nextMessageIndex; i < nextMessageIndex+10;i++)
+		for(Message m : messageList)
 		{
-			if(i == messageList.size())
-			{
-				break;
-			}
 			if(j == 10)
 			{
 				break;
 			}
-			newMessages.add(messageList.get(i));
-			j++;
+			//Get older messages aka ones with a lower message id
+			if(m.getMessageId() < oldestMessageId)
+			{
+				newMessages.add(m);
+				j++;
+			}
 		}
 		return newMessages;
 	}

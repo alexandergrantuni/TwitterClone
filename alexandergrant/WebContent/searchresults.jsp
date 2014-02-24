@@ -75,9 +75,9 @@ function fetchNewMessages()
 
 $(function() {
 	var total = document.getElementsByClassName("message").length;//get all messages
-	if(total > 10)
+	if(total == 10)
 	{
-		$("#moreResults").html("<center>There are more messages to be displayed.  Scroll down to the bottom to see more.</center>")
+		$("#moreResults").html("<center>There may be more messages to be displayed.  Scroll down to the bottom to load more.</center>")
 	}
 	setTimeout(fetchNewMessages, 5000);//start fetching
   });
