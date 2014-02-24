@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+<Resource name="jdbc/chitchat" 
+    type="javax.sql.DataSource"
+    auth="Container" 
+	factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+	driverClassName="com.mysql.jdbc.Driver" 
+	url="jdbc:mysql://arlia.computing.dundee.ac.uk:3306/alexandergrantdb"
+	username="alexandergrant" password="123.ag.pwd" 
+    jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+/>
+
+
+</Context>
+
