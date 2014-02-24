@@ -25,8 +25,6 @@ Example of Admin account: admin@admin.com - google123
 
 Normal user - Can post and delete their own messages.
 
-Example of normal user: test3@test3.com - google123
-
 -- Admin -- 
 
 GET - /admin - takes an administrator to the admin panel.  If the user is not an administrator throws a 404
