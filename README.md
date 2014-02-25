@@ -12,3 +12,5 @@ New messages are loaded if another user posts a message after the page was loade
 Login Details:
 
 admin@admin.com : google123 - admin account
+
+Please ensure you run this locally under the directory alexandergrant or hashtags won't link to the search correctly.
